@@ -2,7 +2,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { IoMenu, IoSearch } from "react-icons/io5";
-import Logo from "./image/TaleWhirlFox-removebg.png";
+import Logo from "../image/TaleWhirlFox-removebg.png";
 import { CiSearch } from "react-icons/ci";
 import { useRouter } from "next/navigation";
 import { IoMdClose } from "react-icons/io";
@@ -30,8 +30,10 @@ const Header = () => {
           <div>
             <IoMenu size={30} />
           </div>
-          <Link href="/">
-            {/* <Image src={Logo} alt="talewhirl logo"></Image> */}
+          <Link
+          className="flex flex-row items-center gap-x-2"
+          href="/">
+            {/* <Image src={Logo} width={30} height={10} alt="talewhirl logo"></Image> */}
             <span className="sigmar-regular">TALEWHIRL</span>
           </Link>
           <form
@@ -74,7 +76,7 @@ const Header = () => {
           <Button className="hover:bg-[#262626] border transition-colors px-5 py-2 rounded md:flex hidden flex-row items-center gap-2">
             Sign up
           </Button>
-          <button>
+          <button onClick={() => setIsLoginCliked(!isLoginClicked)}>
             <MdOutlineAccountCircle className="block md:hidden" size={30} />
           </button>
         </div>

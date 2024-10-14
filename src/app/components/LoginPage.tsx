@@ -2,62 +2,143 @@
 import { useState } from "react";
 import axios from "axios";
 import baseApi from "../api/baseApi";
-
-
-/**
- * TASKS FOR TODAY!!
- * 
- * TODO - style the login page with an image on the left and the form on the right 
- * TODO - handle and display errors in the login page
- */
+import { IoClose } from "react-icons/io5";
+import Image from "next/image";
+import loginBg from "../image/login-bg.jpg";
+import { IoMdMail } from "react-icons/io";
+import { FaLock } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import SignUpPage from "./SignUpPage";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [errormessage, setErrorMessage] = useState("");
+  const [closePopUp, setClosePopUp] = useState(false);
+  const [registerPage, setRegisterPage] = useState(false);
+  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setErrorMessage("");
     try {
       const response = await baseApi.post("auth/Authenticate", {
         email,
         password,
       });
-      console.log("Login successful:", response.data);
-    } catch (err) {
+      console.log(response.data);
+      router.push("/");
+    } catch (err: any) {
       if (axios.isAxiosError(err) && err.response) {
-        setError(err.response.data.message || "Login failed");
+        setErrorMessage(err.response.data.businessErrorDescription);
       } else {
-        setError("Something went wrong");
+        setErrorMessage("Something went wrong");
       }
     }
   };
 
+  const handleDemoLogin = () => {
+    setEmail("Ebubeofoneta@gmail.com");
+    setPassword("password123");
+  };
+
+  if (closePopUp) return null;
+  if (registerPage) return <SignUpPage />;
   return (
-    <div className="bg-white max-w-[600px] text-black absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-      <h1>Login</h1>
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+    <>
+      <div
+        className="absolute w-full h-full bg-[#00000075]"
+        onClick={() => setClosePopUp(!closePopUp)}
+      />
+      <div className="flex flex-row bg-white rounded-md sm:max-w-[400px] w-[80%] md:max-w-[600px] h-[420px] text-black absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <Image
+          src={loginBg}
+          className="hidden md:block object-cover rounded-l-md"
+          width={300}
+          alt=""
+        ></Image>
+        <div className="relative p-4 mx-auto text-center">
+          <button
+            className="absolute right-2 top-3"
+            onClick={() => setClosePopUp(!closePopUp)}
+          >
+            <IoClose size={20} />
+          </button>
+          <h2 className="text-center text-[#256325] font-bold text-xl lg:text-3xl">
+            Welcome back!
+          </h2>
+          <p className="text-center mb-6">
+            TaleWhirl - a better place to read fantasy book online for free!
+          </p>
+          <form onSubmit={handleLogin}>
+            {errormessage && (
+              <div className="w-full bg-red-600 text-white py-2 rounded-t-md">
+                <span>{errormessage}</span>
+              </div>
+            )}
+            <div className="relative">
+              <input
+                required
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="bg-transparent outline-none py-1 pl-2 pr-8 border border-zinc-500 w-full"
+              />
+              <IoMdMail
+                size={16}
+                className="text-[#256325] absolute right-2 top-1.5"
+              />
+            </div>
+            <div className="relative mt-5">
+              <input
+                required
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="bg-transparent outline-none py-1 pl-2 pr-8 border border-zinc-500 w-full"
+              />
+              <FaLock
+                size={16}
+                className="text-[#256325] absolute right-2 top-1.5"
+              />
+            </div>
+
+            <div className="flex flex-row justify-between mt-5">
+              <label className="flex items-center space-x-1">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  value="yes"
+                  className="form-checkbox"
+                />
+                <span>Remember me</span>
+              </label>
+
+              <button className="text-[#256325]" onClick={handleDemoLogin}>
+                Demo Login
+              </button>
+            </div>
+            <button
+              type="submit"
+              className="w-full py-2 bg-[#256325] mt-5 text-white hover:bg-[#2f7f2f] transition-colors rounded-md"
+            >
+              Login
+            </button>
+            <div className="mt-5 space-x-2 pb-6">
+              <span>Don't have an account?</span>
+              <button
+                className="text-[#256325]"
+                onClick={() => setRegisterPage(!registerPage)}
+              >
+                Register
+              </button>
+            </div>
+          </form>
         </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        <button type="submit">Login</button>
-      </form>
-    </div>
+      </div>
+    </>
   );
 };
 
