@@ -1,10 +1,13 @@
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import baseApi from "../api/baseApi";
-import { getToken, setToken } from "../token/Token";
 import axios from "axios";
 import LoginPage from "./LoginPage";
-import countries from "../data/countries.json";
+import Image from "next/image";
+import signUpBg from "../image/signup-bg.jpg";
+import { IoClose } from "react-icons/io5";
+import { IoMdMail, IoMdPerson } from "react-icons/io";
+import { FaLock } from "react-icons/fa";
 import CountrySelector from "../utilities/CountrySelector";
 
 /**
@@ -21,7 +24,6 @@ const SignUpPage = () => {
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [dob, setDob] = useState<string>("");
-  const [preferedGenre, setPreferredGenre] = useState<string[]>([]);
   const [errormessage, setErrorMessage] = useState<string[]>([]);
   const [closePopUp, setClosePopUp] = useState<boolean>(false);
   const [loginPage, setLoginPage] = useState<boolean>(false);
@@ -30,16 +32,19 @@ const SignUpPage = () => {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage([]);
+    const requestData: any = {
+      firstName: firstname,
+      lastName: lastname,
+      email,
+      password,
+      country: selectedCountry,
+    };
+    if (dob) {
+      requestData.dateOfBirth = dob;
+    }
+
     try {
-      const response = await baseApi.post("auth/register", {
-        firstname,
-        lastname,
-        email,
-        password,
-        selectedCountry,
-        preferedGenre,
-        dob,
-      });
+      const response = await baseApi.post("auth/register", requestData);
     } catch (err: any) {
       if (axios.isAxiosError(err) && err.response) {
         setErrorMessage(err.response.data.businessErrorDescription);
@@ -50,34 +55,125 @@ const SignUpPage = () => {
   };
 
   console.log(selectedCountry);
-  
+
   if (closePopUp) return null;
   if (loginPage) return <LoginPage />;
   return (
-    <div className="flex flex-row bg-white rounded-md sm:max-w-[400px] w-[80%] md:max-w-[620px] h-[420px] text-black absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-      <CountrySelector
-        selectedCountry={selectedCountry}
-        onCountryChange={setSelectedCountry}
+    <>
+      <div
+        className="absolute w-full h-full bg-[#00000075]"
+        onClick={() => setClosePopUp(!closePopUp)}
       />
-      <div>
-          <label>Preferred Genre:</label>
-          <select
-            multiple
-            value={preferedGenre}
-            onChange={(e) =>
-              setPreferredGenre(
-                Array.from(e.target.selectedOptions, (option) => option.value)
-              )
-            }
+      <div className="flex flex-row bg-white rounded-md sm:max-w-[420px] w-[82%] md:max-w-[650px] h-[500px] text-black absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <Image
+          src={signUpBg}
+          className="hidden md:block object-cover rounded-l-md"
+          width={400}
+          alt=""
+        ></Image>
+        <div className="relative p-4 mx-auto text-center">
+          <button
+            className="absolute right-2 top-3"
+            onClick={() => setClosePopUp(!closePopUp)}
           >
-            <option value="fiction">Fiction</option>
-            <option value="non-fiction">Non-Fiction</option>
-            <option value="fantasy">Fantasy</option>
-            <option value="romance">Romance</option>
-            <option value="thriller">Thriller</option>
-          </select>
+            <IoClose size={20} />
+          </button>
+          <h2 className="text-center text-[#256325] font-bold text-xl lg:text-3xl">
+            Register
+          </h2>
+          <p className="text-center mb-6">
+            When becoming members of the site, you could use the full range of
+            functions!
+          </p>
+          <form onSubmit={handleSignUp}>
+            {/* {errormessage && (
+              <div className="w-full bg-red-600 text-white py-1 rounded-t-md">
+                <span>{errormessage}</span>
+              </div>
+            )} */}
+            <div className="flex gap-x-4">
+              <div className="relative">
+                <input
+                  required
+                  type="text"
+                  placeholder="Firstname"
+                  value={firstname}
+                  onChange={(e) => setfirstName(e.target.value)}
+                  className="bg-transparent outline-none py-1 pl-2 pr-8 border border-zinc-500 w-full"
+                />
+                <IoMdPerson
+                  size={16}
+                  className="text-[#256325] absolute right-2 top-1.5"
+                />
+              </div>
+              <div className="relative">
+                <input
+                  required
+                  type="text"
+                  placeholder="Lastname"
+                  value={lastname}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="bg-transparent outline-none py-1 pl-2 pr-8 border border-zinc-500 w-full"
+                />
+                <IoMdPerson
+                  size={16}
+                  className="text-[#256325] absolute right-2 top-1.5"
+                />
+              </div>
+            </div>
+            <div className="relative mt-5">
+              <input
+                required
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="bg-transparent outline-none py-1 pl-2 pr-8 border border-zinc-500 w-full"
+              />
+              <IoMdMail
+                size={16}
+                className="text-[#256325] absolute right-2 top-1.5"
+              />
+            </div>
+            <div className="relative mt-5">
+              <input
+                required
+                type="password"
+                placeholder="New password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="bg-transparent outline-none py-1 pl-2 pr-8 border border-zinc-500 w-full"
+              />
+              <FaLock
+                size={16}
+                className="text-[#256325] absolute right-2 top-1.5"
+              />
+            </div>
+            <div>
+              <CountrySelector
+                selectedCountry={selectedCountry}
+                onCountryChange={setSelectedCountry}
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full py-2 bg-[#256325] mt-5 text-white hover:bg-[#2f7f2f] transition-colors rounded-md"
+            >
+              Create an account
+            </button>
+            <div className="mt-5 space-x-2 pb-6">
+              <span>Already have an account?</span>
+              <button
+                className="text-[#256325]"
+                onClick={() => setLoginPage(!loginPage)}
+              >
+                sign in
+              </button>
+            </div>
+          </form>
         </div>
-    </div>
+      </div>
+    </>
   );
 };
 

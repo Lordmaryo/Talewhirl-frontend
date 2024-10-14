@@ -10,11 +10,13 @@ import Link from "next/link";
 import { MdOutlineAccountCircle } from "react-icons/md";
 import { Button } from "@radix-ui/themes";
 import LoginPage from "./LoginPage";
+import SignUpPage from "./SignUpPage";
 
 const Header = () => {
   const [toggleSearchButton, setToggleSearchButton] = useState<boolean>(false);
   const [input, setInput] = useState<string>("");
   const [isLoginClicked, setIsLoginCliked] = useState<boolean>(false);
+  const [isSignup, setIsSignup] = useState<boolean>(false);
   const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -71,7 +73,9 @@ const Header = () => {
           >
             Login
           </Button>
-          <Button className="hover:bg-[#262626] border transition-colors px-5 py-2 rounded md:flex hidden flex-row items-center gap-2">
+          <Button 
+          onClick={() => setIsSignup(!isSignup)}
+          className="hover:bg-[#262626] border transition-colors px-5 py-2 rounded md:flex hidden flex-row items-center gap-2">
             Sign up
           </Button>
           <button onClick={() => setIsLoginCliked(!isLoginClicked)}>
@@ -95,6 +99,7 @@ const Header = () => {
         </form>
       )}
       {isLoginClicked && <LoginPage />}
+      {isSignup && <SignUpPage />}
     </>
   );
 };

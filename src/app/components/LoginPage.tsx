@@ -41,7 +41,6 @@ const LoginPage = () => {
     }
   };
 
-  //  TODO - Save the token to local storage
   const handleDemoLogin = () => {
     setEmail("admin@mail.com");
     setPassword("admin@123");
