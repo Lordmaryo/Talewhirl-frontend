@@ -4,8 +4,6 @@ import axios from "axios";
 import baseApi from "../api/baseApi";
 import { IoClose } from "react-icons/io5";
 import Image from "next/image";
-import loginBg from "../image/login-bg.jpg";
-import loginBg2 from "../image/login-bg2.jpg";
 import loginBg3 from "../image/login-bg3.jpg";
 import { IoMdMail } from "react-icons/io";
 import { FaLock } from "react-icons/fa";
@@ -76,7 +74,7 @@ const LoginPage = () => {
           </p>
           <form onSubmit={handleLogin}>
             {errormessage && (
-              <div className="w-full bg-red-600 text-white py-1 rounded-t-md">
+              <div className="w-full bg-red-500 text-sm text-white py-1 rounded-t-md">
                 <span>{errormessage}</span>
               </div>
             )}

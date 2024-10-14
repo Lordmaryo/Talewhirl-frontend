@@ -29,12 +29,16 @@ const SignUpPage = () => {
   const [loginPage, setLoginPage] = useState<boolean>(false);
   const router = useRouter();
 
+  const capitalizeName = (name: string) => {
+    return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+  };
+
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage([]);
     const requestData: any = {
-      firstName: firstname,
-      lastName: lastname,
+      firstName: capitalizeName(firstname),
+      lastName: capitalizeName(lastname),
       email,
       password,
       country: selectedCountry,
@@ -47,9 +51,9 @@ const SignUpPage = () => {
       const response = await baseApi.post("auth/register", requestData);
     } catch (err: any) {
       if (axios.isAxiosError(err) && err.response) {
-        setErrorMessage(err.response.data.businessErrorDescription);
+        setErrorMessage(err.response.data.validationErrors);
       } else {
-        setErrorMessage([]);
+        setErrorMessage(["something went wrong"]);
       }
     }
   };
@@ -64,7 +68,7 @@ const SignUpPage = () => {
         className="absolute w-full h-full bg-[#00000075]"
         onClick={() => setClosePopUp(!closePopUp)}
       />
-      <div className="flex flex-row bg-white rounded-md sm:max-w-[420px] w-[82%] md:max-w-[650px] h-[500px] text-black absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <div className="flex flex-row bg-white rounded-md sm:max-w-[420px] w-[82%] md:max-w-[650px] h-[520px] text-black absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         <Image
           src={signUpBg}
           className="hidden md:block object-cover rounded-l-md"
@@ -86,11 +90,13 @@ const SignUpPage = () => {
             functions!
           </p>
           <form onSubmit={handleSignUp}>
-            {/* {errormessage && (
-              <div className="w-full bg-red-600 text-white py-1 rounded-t-md">
-                <span>{errormessage}</span>
-              </div>
-            )} */}
+            {errormessage.length > 0 && (
+              <ul className="text-left pl-2 w-full text-sm bg-red-500 text-white py-1 rounded-t-md">
+                {errormessage.map((err, index) => (
+                  <li key={index}>{err}</li>
+                ))}
+              </ul>
+            )}
             <div className="flex gap-x-4">
               <div className="relative">
                 <input
