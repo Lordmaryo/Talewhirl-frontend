@@ -30,9 +30,7 @@ const Header = () => {
           <div>
             <IoMenu size={30} />
           </div>
-          <Link
-          className="flex flex-row items-center gap-x-2"
-          href="/">
+          <Link className="flex flex-row items-center gap-x-2" href="/">
             {/* <Image src={Logo} width={30} height={10} alt="talewhirl logo"></Image> */}
             <span className="sigmar-regular">TALEWHIRL</span>
           </Link>
@@ -49,7 +47,7 @@ const Header = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               type="text"
-              className="sm:w-[300px] md:w-[400px] lg:w-[500px] pl-2 outline-none bg-transparent dark:placeholder:text-gray-50 placeholder:text-zinc-800"
+              className="sm:w-[300px] md:w-[292px] lg:w-[500px] pl-2 outline-none bg-transparent dark:placeholder:text-gray-50 placeholder:text-zinc-800"
               placeholder="Search any title"
             />
           </form>

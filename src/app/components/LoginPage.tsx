@@ -5,17 +5,20 @@ import baseApi from "../api/baseApi";
 import { IoClose } from "react-icons/io5";
 import Image from "next/image";
 import loginBg from "../image/login-bg.jpg";
+import loginBg2 from "../image/login-bg2.jpg";
+import loginBg3 from "../image/login-bg3.jpg";
 import { IoMdMail } from "react-icons/io";
 import { FaLock } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import SignUpPage from "./SignUpPage";
+import { getToken, setToken } from "../token/Token";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errormessage, setErrorMessage] = useState("");
-  const [closePopUp, setClosePopUp] = useState(false);
-  const [registerPage, setRegisterPage] = useState(false);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [errormessage, setErrorMessage] = useState<string>("");
+  const [closePopUp, setClosePopUp] = useState<boolean>(false);
+  const [registerPage, setRegisterPage] = useState<boolean>(false);
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -26,7 +29,8 @@ const LoginPage = () => {
         email,
         password,
       });
-      console.log(response.data);
+      setToken(response.data.token);
+      console.log(getToken());
       router.push("/");
     } catch (err: any) {
       if (axios.isAxiosError(err) && err.response) {
@@ -37,9 +41,10 @@ const LoginPage = () => {
     }
   };
 
+  //  TODO - Save the token to local storage
   const handleDemoLogin = () => {
-    setEmail("Ebubeofoneta@gmail.com");
-    setPassword("password123");
+    setEmail("admin@mail.com");
+    setPassword("admin@123");
   };
 
   if (closePopUp) return null;
@@ -50,11 +55,11 @@ const LoginPage = () => {
         className="absolute w-full h-full bg-[#00000075]"
         onClick={() => setClosePopUp(!closePopUp)}
       />
-      <div className="flex flex-row bg-white rounded-md sm:max-w-[400px] w-[80%] md:max-w-[600px] h-[420px] text-black absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <div className="flex flex-row bg-white rounded-md sm:max-w-[400px] w-[80%] md:max-w-[620px] h-[420px] text-black absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         <Image
-          src={loginBg}
+          src={loginBg3}
           className="hidden md:block object-cover rounded-l-md"
-          width={300}
+          width={400}
           alt=""
         ></Image>
         <div className="relative p-4 mx-auto text-center">
@@ -72,7 +77,7 @@ const LoginPage = () => {
           </p>
           <form onSubmit={handleLogin}>
             {errormessage && (
-              <div className="w-full bg-red-600 text-white py-2 rounded-t-md">
+              <div className="w-full bg-red-600 text-white py-1 rounded-t-md">
                 <span>{errormessage}</span>
               </div>
             )}

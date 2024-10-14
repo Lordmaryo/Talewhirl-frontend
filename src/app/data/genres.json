@@ -1,0 +1,84 @@
+{
+  "genres": [
+    {
+      "name": "Romance",
+      "description": "Stories focusing on romantic relationships between characters."
+    },
+    {
+      "name": "Fantasy",
+      "description": "Stories set in fictional universes with magical or supernatural elements."
+    },
+    {
+      "name": "Science Fiction",
+      "description": "Stories dealing with futuristic technology, space travel, or alternative realities."
+    },
+    {
+      "name": "Mystery",
+      "description": "Stories centered around solving a crime, uncovering secrets, or unraveling mysteries."
+    },
+    {
+      "name": "Adventure",
+      "description": "Stories that involve exploration, quests, or daring journeys."
+    },
+    {
+      "name": "Horror",
+      "description": "Stories designed to scare, shock, or evoke feelings of terror."
+    },
+    {
+      "name": "Thriller",
+      "description": "Fast-paced stories filled with suspense, tension, and excitement."
+    },
+    {
+      "name": "Historical Fiction",
+      "description": "Stories set in past historical periods, often involving real events or figures."
+    },
+    {
+      "name": "Young Adult",
+      "description": "Stories aimed at younger readers, often dealing with coming-of-age themes."
+    },
+    {
+      "name": "Fan Fiction",
+      "description": "Stories that use characters or settings from pre-existing works, created by fans."
+    },
+    {
+      "name": "Drama",
+      "description": "Stories focusing on character development and emotional narratives."
+    },
+    {
+      "name": "Action",
+      "description": "Stories with a focus on fast-paced, physical events such as fights or chases."
+    },
+    {
+      "name": "Supernatural",
+      "description": "Stories involving supernatural beings such as ghosts, vampires, or werewolves."
+    },
+    {
+      "name": "Comedy",
+      "description": "Stories designed to be humorous and entertain readers with funny scenarios."
+    },
+    {
+      "name": "Slice of Life",
+      "description": "Stories that focus on everyday life and the experiences of ordinary people."
+    },
+    {
+      "name": "Tragedy",
+      "description": "Stories that involve sorrowful or disastrous outcomes for the characters."
+    },
+    {
+      "name": "LGBTQ+",
+      "description": "Stories featuring LGBTQ+ themes and characters, often dealing with identity and relationships."
+    },
+    {
+      "name": "Paranormal",
+      "description": "Stories involving elements beyond scientific understanding, such as hauntings or psychic abilities."
+    },
+    {
+      "name": "Dystopian",
+      "description": "Stories set in oppressive, often futuristic societies, typically involving survival or rebellion."
+    },
+    {
+      "name": "Erotica",
+      "description": "Stories that explore sensuality and sexuality in explicit detail."
+    }
+  ]
+}
