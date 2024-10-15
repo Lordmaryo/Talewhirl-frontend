@@ -113,7 +113,7 @@ const LoginPage = () => {
                   type="checkbox"
                   name="remember"
                   value="yes"
-                  className="form-checkbox"
+                  className="border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-green-400"
                 />
                 <span>Remember me</span>
               </label>

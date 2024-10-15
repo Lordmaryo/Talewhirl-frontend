@@ -10,15 +10,8 @@ import { IoMdMail, IoMdPerson } from "react-icons/io";
 import { FaLock } from "react-icons/fa";
 import CountrySelector from "../utilities/CountrySelector";
 
-/**
- * TASKS FOR TODAY!!
- *
- * TODO - style the signUp page with an image on the left and the form on the right
- * TODO - handle and display errors in the signUp page
- */
-
 const SignUpPage = () => {
-  const [firstname, setfirstName] = useState<string>("");
+  const [firstname, setFirstName] = useState<string>("");
   const [lastname, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [selectedCountry, setSelectedCountry] = useState<string>("");
@@ -36,45 +29,46 @@ const SignUpPage = () => {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage([]);
-    const requestData: any = {
+
+    const requestData = {
       firstName: capitalizeName(firstname),
       lastName: capitalizeName(lastname),
       email,
+      dateOfBirth: dob,
       password,
       country: selectedCountry,
     };
-    if (dob) {
-      requestData.dateOfBirth = dob;
-    }
 
     try {
       const response = await baseApi.post("auth/register", requestData);
+      // router.push("/welcome");
     } catch (err: any) {
       if (axios.isAxiosError(err) && err.response) {
-        setErrorMessage(err.response.data.validationErrors);
+        setErrorMessage(
+          err.response.data.validationErrors || ["An error occurred"]
+        );
       } else {
-        setErrorMessage(["something went wrong"]);
+        setErrorMessage(["Something went wrong"]);
       }
     }
   };
 
-  console.log(selectedCountry);
-
   if (closePopUp) return null;
   if (loginPage) return <LoginPage />;
+
   return (
     <>
       <div
         className="absolute w-full h-full bg-[#00000075]"
         onClick={() => setClosePopUp(!closePopUp)}
       />
-      <div className="flex flex-row bg-white rounded-md sm:max-w-[420px] w-[82%] md:max-w-[650px] h-[520px] text-black absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <div className="flex flex-row bg-white rounded-md sm:max-w-[420px] w-[86%] md:max-w-[680px] h-[580px] text-black absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         <Image
           src={signUpBg}
           className="hidden md:block object-cover rounded-l-md"
           width={400}
-          alt=""
-        ></Image>
+          alt="Signup background"
+        />
         <div className="relative p-4 mx-auto text-center">
           <button
             className="absolute right-2 top-3"
@@ -104,7 +98,7 @@ const SignUpPage = () => {
                   type="text"
                   placeholder="Firstname"
                   value={firstname}
-                  onChange={(e) => setfirstName(e.target.value)}
+                  onChange={(e) => setFirstName(e.target.value)}
                   className="bg-transparent outline-none py-1 pl-2 pr-8 border border-zinc-500 w-full"
                 />
                 <IoMdPerson
@@ -155,10 +149,23 @@ const SignUpPage = () => {
                 className="text-[#256325] absolute right-2 top-1.5"
               />
             </div>
-            <div>
-              <CountrySelector
-                selectedCountry={selectedCountry}
-                onCountryChange={setSelectedCountry}
+            <CountrySelector
+              selectedCountry={selectedCountry}
+              onCountryChange={setSelectedCountry}
+            />
+            <div className="flex flex-col gap-y-2 mt-5">
+              <label
+                htmlFor="dob"
+                className="text-sm text-left text-[#0000008d]"
+              >
+                Your birthday
+              </label>
+              <input
+                type="date"
+                value={dob}
+                onChange={(e) => setDob(e.target.value)}
+                id="dob"
+                className="border border-gray-300 rounded-md px-4 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-green-400"
               />
             </div>
             <button
@@ -173,7 +180,7 @@ const SignUpPage = () => {
                 className="text-[#256325]"
                 onClick={() => setLoginPage(!loginPage)}
               >
-                sign in
+                Sign in
               </button>
             </div>
           </form>
