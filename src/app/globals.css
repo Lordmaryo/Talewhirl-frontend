@@ -16,3 +16,15 @@ body {
   font-weight: 400;
   font-style: normal;
 }
+
+/* custome activate account */
+
+.character {
+  border: 1px grey solid;
+  background-color: white;
+  border-radius: 10px;
+}
+
+/* .container {
+  text-align: center;
+} */

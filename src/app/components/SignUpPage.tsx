@@ -9,6 +9,9 @@ import { IoClose } from "react-icons/io5";
 import { IoMdMail, IoMdPerson } from "react-icons/io";
 import { FaLock } from "react-icons/fa";
 import CountrySelector from "../utilities/CountrySelector";
+import ActivateAccount from "./ActivateAccount";
+
+// TODO - add loading animations to the signup and login buttons
 
 const SignUpPage = () => {
   const [firstname, setFirstName] = useState<string>("");
@@ -20,6 +23,8 @@ const SignUpPage = () => {
   const [errormessage, setErrorMessage] = useState<string[]>([]);
   const [closePopUp, setClosePopUp] = useState<boolean>(false);
   const [loginPage, setLoginPage] = useState<boolean>(false);
+  const [signupSucess, setSignupSucess] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
   const capitalizeName = (name: string) => {
@@ -29,6 +34,7 @@ const SignUpPage = () => {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage([]);
+    setLoading(true);
 
     const requestData = {
       firstName: capitalizeName(firstname),
@@ -41,7 +47,8 @@ const SignUpPage = () => {
 
     try {
       const response = await baseApi.post("auth/register", requestData);
-      // router.push("/welcome");
+      // router.push("/activate-account");
+      setSignupSucess(!signupSucess);
     } catch (err: any) {
       if (axios.isAxiosError(err) && err.response) {
         setErrorMessage(
@@ -50,11 +57,14 @@ const SignUpPage = () => {
       } else {
         setErrorMessage(["Something went wrong"]);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   if (closePopUp) return null;
   if (loginPage) return <LoginPage />;
+  if (signupSucess) return <ActivateAccount />;
 
   return (
     <>
@@ -63,6 +73,8 @@ const SignUpPage = () => {
         onClick={() => setClosePopUp(!closePopUp)}
       />
       <div className="flex flex-row bg-white rounded-md sm:max-w-[420px] w-[86%] md:max-w-[680px] h-[580px] text-black absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <button onClick={() => setSignupSucess(true)}>Activation</button>{" "}
+        //remove later
         <Image
           src={signUpBg}
           className="hidden md:block object-cover rounded-l-md"
@@ -170,6 +182,7 @@ const SignUpPage = () => {
             </div>
             <button
               type="submit"
+              disabled={loading}
               className="w-full py-2 bg-[#256325] mt-5 text-white hover:bg-[#2f7f2f] transition-colors rounded-md"
             >
               Create an account

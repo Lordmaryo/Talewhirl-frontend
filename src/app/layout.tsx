@@ -3,6 +3,7 @@ import "./globals.css";
 import Provider from "./components/Provider";
 import Header from "./components/Header";
 import { Theme, ThemePanel } from "@radix-ui/themes";
+import ActivateAccount from "./components/ActivateAccount";
 
 export const metadata: Metadata = {
   title: "TaleWhirl",
@@ -24,6 +25,7 @@ export default function RootLayout({
         <Theme accentColor="amber" grayColor="olive" radius="small">
           <Provider>
             <Header />
+            {/* <ActivateAccount /> */}
             <main>{children}</main>
           </Provider>
         </Theme>
