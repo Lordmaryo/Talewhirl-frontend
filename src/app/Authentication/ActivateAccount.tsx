@@ -48,6 +48,9 @@ const ActivateAccount = () => {
             <h1 className="text-zinc-800 font-bold text-xl lg:text-3xl">
               Input activation code
             </h1>
+            <p className="text-sm text-black">
+              A 6-DIGIT code has been sent to the email you provided
+            </p>
             {isActivated ? (
               <p className="text-sm text-green-700">
                 Success! You will be redirected to login in 5s.

@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMenu, IoSearch } from "react-icons/io5";
 import Logo from "../image/TaleWhirlFox-removebg.png";
 import { CiSearch } from "react-icons/ci";
@@ -11,12 +11,16 @@ import { MdOutlineAccountCircle } from "react-icons/md";
 import { Button } from "@radix-ui/themes";
 import LoginPage from "../Authentication/LoginPage";
 import SignUpPage from "../Authentication/SignUpPage";
+import { fetchUserData } from "../api/ApiServices";
+import { removeToken } from "../token/Token";
 
 const Header = () => {
   const [toggleSearchButton, setToggleSearchButton] = useState<boolean>(false);
   const [input, setInput] = useState<string>("");
+  const [firstname, setFirstname] = useState("");
   const [isLoginClicked, setIsLoginCliked] = useState<boolean>(false);
   const [isSignup, setIsSignup] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -24,6 +28,23 @@ const Header = () => {
     setInput("");
     router.push(`/search/${input}`);
   };
+
+  useEffect(() => {
+    const getTokenFromCookies = () => {
+      const match = document.cookie.match(new RegExp("(^| )token=([^;]+)"));
+      return match ? match[2] : null;
+    };
+
+    const token = getTokenFromCookies();
+    if (token) {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const userId = 302;
+    fetchUserData({ userId, setData: setFirstname });
+  }, []);
 
   return (
     <>
@@ -65,19 +86,29 @@ const Header = () => {
               <IoSearch size={30} />
             )}
           </button>
-          {/* <p className="xl:block hidden">Welcome Ebube!</p> */}
-          {/* this line should only be when you've logged in*/}
-          <Button
-            onClick={() => setIsLoginCliked(!isLoginClicked)}
-            className="bg-green-800 hover:bg-green-700 transition-colors px-5 py-2 rounded md:flex hidden flex-row items-center gap-2"
-          >
-            Login
-          </Button>
-          <Button 
-          onClick={() => setIsSignup(!isSignup)}
-          className="hover:bg-[#262626] border transition-colors px-5 py-2 rounded md:flex hidden flex-row items-center gap-2">
-            Sign up
-          </Button>
+          {isAuthenticated ? (
+            <>
+              <p className="xl:block hidden">Welcome {firstname}!</p>
+              <button className="bg-red-600 text-white py-2 px-4 rounded-md" onClick={removeToken}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Button
+                onClick={() => setIsLoginCliked(!isLoginClicked)}
+                className="bg-green-800 hover:bg-green-700 transition-colors px-5 py-2 rounded md:flex hidden flex-row items-center gap-2"
+              >
+                Login
+              </Button>
+              <Button
+                onClick={() => setIsSignup(!isSignup)}
+                className="hover:bg-[#262626] border transition-colors px-5 py-2 rounded md:flex hidden flex-row items-center gap-2"
+              >
+                Sign up
+              </Button>
+            </>
+          )}
           <button onClick={() => setIsLoginCliked(!isLoginClicked)}>
             <MdOutlineAccountCircle className="block md:hidden" size={30} />
           </button>

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import baseApi from "../api/baseApi";
 import { IoClose } from "react-icons/io5";
@@ -18,7 +18,6 @@ const LoginPage = () => {
   const [closePopUp, setClosePopUp] = useState<boolean>(false);
   const [registerPage, setRegisterPage] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,7 +30,7 @@ const LoginPage = () => {
       });
       setToken(response.data.token);
       console.log(getToken());
-      router.push("/book");
+      location.reload();
     } catch (err: any) {
       if (axios.isAxiosError(err) && err.response) {
         setErrorMessage(
@@ -126,7 +125,11 @@ const LoginPage = () => {
                 <span>Remember me</span>
               </label>
 
-              <button className="text-[#256325]" onClick={handleDemoLogin}>
+              <button
+                type="button"
+                className="text-[#256325]"
+                onClick={handleDemoLogin}
+              >
                 Demo Login
               </button>
             </div>

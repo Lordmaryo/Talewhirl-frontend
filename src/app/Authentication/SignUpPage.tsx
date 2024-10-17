@@ -46,7 +46,7 @@ const SignUpPage = () => {
     };
 
     try {
-      const response = await baseApi.post("auth/register", requestData);
+      await baseApi.post("auth/register", requestData);
       // router.push("/activate-account");
       setSignupSucess(!signupSucess);
     } catch (err: any) {
