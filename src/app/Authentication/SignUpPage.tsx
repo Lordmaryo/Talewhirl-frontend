@@ -72,9 +72,7 @@ const SignUpPage = () => {
         className="absolute w-full h-full bg-[#00000075]"
         onClick={() => setClosePopUp(!closePopUp)}
       />
-      <div className="flex flex-row bg-white rounded-md sm:max-w-[420px] w-[86%] md:max-w-[680px] h-[580px] text-black absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-        <button onClick={() => setSignupSucess(true)}>Activation</button>{" "}
-        //remove later
+      <div className="flex flex-row bg-white rounded-md sm:max-w-[420px] w-[86%] md:max-w-[680px] h-[565px] text-black absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         <Image
           src={signUpBg}
           className="hidden md:block object-cover rounded-l-md"
@@ -91,15 +89,15 @@ const SignUpPage = () => {
           <h2 className="text-center text-[#256325] font-bold text-xl lg:text-3xl">
             Register
           </h2>
-          <p className="text-center mb-6">
+          <p className="text-center mb-4 text-sm">
             When becoming members of the site, you could use the full range of
             functions!
           </p>
           <form onSubmit={handleSignUp}>
             {errormessage.length > 0 && (
-              <ul className="text-left pl-2 w-full text-sm bg-red-500 text-white py-1 rounded-t-md">
+              <ul className="text-left mb-1 text-sm text-red-500">
                 {errormessage.map((err, index) => (
-                  <li key={index}>{err}</li>
+                  <li key={index}>*{err}</li>
                 ))}
               </ul>
             )}

@@ -9,8 +9,8 @@ import { IoMdClose } from "react-icons/io";
 import Link from "next/link";
 import { MdOutlineAccountCircle } from "react-icons/md";
 import { Button } from "@radix-ui/themes";
-import LoginPage from "./LoginPage";
-import SignUpPage from "./SignUpPage";
+import LoginPage from "../Authentication/LoginPage";
+import SignUpPage from "../Authentication/SignUpPage";
 
 const Header = () => {
   const [toggleSearchButton, setToggleSearchButton] = useState<boolean>(false);

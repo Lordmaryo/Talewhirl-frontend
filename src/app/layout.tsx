@@ -3,7 +3,7 @@ import "./globals.css";
 import Provider from "./components/Provider";
 import Header from "./components/Header";
 import { Theme, ThemePanel } from "@radix-ui/themes";
-import ActivateAccount from "./components/ActivateAccount";
+import ActivateAccount from "./Authentication/ActivateAccount";
 
 export const metadata: Metadata = {
   title: "TaleWhirl",

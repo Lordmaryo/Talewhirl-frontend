@@ -8,7 +8,7 @@ import loginBg3 from "../image/login-bg3.jpg";
 import { IoMdMail } from "react-icons/io";
 import { FaLock } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import SignUpPage from "./SignUpPage";
+import SignUpPage from "../Authentication/SignUpPage";
 import { getToken, setToken } from "../token/Token";
 
 const LoginPage = () => {
@@ -17,11 +17,13 @@ const LoginPage = () => {
   const [errormessage, setErrorMessage] = useState<string>("");
   const [closePopUp, setClosePopUp] = useState<boolean>(false);
   const [registerPage, setRegisterPage] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");
+    setIsLoading(true);
     try {
       const response = await baseApi.post("auth/Authenticate", {
         email,
@@ -29,13 +31,19 @@ const LoginPage = () => {
       });
       setToken(response.data.token);
       console.log(getToken());
-      router.push("/");
+      router.push("/book");
     } catch (err: any) {
       if (axios.isAxiosError(err) && err.response) {
-        setErrorMessage(err.response.data.businessErrorDescription);
+        setErrorMessage(
+          err.response.data.businessErrorDescription ||
+            err.response.data.validationErrors ||
+            "error occured"
+        );
       } else {
         setErrorMessage("Something went wrong");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -52,7 +60,7 @@ const LoginPage = () => {
         className="absolute w-full h-full bg-[#00000075]"
         onClick={() => setClosePopUp(!closePopUp)}
       />
-      <div className="flex flex-row bg-white rounded-md sm:max-w-[400px] w-[80%] md:max-w-[620px] h-[420px] text-black absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <div className="flex flex-row bg-white rounded-md sm:max-w-[400px] w-[80%] md:max-w-[620px] h-[400px] text-black absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         <Image
           src={loginBg3}
           className="hidden md:block object-cover rounded-l-md"
@@ -69,13 +77,13 @@ const LoginPage = () => {
           <h2 className="text-center text-[#256325] font-bold text-xl lg:text-3xl">
             Welcome back!
           </h2>
-          <p className="text-center mb-6">
+          <p className="text-center mb-4 text-sm">
             TaleWhirl - a better place to read fantasy book online for free!
           </p>
           <form onSubmit={handleLogin}>
             {errormessage && (
-              <div className="w-full bg-red-500 text-sm text-white py-1 rounded-t-md">
-                <span>{errormessage}</span>
+              <div className="w-full text-sm text-red-500 py-1">
+                <span>*{errormessage}</span>
               </div>
             )}
             <div className="relative">
@@ -124,6 +132,7 @@ const LoginPage = () => {
             </div>
             <button
               type="submit"
+              disabled={isLoading}
               className="w-full py-2 bg-[#256325] mt-5 text-white hover:bg-[#2f7f2f] transition-colors rounded-md"
             >
               Login
