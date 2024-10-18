@@ -1,4 +1,6 @@
-import baseApi from "./baseApi";
+//USELESS FOR NOW
+
+import { axiosInstance } from "./baseApi";
 
 interface FetchUserProps {
     userId: number;
@@ -7,10 +9,9 @@ interface FetchUserProps {
 
 export const fetchUserData = async ({ userId, setData }: FetchUserProps) => {
     try {
-        const response = await baseApi.get(`user/${userId}/fullname`);
+        const response = await axiosInstance.get(`user/${userId}/fullname`);
         setData(response.data);
     } catch (err) {
         console.error(err);
     }
 };
-

@@ -5,6 +5,17 @@
  * to logging out a user
  */
 
+export interface TokenDataProps {
+    firstName: string,
+    lastName: string,
+    country: string,
+    fullName: string
+    id: number,
+    email: number,
+    iat: number,
+    exp: number,
+}
+
 export const setToken = (token: string) => {
     const oneWeekInSeconds = 7 * 24 * 60 * 60;
     document.cookie = `token=${token}; path=/; Secure; SameSite=Strict; max-age=${oneWeekInSeconds}`;
@@ -19,4 +30,15 @@ export const getToken = (): string | null => {
 export const removeToken = () => {
     document.cookie = `token=; path=/; max-age=0`;
     location.reload();
+}
+
+export interface TokenDataProps {
+    firstName: string,
+    lastName: string,
+    country: string,
+    fullName: string
+    id: number,
+    email: number,
+    iat: number,
+    exp: number,
 }

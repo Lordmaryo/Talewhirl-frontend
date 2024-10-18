@@ -11,15 +11,15 @@ import { MdOutlineAccountCircle } from "react-icons/md";
 import { Button } from "@radix-ui/themes";
 import LoginPage from "../Authentication/LoginPage";
 import SignUpPage from "../Authentication/SignUpPage";
-import { fetchUserData } from "../api/ApiServices";
-import { removeToken } from "../token/Token";
+import { getToken, removeToken, TokenDataProps } from "../token/Token";
+import { jwtDecode } from "jwt-decode";
 
 const Header = () => {
   const [toggleSearchButton, setToggleSearchButton] = useState<boolean>(false);
   const [input, setInput] = useState<string>("");
-  const [firstname, setFirstname] = useState("");
   const [isLoginClicked, setIsLoginCliked] = useState<boolean>(false);
   const [isSignup, setIsSignup] = useState<boolean>(false);
+  const [tokenData, setTokenData] = useState<TokenDataProps | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
 
@@ -30,20 +30,12 @@ const Header = () => {
   };
 
   useEffect(() => {
-    const getTokenFromCookies = () => {
-      const match = document.cookie.match(new RegExp("(^| )token=([^;]+)"));
-      return match ? match[2] : null;
-    };
-
-    const token = getTokenFromCookies();
+    const token = getToken();
     if (token) {
       setIsAuthenticated(true);
+      const decodedToken: TokenDataProps = jwtDecode(token);
+      setTokenData(decodedToken);
     }
-  }, []);
-
-  useEffect(() => {
-    const userId = 302;
-    fetchUserData({ userId, setData: setFirstname });
   }, []);
 
   return (
@@ -88,8 +80,13 @@ const Header = () => {
           </button>
           {isAuthenticated ? (
             <>
-              <p className="xl:block hidden">Welcome {firstname}!</p>
-              <button className="bg-red-600 text-white py-2 px-4 rounded-md" onClick={removeToken}>
+              <p className="xl:block hidden">
+                Welcome {tokenData?.firstName || "user"}!
+              </p>
+              <button
+                className="bg-red-600 text-white py-2 px-4 rounded-md"
+                onClick={removeToken}
+              >
                 Logout
               </button>
             </>
