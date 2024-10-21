@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import VerificationInput from "react-verification-input";
 import baseApi from "../api/baseApi";
@@ -29,14 +29,24 @@ const ActivateAccount = () => {
       );
     }
   };
+  useEffect(() => {
+    if (!closePopUp) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, [closePopUp]);
 
   if (closePopUp) return null;
   if (openlogin) return <LoginPage />;
 
   return (
     <>
-      <div className="absolute w-full h-full bg-[#00000075]" />
-      <div className="bg-white rounded-md sm:max-w-[420px] w-[86%] md:max-w-[600px] h-[300px] text-black absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <div className="absolute w-full h-full bg-[#00000075] z-20" />
+      <div className="z-20 bg-white rounded-md sm:max-w-[420px] w-[86%] md:max-w-[600px] h-[300px] text-black absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         <button
           className="absolute right-2 top-3"
           onClick={() => setClosePopUp(true)}
@@ -48,8 +58,8 @@ const ActivateAccount = () => {
             <h1 className="text-zinc-800 font-bold text-xl lg:text-3xl">
               Input activation code
             </h1>
-            <p className="text-sm text-black">
-              A 6-DIGIT code has been sent to the email you provided
+            <p className="text-sm text-zinc-700">
+              6-DIGIT token has been sent to your email
             </p>
             {isActivated ? (
               <p className="text-sm text-green-700">

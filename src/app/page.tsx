@@ -1,8 +1,11 @@
 import React from 'react'
+import HomeProvider from './page/HomeProvider'
 
 const page = () => {
   return (
-    <div className='pt-20'>Home page</div>
+    <div className='pt-16'>
+      <HomeProvider />
+    </div>
   )
 }
 

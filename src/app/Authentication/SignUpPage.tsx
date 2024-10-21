@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import baseApi from "../api/baseApi";
 import axios from "axios";
 import LoginPage from "./LoginPage";
@@ -25,7 +25,6 @@ const SignUpPage = () => {
   const [loginPage, setLoginPage] = useState<boolean>(false);
   const [signupSucess, setSignupSucess] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const router = useRouter();
 
   const capitalizeName = (name: string) => {
     return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
@@ -47,7 +46,6 @@ const SignUpPage = () => {
 
     try {
       await baseApi.post("auth/register", requestData);
-      // router.push("/activate-account");
       setSignupSucess(!signupSucess);
     } catch (err: any) {
       if (axios.isAxiosError(err) && err.response) {
@@ -62,6 +60,17 @@ const SignUpPage = () => {
     }
   };
 
+  useEffect(() => {
+    if (!closePopUp) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, [closePopUp]);
+
   if (closePopUp) return null;
   if (loginPage) return <LoginPage />;
   if (signupSucess) return <ActivateAccount />;
@@ -69,10 +78,10 @@ const SignUpPage = () => {
   return (
     <>
       <div
-        className="absolute w-full h-full bg-[#00000075]"
+        className="z-20 absolute w-full h-full bg-[#00000075]"
         onClick={() => setClosePopUp(!closePopUp)}
       />
-      <div className="flex flex-row bg-white rounded-md sm:max-w-[420px] w-[86%] md:max-w-[680px] h-[565px] text-black absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <div className="z-20 flex flex-row bg-white rounded-md sm:max-w-[420px] w-[86%] md:max-w-[680px] h-[565px] text-black absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         <Image
           src={signUpBg}
           className="hidden md:block object-cover rounded-l-md"

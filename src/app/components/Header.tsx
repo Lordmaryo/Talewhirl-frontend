@@ -40,7 +40,7 @@ const Header = () => {
 
   return (
     <>
-      <div className="flex flex-row items-center justify-between py-5 px-3 fixed top-0 right-0 left-0">
+      <div className="sm:h-16 h-16 bg-inherit z-10 flex flex-row items-center justify-between py-5 px-3 fixed top-0 right-0 left-0">
         <div className="flex items-center justify-between gap-5">
           <div>
             <IoMenu size={30} />
@@ -115,7 +115,7 @@ const Header = () => {
       {toggleSearchButton && (
         <form
           onSubmit={handleSubmit}
-          className="sm:hidden absolute max-w-[640px] top-16 left-0 right-0 flex items-center mx-3 border border-[#413f3f] rounded-md p-2"
+          className="z-10 sm:hidden absolute max-w-[640px] top-16 left-0 right-0 flex items-center mx-3 border border-[#413f3f] rounded-md p-2"
         >
           <input
             value={input}
