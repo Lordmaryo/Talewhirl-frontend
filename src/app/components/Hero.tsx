@@ -30,8 +30,9 @@ const Hero = () => {
       <Splide
         options={{
           perPage: 1,
-          drag: false,
+          drag: true,
           pagination: true,
+          arrows: false,
           type: "loop",
           autoplay: true,
           interval: 5000,
@@ -43,7 +44,6 @@ const Hero = () => {
           </SplideSlide>
         ))}
       </Splide>
-      <div></div>
     </div>
   );
 };

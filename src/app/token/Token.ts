@@ -1,7 +1,7 @@
 /**
  * 
  * @param token 
- * this file handles token activities from seting token when the user is logged in
+ * this file handles token activities from setting token when the user is logged in
  * to logging out a user
  */
 

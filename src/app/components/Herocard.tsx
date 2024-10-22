@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { Book } from "../api/ApiServices";
-import background from "../image/bg-cover.jpg";
 import { FaRegClock, FaStar } from "react-icons/fa";
 import { FiBookOpen } from "react-icons/fi";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+import Link from "next/link";
 
 type HeroCardProps = {
   book: Book;
@@ -21,12 +21,21 @@ const Herocard = ({ book, numbering }: HeroCardProps) => {
     return time > 59 ? `${Math.floor(time / 60)}h` : `${time}m`;
   };
 
+  const truncateWord = (word: string | null, maxLength: number) => {
+    if (!word) return word;
+
+    const numOfWords = word.length;
+    return numOfWords > maxLength ? word.slice(0, maxLength) + "..." : word;
+  };
+
   return (
     <div className="relative">
       <Image
         className="w-full object-cover md:h-screen"
         priority={true}
-        src={background}
+        src={`data:image/jpeg;base64,${book.backgroundCover}`}
+        width={100}
+        height={100}
         alt="book backgroud cover"
       />
       <div className="absolute bottom-0 h-full w-full bg-gradient-to-r from-[#171717] to-transparent">
@@ -43,7 +52,11 @@ const Herocard = ({ book, numbering }: HeroCardProps) => {
             </p>
           </div>
           <div className="hidden flex-row items-center gap-4 mt-2 sm:flex">
-            <span>Fantasy | Drama</span>
+            <div className="divide-x-2">
+              {book.genres
+                ?.map((g) => <span className="px-2">{g}</span>)
+                .slice(1)}
+            </div>
             <div className="flex flex-row items-center gap-1">
               <FaRegClock />
               <span>{interval(bookReadTime)}</span>
@@ -54,20 +67,22 @@ const Herocard = ({ book, numbering }: HeroCardProps) => {
             </div>
           </div>
           <p className="pt-6 hidden sm:block md:text-base text-sm">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae
-            labore eveniet ducimus sequi nemo totam itaque, sed dignissimos,
-            quis saepe dolorem aspernatur fuga aperiam. Quos minus doloribus
+            {truncateWord(book.synopsis, 150)}
             {/* truncate if its over a certain word*/}
           </p>
           <div className="flex flex-row items-center gap-2 mt-4">
-            <button className="flex flex-row items-center gap-1 font-semibold hover:bg-[#ffffffba] transition-colors bg-white text-black sm:px-5 px-3 py-2 rounded-lg">
-              <FiBookOpen />
-              <span>Read now</span>
-            </button>
-            <button className="flex flex-row items-center gap-1 font-semibold rounded-lg hover:bg-[#ffffff10] transition-colors text-white border sm:px-5 py-2 px-3">
-              <span>View details</span>
-              <MdOutlineKeyboardArrowRight size={20} />
-            </button>
+            <Link href={"/"}>
+              <button className="flex flex-row items-center gap-1 font-semibold hover:bg-[#ffffffba] transition-colors bg-white text-black sm:px-5 px-3 py-2 rounded-lg">
+                <FiBookOpen />
+                <span>Read now</span>
+              </button>
+            </Link>
+            <Link href={"/"}>
+              <button className="flex flex-row items-center gap-1 font-semibold rounded-lg hover:bg-[#ffffff10] transition-colors text-white border sm:px-5 py-2 px-3">
+                <span>View details</span>
+                <MdOutlineKeyboardArrowRight size={20} />
+              </button>
+            </Link>
           </div>
         </div>
       </div>
