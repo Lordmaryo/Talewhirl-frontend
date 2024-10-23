@@ -6,6 +6,8 @@ import baseApi from "../api/baseApi";
 import { Book, ResponseProps } from "../api/ApiServices";
 import Card from "./Card";
 import NavItem from "./NavItem";
+import HomeLoader from "../loaders/HomeLoader";
+import HomeBodyLoader from "../loaders/HomeBodyLoader";
 
 const HomeBody = () => {
   const [bookResponse, setBookResponse] = useState<Book[] | null>();
@@ -21,6 +23,8 @@ const HomeBody = () => {
       console.error(error);
     }
   };
+
+  if (!bookResponse) return <HomeBodyLoader />;
 
   return (
     <div className="relative py-6 px-2 md:px-6">

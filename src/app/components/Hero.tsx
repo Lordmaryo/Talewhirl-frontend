@@ -5,6 +5,7 @@ import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import { ResponseProps } from "../api/ApiServices";
 import Herocard from "./Herocard";
+import HomeLoader from "../loaders/HomeLoader";
 
 const Hero = () => {
   const [response, setResponse] = useState<ResponseProps | null>(null);
@@ -25,6 +26,9 @@ const Hero = () => {
       console.error(error);
     }
   };
+  if (!response) return <HomeLoader />;
+  
+
   return (
     <div>
       <Splide

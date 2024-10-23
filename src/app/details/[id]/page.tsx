@@ -8,6 +8,7 @@ import { FaRegClock, FaStar } from "react-icons/fa";
 import { FiBookOpen } from "react-icons/fi";
 import Button from "@/app/components/Button";
 import ButtonTransparent from "@/app/components/ButtonTransparent";
+import Spinner from "@/app/loaders/Spinner";
 
 type PageProps = {
   params: { id: string };
@@ -51,6 +52,7 @@ const Details = ({ params }: PageProps) => {
     }
   };
 
+  if (!book) return <Spinner />;
   return (
     <div className="pt-20 px-6 md:px-12">
       <div className="flex flex-row gap-x-4">
@@ -63,7 +65,7 @@ const Details = ({ params }: PageProps) => {
           height={100}
           alt={book?.title + ""}
         />
-        <div>
+        <div className="lg:max-w-[70%]">
           <h1 className="font-medium text-xl sm:text-2xl md:text-3xl xl:text-5xl">
             {truncateWord(book?.title, 40)} and it havent even ended yet.
           </h1>

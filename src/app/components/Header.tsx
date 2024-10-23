@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 import { IoMdClose } from "react-icons/io";
 import Link from "next/link";
 import { MdOutlineAccountCircle } from "react-icons/md";
-import { Button } from "@radix-ui/themes";
 import LoginPage from "../Authentication/LoginPage";
 import SignUpPage from "../Authentication/SignUpPage";
 import { getToken, removeToken, TokenDataProps } from "../token/Token";
@@ -92,18 +91,18 @@ const Header = () => {
             </>
           ) : (
             <>
-              <Button
+              <button
                 onClick={() => setIsLoginCliked(!isLoginClicked)}
                 className="bg-green-800 hover:bg-green-700 transition-colors px-5 py-2 rounded md:flex hidden flex-row items-center gap-2"
               >
                 Login
-              </Button>
-              <Button
+              </button>
+              <button
                 onClick={() => setIsSignup(!isSignup)}
                 className="hover:bg-[#262626] border transition-colors px-5 py-2 rounded md:flex hidden flex-row items-center gap-2"
               >
                 Sign up
-              </Button>
+              </button>
             </>
           )}
           <button onClick={() => setIsLoginCliked(!isLoginClicked)}>

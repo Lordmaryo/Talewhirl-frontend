@@ -44,7 +44,7 @@ const LoginPage = () => {
       setIsLoading(false);
     }
   };
-  
+
   useEffect(() => {
     if (!closePopUp) {
       document.body.classList.add("overflow-hidden");

@@ -17,7 +17,7 @@ body {
   font-style: normal;
 }
 
-/* custom activate account */
+/* custom activate account input */
 
 .character {
   border: 1px grey solid;
@@ -25,10 +25,50 @@ body {
   border-radius: 10px;
 }
 
-/* .container {
-  text-align: center;
-} */
-
 button:disabled {
-  opacity: .5;
+  opacity: 0.5;
+}
+
+/* Skeletal loaders */
+.hero-loader {
+  animation-name: hero-card;
+  animation-duration: 5s;
+  animation-timing-function: ease;
+  animation-iteration-count: infinite;
+}
+.loader-box {
+  animation-name: hero-card;
+  animation-duration: 5s;
+  animation-timing-function: ease;
+  animation-iteration-count: infinite;
+}
+
+@keyframes hero-card {
+  0% {
+    background-color: #242424;
+  }
+  50% {
+    background-color: #2d2c2c;
+  }
+  75% {
+    background-color: #242424;
+  }
+  100% {
+    background-color: #2d2c2c;
+  }
+}
+
+@keyframes loader-box {
+  0% {
+    background-color: #242424;
+  }
+  50% {
+    background-color: #2d2c2c;
+  }
+  75% {
+    background-color: #242424;
+  }
+  100% {
+    background-color: #2d2c2c;
+  }
 }
