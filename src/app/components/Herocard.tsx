@@ -77,7 +77,7 @@ const Herocard = ({ book, numbering }: HeroCardProps) => {
                 <span>Read now</span>
               </button>
             </Link>
-            <Link href={"/"}>
+            <Link href={"/details/" + book.id}>
               <button className="flex flex-row items-center gap-1 font-semibold rounded-lg hover:bg-[#ffffff10] transition-colors text-white border sm:px-5 py-2 px-3">
                 <span>View details</span>
                 <MdOutlineKeyboardArrowRight size={20} />

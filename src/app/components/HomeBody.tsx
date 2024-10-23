@@ -5,6 +5,7 @@ import "@splidejs/react-splide/css";
 import baseApi from "../api/baseApi";
 import { Book, ResponseProps } from "../api/ApiServices";
 import Card from "./Card";
+import NavItem from "./NavItem";
 
 const HomeBody = () => {
   const [bookResponse, setBookResponse] = useState<Book[] | null>();
@@ -29,7 +30,7 @@ const HomeBody = () => {
           perPage: 5,
           drag: true,
           pagination: false,
-          gap: "1.5rem",
+          gap: "1.2rem",
           arrows: false,
           breakpoints: {
             1024: { perPage: 3 },
@@ -44,6 +45,26 @@ const HomeBody = () => {
           </SplideSlide>
         ))}
       </Splide>
+      <div className="flex flex-wrap md:flex-nowrap flex-col-reverse lg:flex-row justify-between mt-6">
+        <div>
+          <h2 className="font-bold mb-2">Trending</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 xl:grid-cols-4 gap-4">
+            {bookResponse?.map((book) => (
+              <div className="max-w-52">
+                <Card book={book} />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="sm:ml-4 bg-[#252424] p-4 rounded-md">
+          <h2 className="font-bold mb-2">Top Ten</h2>
+          {bookResponse?.map((book, index) => (
+            <div className="max-w-60">
+              <NavItem book={book} numberings={index} />
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

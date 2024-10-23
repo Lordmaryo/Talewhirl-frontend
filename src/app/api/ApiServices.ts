@@ -5,6 +5,7 @@ export interface Book {
     authorName: string;
     genres: string[] | null; 
     isbn: string;
+    pgRating: number;
     readCount: number;
     synopsis: string | null;
     owner: string;
