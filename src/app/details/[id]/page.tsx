@@ -1,7 +1,6 @@
 "use client";
 import { Book } from "@/app/api/ApiServices";
 import Image from "next/image";
-import baseApi from "../../api/baseApi";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { FaRegClock, FaStar } from "react-icons/fa";
@@ -9,6 +8,8 @@ import { FiBookOpen } from "react-icons/fi";
 import Button from "@/app/components/Button";
 import ButtonTransparent from "@/app/components/ButtonTransparent";
 import Spinner from "@/app/loaders/Spinner";
+import Feedback from "@/app/components/Feedback";
+import { baseApi } from "@/app/api/baseApi";
 
 type PageProps = {
   params: { id: string };
@@ -51,7 +52,7 @@ const Details = ({ params }: PageProps) => {
       console.error(error);
     }
   };
-
+  console.log("details response state", book);
   if (!book) return <Spinner />;
   return (
     <div className="pt-20 px-6 md:px-12">
@@ -144,6 +145,9 @@ const Details = ({ params }: PageProps) => {
           {book?.synopsis}
           {book?.synopsis}
         </p>
+      </div>
+      <div>
+        <Feedback getRate={book.rate} bookId={book.id}/>
       </div>
     </div>
   );

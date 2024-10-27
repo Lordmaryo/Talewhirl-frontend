@@ -11,7 +11,7 @@ import { MdOutlineAccountCircle } from "react-icons/md";
 import LoginPage from "../Authentication/LoginPage";
 import SignUpPage from "../Authentication/SignUpPage";
 import { getToken, removeToken, TokenDataProps } from "../token/Token";
-import { jwtDecode } from "jwt-decode";
+import checkAuthAndSetToken from "../token/Token";
 
 const Header = () => {
   const [toggleSearchButton, setToggleSearchButton] = useState<boolean>(false);
@@ -29,12 +29,7 @@ const Header = () => {
   };
 
   useEffect(() => {
-    const token = getToken();
-    if (token) {
-      setIsAuthenticated(true);
-      const decodedToken: TokenDataProps = jwtDecode(token);
-      setTokenData(decodedToken);
-    }
+    checkAuthAndSetToken(getToken, setIsAuthenticated, setTokenData);
   }, []);
 
   return (

@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import baseApi from "../api/baseApi";
 import { IoClose } from "react-icons/io5";
 import Image from "next/image";
 import loginBg3 from "../image/login-bg3.jpg";
@@ -9,6 +8,7 @@ import { IoMdMail } from "react-icons/io";
 import { FaLock } from "react-icons/fa";
 import SignUpPage from "../Authentication/SignUpPage";
 import { getToken, setToken } from "../token/Token";
+import { baseApi } from "../api/baseApi";
 
 const LoginPage = () => {
   const [email, setEmail] = useState<string>("");
@@ -74,6 +74,7 @@ const LoginPage = () => {
           src={loginBg3}
           className="hidden md:block object-cover rounded-l-md"
           width={400}
+          priority={true}
           alt=""
         ></Image>
         <div className="relative p-4 mx-auto text-center">

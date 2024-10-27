@@ -1,6 +1,4 @@
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import baseApi from "../api/baseApi";
 import axios from "axios";
 import LoginPage from "./LoginPage";
 import Image from "next/image";
@@ -10,6 +8,7 @@ import { IoMdMail, IoMdPerson } from "react-icons/io";
 import { FaLock } from "react-icons/fa";
 import CountrySelector from "../utilities/CountrySelector";
 import ActivateAccount from "./ActivateAccount";
+import { baseApi } from "../api/baseApi";
 
 // TODO - add loading animations to the signup and login buttons
 
@@ -49,9 +48,10 @@ const SignUpPage = () => {
       setSignupSucess(!signupSucess);
     } catch (err: any) {
       if (axios.isAxiosError(err) && err.response) {
-        setErrorMessage(
-          err.response.data.validationErrors || ["An error occurred"]
-        );
+        setErrorMessage(err.response.data.validationErrors || ["An error occurred"]);
+        const regex = err.response.data.error;
+        const emailExists = regex.match(new RegExp("duplicate key value"));
+        if (emailExists) setErrorMessage(["Email already exists"])
       } else {
         setErrorMessage(["Something went wrong"]);
       }

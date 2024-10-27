@@ -7,7 +7,7 @@ type CardProps = {
   book: Book;
 };
 const Card = ({ book }: CardProps) => {
-  
+
   const everyWordLength = book.chapters
     .map((chapter) => chapter.content.split(/\s+/).length)
     .reduce((a, b) => a + b, 0);
@@ -32,7 +32,7 @@ const Card = ({ book }: CardProps) => {
       <Link href={"/details/" + book.id}>
         <Image
           src={`data:image/jpeg;base64,${book.cover}`}
-          className="h-full w-full object-cover rounded-md"
+          className="h-[250px] w-full object-cover rounded-md"
           width={100}
           height={100}
           alt="book covers"

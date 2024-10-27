@@ -2,23 +2,42 @@
 import React, { useEffect, useState } from "react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
-import baseApi from "../api/baseApi";
 import { Book, ResponseProps } from "../api/ApiServices";
 import Card from "./Card";
 import NavItem from "./NavItem";
 import HomeLoader from "../loaders/HomeLoader";
 import HomeBodyLoader from "../loaders/HomeBodyLoader";
+import { checkAuthenication } from "../token/Token";
+import { baseApi } from "../api/baseApi";
 
 const HomeBody = () => {
-  const [bookResponse, setBookResponse] = useState<Book[] | null>();
+  const [bookResponse, setBookResponse] = useState<ResponseProps | null>();
+  const [topTen, setTopTen] = useState<Book[] | null>();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   useEffect(() => {
     loadBooks();
+    loadTopTen();
+    checkAuthenication(setIsAuthenticated);
   }, []);
 
   const loadBooks = async () => {
+    const page = 0;
+    const size = 5;
+    try {
+      const { data } = await baseApi.get(
+        `book/all-books?page=${page}&size=${size}`
+      );
+      setBookResponse(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const loadTopTen = async () => {
     try {
       const { data } = await baseApi.get(`book/top10`);
-      setBookResponse(data);
+      setTopTen(data);
     } catch (error) {
       console.error(error);
     }
@@ -27,33 +46,37 @@ const HomeBody = () => {
   if (!bookResponse) return <HomeBodyLoader />;
 
   return (
-    <div className="relative py-6 px-2 md:px-6">
-      <h2 className="font-bold sm:text-xl mb-2">Recommended for you</h2>
-      <Splide
-        options={{
-          perPage: 5,
-          drag: true,
-          pagination: false,
-          gap: "1.2rem",
-          arrows: false,
-          breakpoints: {
-            1024: { perPage: 3 },
-            1200: { perPage: 4 },
-            640: { perPage: 2 },
-          },
-        }}
-      >
-        {bookResponse?.map((book) => (
-          <SplideSlide key={book.id}>
-            <Card book={book} />
-          </SplideSlide>
-        ))}
-      </Splide>
-      <div className="flex flex-wrap md:flex-nowrap flex-col-reverse lg:flex-row justify-between mt-6">
+    <div className="relative py-6 px-4 md:px-6">
+      {isAuthenticated && (
+        <>
+          <h2 className="font-bold sm:text-xl mb-2">Recommended for you</h2>
+          <Splide
+            options={{
+              perPage: 5,
+              drag: true,
+              pagination: false,
+              gap: "1.2rem",
+              arrows: true,
+              breakpoints: {
+                1024: { perPage: 3 },
+                1200: { perPage: 4 },
+                640: { perPage: 2 },
+              },
+            }}
+          >
+            {bookResponse.content.map((book) => (
+              <SplideSlide key={book.id}>
+                <Card book={book} />
+              </SplideSlide>
+            ))}
+          </Splide>
+        </>
+      )}
+      <div className="lg:px-5 flex flex-wrap md:flex-nowrap flex-col-reverse lg:flex-row justify-between mt-6">
         <div>
-          <h2 className="font-bold mb-2">Trending</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 xl:grid-cols-4 gap-4">
-            {bookResponse?.map((book) => (
+          <h2 className="font-bold sm:text-xl mb-2">Explore</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {bookResponse.content.map((book) => (
               <div className="max-w-52">
                 <Card book={book} />
               </div>
@@ -62,7 +85,7 @@ const HomeBody = () => {
         </div>
         <div className="sm:ml-4 bg-[#252424] p-4 rounded-md">
           <h2 className="font-bold mb-2">Top Ten</h2>
-          {bookResponse?.map((book, index) => (
+          {topTen?.map((book, index) => (
             <div className="max-w-60">
               <NavItem book={book} numberings={index} />
             </div>

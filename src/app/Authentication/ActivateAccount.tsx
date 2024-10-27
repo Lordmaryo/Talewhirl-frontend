@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import VerificationInput from "react-verification-input";
-import baseApi from "../api/baseApi";
 import axios from "axios";
 import LoginPage from "../Authentication/LoginPage";
+import { baseApi } from "../api/baseApi";
 
 const ActivateAccount = () => {
   const [closePopUp, setClosePopUp] = useState(false);
@@ -20,7 +20,7 @@ const ActivateAccount = () => {
       setIsActivated(true);
       setTimeout(() => {
         setOpenLogin(!openlogin);
-      }, 5000);
+      }, 3000);
     } catch (err: any) {
       setErrorMessage(
         axios.isAxiosError(err) && err.response
@@ -63,7 +63,7 @@ const ActivateAccount = () => {
             </p>
             {isActivated ? (
               <p className="text-sm text-green-700">
-                Success! You will be redirected to login in 5s.
+                Success! You will be redirected to login in 3s.
               </p>
             ) : (
               <p className="text-sm text-red-600">{errorMessage}</p>
