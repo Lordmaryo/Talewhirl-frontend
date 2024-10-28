@@ -10,12 +10,10 @@ interface FeedbackProp {
 }
 
 const Feedback = ({ getRate, bookId }: FeedbackProp) => {
-  const [note, setNote] = useState(0);
   const [hovered, setHovered] = useState(0);
+  const [note, setNote] = useState(0);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  let reactionKey = 0;
-  let comment = "This is the best book ever";
-  let testNote = 5;
+  const [reaction, setReaction] = useState("");
 
   useEffect(() => {
     checkAuthenication(setIsAuthenticated);
@@ -26,23 +24,16 @@ const Feedback = ({ getRate, bookId }: FeedbackProp) => {
       return <LoginPage />;
     }
     setNote(value);
-    handleFeedbacks();
-    console.log("Selected note:", value);
-    console.log(
-      isAuthenticated ? "User is Authenticated" : "User is not Authenticated"
-    );
+    setReaction(rateReactions[value]);
+    handleFeedbacks(value);
   };
 
-  const handleFeedbacks: () => void = async () => {
+  const handleFeedbacks = async (value: number) => {
     try {
-      const response = await baseApi.post("feedbacks/add_feedback", {
-        note: testNote,
-        comment,
+      await baseApi.post("feedbacks/add_feedback", {
+        note: value,
         bookId,
       });
-      if (response) {
-        console.log("Feedback added");
-      } else console.log("Feedback not added");
     } catch (error) {
       console.error(error);
     }
@@ -61,19 +52,24 @@ const Feedback = ({ getRate, bookId }: FeedbackProp) => {
     const maxRate = 5;
     for (let i = 1; i <= maxRate; i++) {
       stars.push(
-        <span
+        <button
           key={i}
           onClick={() => handleClick(i)}
-          onMouseEnter={() => setHovered(i)}
-          onMouseLeave={() => setHovered(0)}
+          onMouseEnter={() => {
+            setHovered(i);
+            setReaction(rateReactions[i]);
+          }}
+          onMouseLeave={() => {
+            setHovered(0);
+            setReaction(rateReactions[0]);
+          }}
           className={`relative cursor-pointer text-2xl ${
             i <= (hovered || note) ? "text-yellow-500" : "text-gray-400"
           }`}
         >
           ★
-        </span>
+        </button>
       );
-      if (hovered === i) reactionKey = i;
     }
     return stars;
   };
@@ -89,7 +85,7 @@ const Feedback = ({ getRate, bookId }: FeedbackProp) => {
       <div>
         {renderStars()}
         <span className="pl-2 font-bold text-[#ffffffb6]">
-          {rateReactions[reactionKey] || rateReactions[note]}
+          {reaction || rateReactions[note]}
         </span>
       </div>
       <FeedbackComment bookId={bookId} />
