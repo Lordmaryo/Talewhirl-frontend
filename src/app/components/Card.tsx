@@ -2,30 +2,14 @@ import Image from "next/image";
 import { Book } from "../api/ApiServices";
 import Link from "next/link";
 import { FiBookOpen } from "react-icons/fi";
+import { averageReadTime, interval, truncateWord } from "../utilities/Helpers";
 
 type CardProps = {
   book: Book;
 };
 const Card = ({ book }: CardProps) => {
-
-  const everyWordLength = book.chapters
-    .map((chapter) => chapter.content.split(/\s+/).length)
-    .reduce((a, b) => a + b, 0);
-  const averageWpm = 200;
-  const bookReadTime = Math.ceil(everyWordLength / averageWpm); // per min
-
-  const interval = (time: number) => {
-    return time > 59 ? `${Math.floor(time / 60)}h` : `${time}m`;
-  };
-
-  const truncateWord = (word: string | null, maxLength: number) => {
-    if (!word) return word;
-
-    const numOfWords = word.length;
-    return numOfWords > maxLength
-      ? word.slice(0, maxLength) + " see more..."
-      : word;
-  };
+  const chapter = book.chapters;
+  const readTime = averageReadTime(chapter);
 
   return (
     <div className="relative">
@@ -46,7 +30,7 @@ const Card = ({ book }: CardProps) => {
             {truncateWord(book.title, 50)}
           </h3>
           <h3 className="absolute text-sm right-2 bottom-2 font-bold">
-            {interval(bookReadTime)}
+            {interval(readTime)}
           </h3>
         </div>
       </Link>

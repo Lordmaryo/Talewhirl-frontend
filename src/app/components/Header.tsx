@@ -5,13 +5,14 @@ import { IoMenu, IoSearch } from "react-icons/io5";
 import Logo from "../image/TaleWhirlFox-removebg.png";
 import { CiSearch } from "react-icons/ci";
 import { useRouter } from "next/navigation";
-import { IoMdClose } from "react-icons/io";
+import { IoIosArrowDown, IoMdClose } from "react-icons/io";
 import Link from "next/link";
 import { MdOutlineAccountCircle } from "react-icons/md";
 import LoginPage from "../Authentication/LoginPage";
 import SignUpPage from "../Authentication/SignUpPage";
 import { getToken, removeToken, TokenDataProps } from "../token/Token";
 import checkAuthAndSetToken from "../token/Token";
+import defaultProfile from "../image/default-profile.png";
 
 const Header = () => {
   const [toggleSearchButton, setToggleSearchButton] = useState<boolean>(false);
@@ -21,16 +22,15 @@ const Header = () => {
   const [tokenData, setTokenData] = useState<TokenDataProps | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
+  useEffect(() => {
+    checkAuthAndSetToken(getToken, setIsAuthenticated, setTokenData);
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setInput("");
     router.push(`/search/${input}`);
   };
-
-  useEffect(() => {
-    checkAuthAndSetToken(getToken, setIsAuthenticated, setTokenData);
-  }, []);
 
   return (
     <>
@@ -40,7 +40,11 @@ const Header = () => {
             <IoMenu size={30} />
           </div>
           <Link className="flex flex-row items-center gap-x-2" href="/">
-            {/* <Image src={Logo} width={30} height={10} alt="talewhirl logo"></Image> */}
+            <Image
+              src={Logo}
+              className="w-8 h-8 sm:w-10 sm:h-10 object-cover"
+              alt="talewhirl logo"
+            ></Image>
             <span className="sigmar-regular">TALEWHIRL</span>
           </Link>
           <form
@@ -77,31 +81,42 @@ const Header = () => {
               <p className="xl:block hidden">
                 Welcome {tokenData?.firstName || "user"}!
               </p>
-              <button
-                className="bg-red-600 text-white py-2 px-4 rounded-md"
-                onClick={removeToken}
-              >
-                Logout
+              <button className="hidden md:flex flex-row gap-x-2 items-center font-bold">
+                <span>Account</span>
+                <IoIosArrowDown />
               </button>
             </>
           ) : (
-            <>
+            <div className="hidden md:flex items-center flex-row gap-2">
               <button
                 onClick={() => setIsLoginCliked(!isLoginClicked)}
-                className="bg-green-800 hover:bg-green-700 transition-colors px-5 py-2 rounded md:flex hidden flex-row items-center gap-2"
+                className="bg-green-800 hover:bg-green-700 transition-colors px-5 py-2 rounded"
               >
                 Login
               </button>
               <button
                 onClick={() => setIsSignup(!isSignup)}
-                className="hover:bg-[#262626] border transition-colors px-5 py-2 rounded md:flex hidden flex-row items-center gap-2"
+                className="hover:bg-[#262626] border transition-colors px-5 py-2 rounded"
               >
                 Sign up
               </button>
-            </>
+            </div>
           )}
-          <button onClick={() => setIsLoginCliked(!isLoginClicked)}>
-            <MdOutlineAccountCircle className="block md:hidden" size={30} />
+          <button
+            className="md:hidden"
+            onClick={() => {
+              if (isAuthenticated) {
+                router.push(`/profile/${tokenData?.id}`);
+              } else {
+                return <LoginPage />;
+              }
+            }}
+          >
+            <Image
+              className="h-6 w-6 rounded-full"
+              src={tokenData?.profilePic || defaultProfile}
+              alt="your profile"
+            />
           </button>
         </div>
       </div>

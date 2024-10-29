@@ -3,21 +3,13 @@ import { Book } from "../api/ApiServices";
 import Image from "next/image";
 import Link from "next/link";
 import { RxEyeOpen } from "react-icons/rx";
+import { truncateWord } from "../utilities/Helpers";
 
 type BookProps = {
   book: Book;
   numberings: number;
 };
 const NavItem = ({ book, numberings }: BookProps) => {
-  const truncateWord = (word: string | null, maxLength: number) => {
-    if (!word) return word;
-
-    const numOfWords = word.length;
-    return numOfWords > maxLength
-      ? word.slice(0, maxLength) + " see more..."
-      : word;
-  };
-
   return (
     <Link
       href={"/details/" + book.id}

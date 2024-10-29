@@ -1,5 +1,6 @@
 // props for page response
-import baseApi from "./baseApi";
+import FeedbackComment from "../components/FeedbackComment";
+import { baseApi } from "./baseApi";
 
 export interface Book {
   id: number;
@@ -63,30 +64,47 @@ export interface FeedbackResponseProps {
   last: boolean;
 }
 
+export interface FeedbackComment {
+  commentId: number;
+  comment: string;
+  createdBy: number;
+  createdDate: string;
+  likes: number;
+  ownComment: boolean;
+}
+
+export interface FeedbackCommentResponseProps {
+  content: FeedbackComment[];
+  number: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  first: boolean;
+  last: boolean;
+}
+
 export interface UserResponse {
   // TODO - add more props whe new fields are added to the userResponse server
   id: number;
   firstname: string;
   lastname: string;
+  createdDate: string;
   email: string;
   dateOfBirth: string;
   generatedUsername: string;
+  profilePic: string;
+  backgroundPic: string;
   username: string;
-  followers: UserResponse[];
-  following: UserResponse[];
+  followers: number[];
+  following: number[];
   country: string;
   bio: string | null;
 }
 
-interface LoadUserProps {
-  userId: number;
-  setUserData: (user: UserResponse) => void;
-}
-
-export const loadUser = async ({
-  userId,
-  setUserData,
-}: LoadUserProps) => {
+export const loadUser = async (
+  userId: number | string,
+  setUserData: (user: UserResponse) => void
+): Promise<void> => {
   try {
     const { data } = await baseApi.get<UserResponse>(`user/${userId}`);
     setUserData(data);

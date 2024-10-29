@@ -4,6 +4,7 @@ import { FaRegClock, FaStar } from "react-icons/fa";
 import { FiBookOpen } from "react-icons/fi";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import Link from "next/link";
+import { averageReadTime, interval, truncateWord } from "../utilities/Helpers";
 
 type HeroCardProps = {
   book: Book;
@@ -11,22 +12,8 @@ type HeroCardProps = {
 };
 
 const Herocard = ({ book, numbering }: HeroCardProps) => {
-  const everyWordLength = book.chapters
-    .map((chapter) => chapter.content.split(/\s+/).length)
-    .reduce((a, b) => a + b, 0);
-  const averageWpm = 200;
-  const bookReadTime = Math.ceil(everyWordLength / averageWpm); // per min
-
-  const interval = (time: number) => {
-    return time > 59 ? `${Math.floor(time / 60)}h` : `${time}m`;
-  };
-
-  const truncateWord = (word: string | null, maxLength: number) => {
-    if (!word) return word;
-
-    const numOfWords = word.length;
-    return numOfWords > maxLength ? word.slice(0, maxLength) + "..." : word;
-  };
+  const chapter = book.chapters;
+  const readTime = averageReadTime(chapter);
 
   return (
     <div className="relative">
@@ -59,7 +46,7 @@ const Herocard = ({ book, numbering }: HeroCardProps) => {
             </div>
             <div className="flex flex-row items-center gap-1">
               <FaRegClock />
-              <span>{interval(bookReadTime)}</span>
+              <span>{interval(readTime)}</span>
             </div>
             <div className="flex flex-row items-center gap-1">
               <FaStar />

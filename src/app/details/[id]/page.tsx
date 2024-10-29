@@ -11,7 +11,7 @@ import Spinner from "@/app/loaders/Spinner";
 import Feedback from "@/app/components/Feedback";
 import { baseApi } from "@/app/api/baseApi";
 
-type PageProps = {
+export type PageProps = {
   params: { id: string };
 };
 

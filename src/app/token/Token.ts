@@ -8,11 +8,12 @@
 import { jwtDecode } from "jwt-decode";
 
 export interface TokenDataProps {
+  id: number;
   firstName: string;
   lastName: string;
+  profilePic: string; // relogin to update
   country: string;
   fullName: string;
-  id: number;
   email: string;
   iat: number;
   exp: number;

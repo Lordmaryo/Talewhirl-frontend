@@ -5,7 +5,6 @@ import "@splidejs/react-splide/css";
 import { Book, ResponseProps } from "../api/ApiServices";
 import Card from "./Card";
 import NavItem from "./NavItem";
-import HomeLoader from "../loaders/HomeLoader";
 import HomeBodyLoader from "../loaders/HomeBodyLoader";
 import { checkAuthenication } from "../token/Token";
 import { baseApi } from "../api/baseApi";
