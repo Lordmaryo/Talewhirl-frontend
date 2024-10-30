@@ -5,7 +5,7 @@ import { IoMenu, IoSearch } from "react-icons/io5";
 import Logo from "../image/TaleWhirlFox-removebg.png";
 import { CiSearch } from "react-icons/ci";
 import { useRouter } from "next/navigation";
-import { IoIosArrowDown, IoMdClose } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowUp, IoMdClose } from "react-icons/io";
 import Link from "next/link";
 import { MdOutlineAccountCircle } from "react-icons/md";
 import LoginPage from "../Authentication/LoginPage";
@@ -13,6 +13,8 @@ import SignUpPage from "../Authentication/SignUpPage";
 import { getToken, removeToken, TokenDataProps } from "../token/Token";
 import checkAuthAndSetToken from "../token/Token";
 import defaultProfile from "../image/default-profile.png";
+import ToggleHeader from "./ToggleHeader";
+import { loadUser, UserResponse } from "../api/ApiServices";
 
 const Header = () => {
   const [toggleSearchButton, setToggleSearchButton] = useState<boolean>(false);
@@ -21,9 +23,13 @@ const Header = () => {
   const [isSignup, setIsSignup] = useState<boolean>(false);
   const [tokenData, setTokenData] = useState<TokenDataProps | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [toggleAccount, setToggleAccount] = useState(false);
+  const [userData, setUserData] = useState<UserResponse>();
   const router = useRouter();
+  const currentuserId: any = tokenData?.id;
   useEffect(() => {
     checkAuthAndSetToken(getToken, setIsAuthenticated, setTokenData);
+    loadUser(currentuserId, setUserData);
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -81,9 +87,12 @@ const Header = () => {
               <p className="xl:block hidden">
                 Welcome {tokenData?.firstName || "user"}!
               </p>
-              <button className="hidden md:flex flex-row gap-x-2 items-center font-bold">
+              <button
+                onClick={() => setToggleAccount(!toggleAccount)}
+                className="px-2 py-1 hidden md:flex flex-row gap-x-2 items-center font-bold"
+              >
                 <span>Account</span>
-                <IoIosArrowDown />
+                {toggleAccount ? <IoIosArrowUp /> : <IoIosArrowDown />}
               </button>
             </>
           ) : (
@@ -114,7 +123,7 @@ const Header = () => {
           >
             <Image
               className="h-6 w-6 rounded-full"
-              src={tokenData?.profilePic || defaultProfile}
+              src={userData?.profilePic || defaultProfile}
               alt="your profile"
             />
           </button>
@@ -137,6 +146,11 @@ const Header = () => {
       )}
       {isLoginClicked && <LoginPage />}
       {isSignup && <SignUpPage />}
+      {toggleAccount && (
+        <div className="absolute top-12 bg-inherit right-2 rounded-lg z-20">
+          <ToggleHeader />
+        </div>
+      )}
     </>
   );
 };

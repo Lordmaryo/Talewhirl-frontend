@@ -69,7 +69,12 @@ const LoginPage = () => {
         className="z-10 fixed w-full h-full overflow-hidden bg-[#000000a4]"
         onClick={() => setClosePopUp(!closePopUp)}
       />
-      <div className="z-10 backdrop-blur-md flex flex-row bg-white rounded-md sm:max-w-[400px] w-[80%] md:max-w-[620px] h-[400px] text-black fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <div
+        className="z-10 backdrop-blur-md flex flex-row bg-white rounded-md 
+      sm:max-w-[400px] w-[80%] md:max-w-[620px] h-[400px] text-black fixed 
+      top-1/2 left-1/2 transform -translate-x-1/2
+       -translate-y-1/2"
+      >
         <Image
           src={loginBg3}
           className="hidden md:block object-cover rounded-l-md"

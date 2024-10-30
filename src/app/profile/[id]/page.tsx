@@ -79,7 +79,7 @@ const Page = ({ params }: PageProps) => {
             {userData?.firstname + " " + userData?.lastname}
           </span>
           <span className="opacity-50">
-            @{userData.username || userData?.firstname}
+            @{userData.generatedUsername || userData?.firstname}
           </span>
           <span className="pt-3">{userData.bio || "No bio yet"}</span>
           <span className="opacity-50">

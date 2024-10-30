@@ -24,7 +24,9 @@ const ListFollowCard = ({ followId }: FollowIdProp) => {
           alt="profile picture"
         />
         <div className="flex flex-col">
-          <span className="text-sm">{userData?.username || userData?.firstname}</span>
+          <span className="text-sm">
+            {userData?.username || userData?.firstname}
+          </span>
           <span className="text-xs opacity-50">
             {userData?.firstname + " " + userData?.lastname}
           </span>

@@ -11,9 +11,6 @@ export interface TokenDataProps {
   id: number;
   firstName: string;
   lastName: string;
-  profilePic: string; // relogin to update
-  country: string;
-  fullName: string;
   email: string;
   iat: number;
   exp: number;
