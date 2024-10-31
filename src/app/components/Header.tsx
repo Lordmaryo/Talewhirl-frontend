@@ -103,7 +103,7 @@ const Header = () => {
           {isAuthenticated ? (
             <>
               <p className="xl:block hidden">
-                Welcome {tokenData?.firstName || "user"}!
+                Welcome {userData?.firstname || "user"}!
               </p>
               <button
                 onClick={() => setToggleAccount(!toggleAccount)}

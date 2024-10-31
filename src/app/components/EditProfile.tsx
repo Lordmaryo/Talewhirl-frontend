@@ -91,8 +91,9 @@ const EditProfile = ({ currentUserId }: CurrentUserIdProp) => {
             src={
               backgroundFile
                 ? URL.createObjectURL(backgroundFile)
-                : `data:image/jpeg;base64,${userData?.backgroundPic}` ||
-                  defaultbg
+                : !userData.backgroundPic
+                ? defaultbg
+                : `data:image/jpeg;base64,${userData?.backgroundPic}`
             }
             width={100}
             height={100}
@@ -122,8 +123,9 @@ const EditProfile = ({ currentUserId }: CurrentUserIdProp) => {
             src={
               profileFile
                 ? URL.createObjectURL(profileFile)
-                : `data:image/jpeg;base64,${userData?.profilePic}` ||
-                  defaultProfile
+                : !userData.profilePic
+                ? defaultProfile
+                : `data:image/jpeg;base64,${userData?.profilePic}`
             }
             width={100}
             height={100}

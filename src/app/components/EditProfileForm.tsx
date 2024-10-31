@@ -3,6 +3,7 @@ import { UserResponse } from "../api/ApiServices";
 import { baseApi } from "../api/baseApi";
 import axios from "axios";
 import Button from "./Button";
+import { capitalizeName } from "../utilities/Helpers";
 
 type EditProfileFormProps = {
   uploadProfile: () => Promise<void>;
@@ -21,15 +22,15 @@ const EditProfileForm = ({
 }: EditProfileFormProps) => {
   const [firstName, setFirstname] = useState("");
   const [lastName, setLastname] = useState("");
-  const [username, setUsername] = useState("");
-  const [errormessage, setErrorMessage] = useState("");
+  // const [username, setUsername] = useState("");
+  const [errormessage, setErrorMessage] = useState<string[]>([]);
   const [bio, setBio] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setFirstname(userData.firstname || firstName);
     setLastname(userData.lastname || lastName);
-    setUsername(userData.generatedUsername || username);
+    // setUsername(userData.generatedUsername || username);
     setBio(userData.bio || bio);
   }, [userData]);
 
@@ -37,12 +38,12 @@ const EditProfileForm = ({
 
   const handleForm = async () => {
     console.log("user id inside handle form", currentUserId);
-    setErrorMessage("");
+    setErrorMessage([]);
     try {
       await baseApi.patch(`user/edit_account/${currentUserId}`, {
-        firstName,
-        lastName,
-        generatedUsername: username,
+        firstName: capitalizeName(firstName),
+        lastName: capitalizeName(lastName),
+        // generatedUsername: username,
         bio,
       });
     } catch (err: any) {
@@ -53,7 +54,7 @@ const EditProfileForm = ({
             "error occured"
         );
       } else {
-        setErrorMessage("Something went wrong");
+        setErrorMessage(["Something went wrong"]);
       }
     }
   };
@@ -64,7 +65,6 @@ const EditProfileForm = ({
       await uploadProfile();
       await uploadBackground();
       await handleForm();
-      setSucess(true);
     } catch (error) {
       console.error("error updating profile", error);
     } finally {
@@ -73,7 +73,16 @@ const EditProfileForm = ({
   };
 
   return (
-    <div className="mt-20 px-4">
+    <form className="mt-20 px-4" onSubmit={handleAllEdit}>
+      {errormessage.length > 0 && (
+        <ul className="py-2 rounded-md px-4 bg-red-500 text-white mb-2">
+          {errormessage.map((e, index) => (
+            <li className="py-1" key={index}>
+              {e}
+            </li>
+          ))}
+        </ul>
+      )}
       <div className="flex justify-center flex-wrap sm:flex-nowrap items-center gap-4">
         <div className="flex flex-col gap-2 w-full">
           <label className=" text-sm opacity-75" htmlFor="firstname">
@@ -84,7 +93,7 @@ const EditProfileForm = ({
             type="text"
             id="firstname"
             className="bg-transparent border border-zinc-500 
-            rounded-md h-8 outline-none px-2"
+            rounded-md h-8 outline-none px-2 py-4"
             onChange={(e) => setFirstname(e.target.value)}
             value={firstName}
           />
@@ -97,14 +106,14 @@ const EditProfileForm = ({
             required
             type="text"
             className="bg-transparent border border-zinc-500 
-            rounded-md h-8 outline-none px-2"
+            rounded-md h-8 outline-none px-2 py-4"
             id="lastname"
             onChange={(e) => setLastname(e.target.value)}
             value={lastName}
           />
         </div>
       </div>
-      <div className="flex flex-col gap-2 w-full py-4">
+      {/* <div className="flex flex-col gap-2 w-full py-4">
         <label className=" text-sm opacity-75" htmlFor="lastname">
           Username
         </label>
@@ -112,12 +121,12 @@ const EditProfileForm = ({
           required
           type="text"
           className="bg-transparent border border-zinc-500 
-            rounded-md h-8 outline-none px-2"
+            rounded-md h-8 outline-none px-2 py-4"
           id="lastname"
           onChange={(e) => setUsername(e.target.value)}
           value={username}
         />
-      </div>
+      </div> */}
       <div className="flex flex-col gap-2 w-full py-4">
         <label className=" text-sm opacity-75" htmlFor="lastname">
           Bio
@@ -125,7 +134,7 @@ const EditProfileForm = ({
         <textarea
           required
           className="bg-transparent border border-zinc-500 
-            rounded-md outline-none px-2 h-24 resize-none"
+            rounded-md outline-none px-2 py-2 h-24 resize-none"
           id="lastname"
           onChange={(e) => setBio(e.target.value)}
           value={bio}
@@ -137,7 +146,7 @@ const EditProfileForm = ({
         label="Save Changes"
         onClick={handleAllEdit}
       />
-    </div>
+    </form>
   );
 };
 

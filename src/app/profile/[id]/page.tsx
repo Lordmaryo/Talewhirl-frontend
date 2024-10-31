@@ -1,5 +1,7 @@
 "use client";
 import { PageProps } from "@/app/details/[id]/page";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
 import defaultProfile from "../../image/default-profile.png";
@@ -62,14 +64,24 @@ const Page = ({ params }: PageProps) => {
     loadUserData();
   };
 
+  const handleAction = (
+    setAction: (action: boolean) => void,
+    action: boolean
+  ): void => {
+    if (!isAuthenticated) {
+      notify();
+    } else {
+      setAction(!action);
+    }
+  };
+
+  const notify = () =>
+    toast("You need to be authenticated to complete this action");
+
   if (!userData) return <Spinner />;
-  // if (!isAuthenticated) return <LoginPage />; 
-  /**
-   * 
-   * make authentication crucial on an interactive event
-   */
   return (
     <>
+      <ToastContainer />
       <div className="pt-16 relative">
         <Image
           src={
@@ -101,17 +113,21 @@ const Page = ({ params }: PageProps) => {
             @{userData.generatedUsername || userData?.firstname}
           </span>
           <span className="pt-3">{userData.bio || "No bio yet"}</span>
-          <span className="opacity-50">
+          <span className="opacity-50 py-2">
             Joined {formatDate(userData.createdDate)}
           </span>
         </div>
         <div className="pt-4 absolute lg:w-[78%] md:w-[70%] sm:w-[65%] top-52 right-2 flex justify-between items-center">
           <div className="hidden sm:flex flex-row gap-x-20 lg:gap-36 items-center">
-            <button onClick={() => setOpenFollowings(!openFollowings)}>
+            <button
+              onClick={() => handleAction(setOpenFollowings, openFollowings)}
+            >
               <span className="pr-1">{userData.following.length}</span>
               <span>Followings</span>
             </button>
-            <button onClick={() => setOpenFollowers(!openFollowers)}>
+            <button
+              onClick={() => handleAction(setOpenFollowers, openFollowers)}
+            >
               <span className="pr-1">{userData.followers.length}</span>
               <span>Followers</span>
             </button>
@@ -131,12 +147,14 @@ const Page = ({ params }: PageProps) => {
             />
           )}
         </div>
-        <div className="pl-4 md:pl-10 absolute top-[22rem] flex sm:hidden flex-row gap-x-6 items-center">
-          <button onClick={() => setOpenFollowers(!openFollowers)}>
+        <div className="pl-4 md:pl-10 absolute top-[22.5rem] flex sm:hidden flex-row gap-x-6 items-center">
+          <button onClick={() => handleAction(setOpenFollowers, openFollowers)}>
             <span className="pr-1">{userData.followers.length}</span>
             <span>Followers</span>
           </button>
-          <button onClick={() => setOpenFollowings(!openFollowings)}>
+          <button
+            onClick={() => handleAction(setOpenFollowings, openFollowings)}
+          >
             <span className="pr-1">{userData.following.length}</span>
             <span>Followings</span>
           </button>

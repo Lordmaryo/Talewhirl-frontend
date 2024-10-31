@@ -9,6 +9,7 @@ import { FaLock } from "react-icons/fa";
 import CountrySelector from "../utilities/CountrySelector";
 import ActivateAccount from "./ActivateAccount";
 import { baseApi } from "../api/baseApi";
+import { capitalizeName } from "../utilities/Helpers";
 
 // TODO - add loading animations to the signup and login buttons
 
@@ -24,10 +25,6 @@ const SignUpPage = () => {
   const [loginPage, setLoginPage] = useState<boolean>(false);
   const [signupSucess, setSignupSucess] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-
-  const capitalizeName = (name: string) => {
-    return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-  };
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();

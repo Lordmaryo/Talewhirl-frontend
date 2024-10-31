@@ -19,3 +19,7 @@ export const truncateWord = (word: string | null, maxLength: number) => {
   const numOfWords = word.length;
   return numOfWords > maxLength ? word.slice(0, maxLength) + "..." : word;
 };
+
+export const capitalizeName = (name: string) => {
+  return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+};
