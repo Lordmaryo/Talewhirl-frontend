@@ -22,8 +22,8 @@ const Hero = () => {
       console.error(error);
     }
   };
-  if (!response) return <HomeLoader />;
 
+  if (!response) return <HomeLoader />;
   return (
     <div>
       <Splide

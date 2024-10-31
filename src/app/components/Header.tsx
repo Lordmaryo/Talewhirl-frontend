@@ -24,13 +24,29 @@ const Header = () => {
   const [tokenData, setTokenData] = useState<TokenDataProps | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [toggleAccount, setToggleAccount] = useState(false);
-  const [userData, setUserData] = useState<UserResponse>();
+  const [userData, setUserData] = useState<UserResponse | null>(null);
+  const [currentUserId, setCurrentUserid] = useState<number | undefined>(0);
   const router = useRouter();
-  const currentuserId: any = tokenData?.id;
+
+  console.log("Current user id type header", typeof currentUserId);
+  console.log("Current user header", currentUserId);
+  console.log("user header", userData);
+
+  const [loading, setLoading] = useState<boolean>(false);
+
   useEffect(() => {
-    checkAuthAndSetToken(getToken, setIsAuthenticated, setTokenData);
-    loadUser(currentuserId, setUserData);
-  }, []);
+    const fetchData = async () => {
+      checkAuthAndSetToken(getToken, setIsAuthenticated, setTokenData);
+      setCurrentUserid(tokenData?.id);
+      if (currentUserId) {
+        setLoading(true);
+        await loadUser(currentUserId, setUserData);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [currentUserId]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,6 +64,8 @@ const Header = () => {
           <Link className="flex flex-row items-center gap-x-2" href="/">
             <Image
               src={Logo}
+              width={100}
+              height={100}
               className="w-8 h-8 sm:w-10 sm:h-10 object-cover"
               alt="talewhirl logo"
             ></Image>
@@ -123,8 +141,14 @@ const Header = () => {
           >
             <Image
               className="h-6 w-6 rounded-full"
-              src={userData?.profilePic || defaultProfile}
-              alt="your profile"
+              src={
+                !userData
+                  ? defaultProfile
+                  : `data:image/jpeg;base64,${userData?.profilePic}`
+              }
+              width={100}
+              height={100}
+              alt="profile"
             />
           </button>
         </div>

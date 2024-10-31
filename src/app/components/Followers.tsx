@@ -6,12 +6,12 @@ import ListFollowCard from "./ListFollowCard";
 
 const Followers = ({ params }: PageProps) => {
   const userId = params.id;
-  const [userData, setUserData] = useState<UserResponse>();
+  const [userData, setUserData] = useState<UserResponse | null>(null);
 
   const [closePopUp, setClosePopUp] = useState(false);
   useEffect(() => {
     loadUser(userId, setUserData);
-  }, []);
+  }, [userId]);
 
   if (closePopUp) return null;
   return (
@@ -30,9 +30,15 @@ const Followers = ({ params }: PageProps) => {
         <h2 className="text-center text-white font-bold mt-3">Followers</h2>
       </div>
       <div>
-        {userData?.followers.map((followId) => {
-          return <ListFollowCard followId={followId} />;
-        })}
+        {userData?.followers.length ? (
+          userData.followers.map((followId) => (
+            <ListFollowCard key={followId} followId={followId} />
+          ))
+        ) : (
+          <h2 className="font-bold absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 ">
+            No followers yet
+          </h2>
+        )}
       </div>
     </div>
   );

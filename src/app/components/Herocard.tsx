@@ -41,7 +41,7 @@ const Herocard = ({ book, numbering }: HeroCardProps) => {
           <div className="hidden flex-row items-center gap-4 mt-2 sm:flex">
             <div className="divide-x-2">
               {book.genres
-                ?.map((g) => <span className="px-2">{g}</span>)
+                ?.map((g, index) => <span className="px-2" key={index}>{g}</span>)
                 .slice(1)}
             </div>
             <div className="flex flex-row items-center gap-1">

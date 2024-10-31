@@ -10,6 +10,11 @@ import ButtonTransparent from "@/app/components/ButtonTransparent";
 import Spinner from "@/app/loaders/Spinner";
 import Feedback from "@/app/components/Feedback";
 import { baseApi } from "@/app/api/baseApi";
+import {
+  averageReadTime,
+  interval,
+  truncateWord,
+} from "@/app/utilities/Helpers";
 
 export type PageProps = {
   params: { id: string };
@@ -17,28 +22,17 @@ export type PageProps = {
 
 const Details = ({ params }: PageProps) => {
   const id = params.id;
-  const [book, setBook] = useState<Book | null>();
+  console.log("detaials id", id);
+  console.log("type of details ", typeof id);
+
+  const [book, setBook] = useState<Book | null>(null);
 
   useEffect(() => {
     fetchBookDetails();
-  }, []);
+  }, [id]);
 
-  const everyWordLength: any = book?.chapters
-    .map((chapter) => chapter.content.split(/\s+/).length)
-    .reduce((a, b) => a + b, 0);
-  const averageWpm = 200;
-  const bookReadTime = Math.ceil(everyWordLength / averageWpm); // per min
-
-  const truncateWord = (word: string | any, maxLength: number) => {
-    if (!word) return word;
-
-    const numOfWords = word.length;
-    return numOfWords > maxLength ? word.slice(0, maxLength) + "..." : word;
-  };
-
-  const interval = (time: number) => {
-    return time > 59 ? `${Math.floor(time / 60)}h` : `${time}m`;
-  };
+  const chapter = book?.chapters;
+  const readTime = averageReadTime(chapter);
 
   const HandleClick = () => {
     console.log("Hello!");
@@ -47,11 +41,13 @@ const Details = ({ params }: PageProps) => {
   const fetchBookDetails = async () => {
     try {
       const { data } = await baseApi.get(`book/${id}`);
+      console.log("Book data:", data);
       setBook(data);
     } catch (error) {
       console.error(error);
     }
   };
+
   console.log("details response state", book);
   if (!book) return <Spinner />;
   return (
@@ -71,7 +67,8 @@ const Details = ({ params }: PageProps) => {
             {truncateWord(book?.title, 40)} and it havent even ended yet.
           </h1>
           <Link
-            href={"/"}
+            href={`/profile/${1}`}
+            // change to book.createdBy when before deployment
             className="hover:underline transition-all border-[#ffffffa2]"
           >
             <h2
@@ -83,7 +80,12 @@ const Details = ({ params }: PageProps) => {
           </Link>
           <div className="divide-x-2 md:mt-5 mt-3">
             {book?.genres
-              ?.map((g) => <span className="pr-2"> {g}</span>)
+              ?.map((g, index) => (
+                <span className="pr-2" key={index}>
+                  {" "}
+                  {g}
+                </span>
+              ))
               .slice(0, 3)}
           </div>
           <div className="md:mt-5 mt-3 text-[#ffffffb3] font-medium">
@@ -100,7 +102,7 @@ const Details = ({ params }: PageProps) => {
             </div>
             <div className="flex flex-row items-center gap-1 px-2">
               <FaRegClock />
-              <span>{interval(bookReadTime)}</span>
+              <span>{interval(readTime)}</span>
             </div>
             <div className="flex flex-row items-center gap-1 border-l-2 px-4">
               <FiBookOpen />
@@ -122,7 +124,7 @@ const Details = ({ params }: PageProps) => {
         </div>
         <div className="flex flex-row items-center gap-1 px-2">
           <FaRegClock />
-          <span>{interval(bookReadTime)}</span>
+          <span>{interval(readTime)}</span>
         </div>
         <div className="flex flex-row items-center gap-1 border-l-2 px-4">
           <FiBookOpen />
@@ -140,14 +142,10 @@ const Details = ({ params }: PageProps) => {
         <h2 className="font-bold text-xl sm:text-2xl md:text-2xl pb-4">
           Overview
         </h2>
-        <p>
-          {book?.synopsis}
-          {book?.synopsis}
-          {book?.synopsis}
-        </p>
+        <p>{book?.synopsis}</p>
       </div>
       <div>
-        <Feedback getRate={book.rate} bookId={book.id}/>
+        <Feedback getRate={book.rate} bookId={book.id} />
       </div>
     </div>
   );

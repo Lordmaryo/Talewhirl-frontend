@@ -2,8 +2,8 @@
 import { PageProps } from "@/app/details/[id]/page";
 import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
-import profile from "../../image/default-profile.png";
-import backgroundPic from "../../image/bg-cover.jpg";
+import defaultProfile from "../../image/default-profile.png";
+import defaultbg from "../../image/darkbackground.jpg";
 import { loadUser, UserResponse } from "@/app/api/ApiServices";
 import Spinner from "@/app/loaders/Spinner";
 import { formatDate } from "@/app/utilities/FormatDate";
@@ -15,12 +15,15 @@ import checkAuthAndSetToken, {
   TokenDataProps,
 } from "@/app/token/Token";
 import { baseApi } from "@/app/api/baseApi";
+import EditProfile from "@/app/components/EditProfile";
+import LoginPage from "@/app/Authentication/LoginPage";
 
 const Page = ({ params }: PageProps) => {
   const userId = params.id;
-  const [userData, setUserData] = useState<UserResponse>();
+  const [userData, setUserData] = useState<UserResponse | null>(null);
   const [openFollowers, setOpenFollowers] = useState(false);
   const [openFollowings, setOpenFollowings] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
   const [tokenData, setTokenData] = useState<TokenDataProps | null>(null);
   const [followStatus, setFollowStatus] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -60,19 +63,35 @@ const Page = ({ params }: PageProps) => {
   };
 
   if (!userData) return <Spinner />;
-
+  // if (!isAuthenticated) return <LoginPage />; 
+  /**
+   * 
+   * make authentication crucial on an interactive event
+   */
   return (
     <>
       <div className="pt-16 relative">
         <Image
-          src={backgroundPic}
-          alt="profile picture"
+          src={
+            !userData.backgroundPic
+              ? defaultbg
+              : `data:image/jpeg;base64,${userData?.backgroundPic}`
+          }
+          width={100}
+          height={100}
+          alt=""
           className="w-full max-h-36 object-cover"
         />
         <Image
-          src={profile}
+          src={
+            !userData.profilePic
+              ? defaultProfile
+              : `data:image/jpeg;base64,${userData?.profilePic}`
+          }
+          width={100}
+          height={100}
           className="w-16 h-16 sm:w-24 sm:h-24 object-cover rounded-full absolute top-40 sm:left-14 left-6"
-          alt="profile picture"
+          alt=""
         />
         <div className="absolute sm:top-[17rem] top-[15rem] px-4 flex flex-col pl-4 md:pl-10">
           <span className="font-bold">
@@ -98,7 +117,11 @@ const Page = ({ params }: PageProps) => {
             </button>
           </div>
           {currentUserId == userId ? (
-            <ButtonTransparent label="Edit profile" className="lg:mr-10 mx-4" />
+            <ButtonTransparent
+              onClick={() => setOpenEdit(!openEdit)}
+              label="Edit profile"
+              className="lg:mr-10 mx-4"
+            />
           ) : (
             <ButtonTransparent
               disabled={!isAuthenticated}
@@ -109,14 +132,11 @@ const Page = ({ params }: PageProps) => {
           )}
         </div>
         <div className="pl-4 md:pl-10 absolute top-[22rem] flex sm:hidden flex-row gap-x-6 items-center">
-          <button className="" onClick={() => setOpenFollowers(!openFollowers)}>
+          <button onClick={() => setOpenFollowers(!openFollowers)}>
             <span className="pr-1">{userData.followers.length}</span>
             <span>Followers</span>
           </button>
-          <button
-            className=""
-            onClick={() => setOpenFollowings(!openFollowings)}
-          >
+          <button onClick={() => setOpenFollowings(!openFollowings)}>
             <span className="pr-1">{userData.following.length}</span>
             <span>Followings</span>
           </button>
@@ -124,6 +144,7 @@ const Page = ({ params }: PageProps) => {
       </div>
       {openFollowers && <Followers params={params} />}
       {openFollowings && <Followings params={params} />}
+      {openEdit && <EditProfile currentUserId={currentUserId} />}
     </>
   );
 };

@@ -19,13 +19,20 @@ const ListFollowCard = ({ followId }: FollowIdProp) => {
     <div className="flex justify-between items-center my-4">
       <div className="flex flex-row gap-x-2">
         <Image
-          src={userData?.profilePic || defaultProfile}
+          src={
+            !userData.profilePic
+              ? defaultProfile
+              : `data:image/jpeg;base64,${userData?.profilePic}`
+          }
           className="w-10 h-10 rounded-full"
           alt="profile picture"
+          width={100}
+          height={100}
         />
         <div className="flex flex-col">
           <span className="text-sm">
             {userData?.username || userData?.firstname}
+            {/* change to generatedUsername */}
           </span>
           <span className="text-xs opacity-50">
             {userData?.firstname + " " + userData?.lastname}

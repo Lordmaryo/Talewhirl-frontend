@@ -6,7 +6,7 @@ export interface Book {
   id: number;
   title: string;
   authorName: string;
-  genres: string[] | null;
+  genres: string[];
   isbn: string;
   pgRating: number;
   readCount: number;
@@ -98,11 +98,11 @@ export interface UserResponse {
   followers: number[];
   following: number[];
   country: string;
-  bio: string | null;
+  bio: string;
 }
 
 export const loadUser = async (
-  userId: number | string,
+  userId: number | string | undefined,
   setUserData: (user: UserResponse) => void
 ): Promise<void> => {
   try {

@@ -10,13 +10,16 @@ import { checkAuthenication } from "../token/Token";
 import { baseApi } from "../api/baseApi";
 
 const HomeBody = () => {
-  const [bookResponse, setBookResponse] = useState<ResponseProps | null>();
-  const [topTen, setTopTen] = useState<Book[] | null>();
+  const [bookResponse, setBookResponse] = useState<ResponseProps | null>(null);
+  const [topTen, setTopTen] = useState<Book[] | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     loadBooks();
     loadTopTen();
+  }, []);
+
+  useEffect(() => {
     checkAuthenication(setIsAuthenticated);
   }, []);
 
@@ -76,7 +79,7 @@ const HomeBody = () => {
           <h2 className="font-bold sm:text-xl mb-2">Explore</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {bookResponse.content.map((book) => (
-              <div className="max-w-52">
+              <div className="max-w-52" key={book.id}>
                 <Card book={book} />
               </div>
             ))}
@@ -85,7 +88,7 @@ const HomeBody = () => {
         <div className="sm:ml-4 bg-[#252424] p-4 rounded-md">
           <h2 className="font-bold mb-2">Top Ten</h2>
           {topTen?.map((book, index) => (
-            <div className="max-w-60">
+            <div className="max-w-60" key={book.id}>
               <NavItem book={book} numberings={index} />
             </div>
           ))}

@@ -31,9 +31,15 @@ const Followings = ({ params }: PageProps) => {
         <h2 className="text-center text-white font-bold mt-3">Followings</h2>
       </div>
       <div className="pt-6">
-        {userData?.following.map((followId) => {
-          return <ListFollowCard followId={followId} />;
-        })}
+        {userData?.following.length ? (
+          userData.following.map((followId) => (
+            <ListFollowCard key={followId} followId={followId} />
+          ))
+        ) : (
+          <h2 className="font-bold absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 ">
+            No followings yet
+          </h2>
+        )}
       </div>
     </div>
   );
