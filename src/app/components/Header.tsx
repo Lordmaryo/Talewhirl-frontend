@@ -28,10 +28,6 @@ const Header = () => {
   const [currentUserId, setCurrentUserid] = useState<number | undefined>(0);
   const router = useRouter();
 
-  console.log("Current user id type header", typeof currentUserId);
-  console.log("Current user header", currentUserId);
-  console.log("user header", userData);
-
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {

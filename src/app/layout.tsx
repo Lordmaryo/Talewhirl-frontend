@@ -20,8 +20,8 @@ export default function RootLayout({
         <Provider>
           <Header />
           <main>{children}</main>
-          <Footer />
         </Provider>
+        <Footer />
       </body>
     </html>
   );

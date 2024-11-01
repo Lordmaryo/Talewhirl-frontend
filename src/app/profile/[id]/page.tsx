@@ -18,9 +18,10 @@ import checkAuthAndSetToken, {
 } from "@/app/token/Token";
 import { baseApi } from "@/app/api/baseApi";
 import EditProfile from "@/app/components/EditProfile";
-import LoginPage from "@/app/Authentication/LoginPage";
+import Link from "next/link";
+import NavigateProfile from "@/app/components/NavigateProfile";
 
-const Page = ({ params }: PageProps) => {
+const Profile = ({ params }: PageProps) => {
   const userId = params.id;
   const [userData, setUserData] = useState<UserResponse | null>(null);
   const [openFollowers, setOpenFollowers] = useState(false);
@@ -29,11 +30,6 @@ const Page = ({ params }: PageProps) => {
   const [tokenData, setTokenData] = useState<TokenDataProps | null>(null);
   const [followStatus, setFollowStatus] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  /**
-   * published
-   * drafts
-   * about
-   */
   const currentUserId: any = tokenData?.id;
 
   useEffect(() => {
@@ -147,7 +143,7 @@ const Page = ({ params }: PageProps) => {
             />
           )}
         </div>
-        <div className="pl-4 md:pl-10 absolute top-[22.5rem] flex sm:hidden flex-row gap-x-6 items-center">
+        <div className="pl-4 md:pl-10 pt-44 flex sm:hidden flex-row gap-x-6 items-center">
           <button onClick={() => handleAction(setOpenFollowers, openFollowers)}>
             <span className="pr-1">{userData.followers.length}</span>
             <span>Followers</span>
@@ -159,6 +155,7 @@ const Page = ({ params }: PageProps) => {
             <span>Followings</span>
           </button>
         </div>
+        <NavigateProfile userId={userId} currentUserId={currentUserId} />
       </div>
       {openFollowers && <Followers params={params} />}
       {openFollowings && <Followings params={params} />}
@@ -167,4 +164,5 @@ const Page = ({ params }: PageProps) => {
   );
 };
 
-export default Page;
+export default Profile;
+// address the issue of null in header

@@ -121,10 +121,10 @@ const ReadBook = ({ params }: ReadBookProps) => {
           <span className="text-zinc-500">Epigraph</span>
           <div className="w-full h-px bg-zinc-500"></div>
         </div>
-        <div></div>
+        <p className="text-center text-sm italic font-semibold pb-6 text-zinc-400">{currentChapter.epigraph}</p>
       </div>
       <div className="px-4 md:px-10 flex gap-6 justify-between relative">
-        <div className="hidden md:block w-[40%] sticky top-28 h-1/2 my-4">
+        <div className="hidden md:block w-[40%] sticky top-28 h-screen my-4">
           <Image
             src={`data:image/jpeg;base64,${bookData?.cover}`}
             className="lg:w-56 lg:h-80 w-52 h-72 object-cover rounded-md"
