@@ -22,9 +22,6 @@ export type PageProps = {
 
 const Details = ({ params }: PageProps) => {
   const id = params.id;
-  console.log("detaials id", id);
-  console.log("type of details ", typeof id);
-
   const [book, setBook] = useState<Book | null>(null);
 
   useEffect(() => {
@@ -89,7 +86,7 @@ const Details = ({ params }: PageProps) => {
               .slice(0, 3)}
           </div>
           <div className="md:mt-5 mt-3 text-[#ffffffb3] font-medium">
-            {/* shouldbe createdAt */}
+            {/* should be createdAt */}
             24, september, 2024
           </div>
           <div
@@ -135,7 +132,12 @@ const Details = ({ params }: PageProps) => {
         </div>
       </div>
       <div className="flex flex-col gap-4 sm:flex-row mt-6">
-        <Button label="Read Now" />
+        <Link
+          href={`/read/${book.id}/${book.title.replace(/\s+/g, "-")}`}
+          className=""
+        >
+          <Button className="w-full" label="Read Now" />
+        </Link>
         <ButtonTransparent onClick={HandleClick} label="Add to bookmark" />
       </div>
       <div className="mt-20 md:w-[70%]">

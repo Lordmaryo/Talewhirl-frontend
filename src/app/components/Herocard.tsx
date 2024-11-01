@@ -5,6 +5,7 @@ import { FiBookOpen } from "react-icons/fi";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import Link from "next/link";
 import { averageReadTime, interval, truncateWord } from "../utilities/Helpers";
+import { RxEyeOpen } from "react-icons/rx";
 
 type HeroCardProps = {
   book: Book;
@@ -41,7 +42,11 @@ const Herocard = ({ book, numbering }: HeroCardProps) => {
           <div className="hidden flex-row items-center gap-4 mt-2 sm:flex">
             <div className="divide-x-2">
               {book.genres
-                ?.map((g, index) => <span className="px-2" key={index}>{g}</span>)
+                ?.map((g, index) => (
+                  <span className="px-2" key={index}>
+                    {g}
+                  </span>
+                ))
                 .slice(1)}
             </div>
             <div className="flex flex-row items-center gap-1">
@@ -52,13 +57,17 @@ const Herocard = ({ book, numbering }: HeroCardProps) => {
               <FaStar />
               <span>{!book.rate ? "No rate yet" : book.rate}</span>
             </div>
+            <div className="flex flex-row items-center gap-1">
+              <RxEyeOpen />
+              <span>{book.readCount}</span>
+            </div>
           </div>
           <p className="pt-6 hidden sm:block md:text-base text-sm">
             {truncateWord(book.synopsis, 150)}
             {/* truncate if its over a certain word*/}
           </p>
           <div className="flex flex-row items-center gap-2 mt-4">
-            <Link href={"/"}>
+            <Link href={`/read/${book.id}/${book.title.replace(/\s+/g, "-")}`}>
               <button className="flex flex-row items-center gap-1 font-semibold hover:bg-[#ffffffba] transition-colors bg-white text-black sm:px-5 px-3 py-2 rounded-lg">
                 <FiBookOpen />
                 <span>Read now</span>

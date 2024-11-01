@@ -5,7 +5,7 @@ import FeedbackComment from "./FeedbackComment";
 import { baseApi } from "../api/baseApi";
 
 interface FeedbackProp {
-  getRate: number;
+  getRate: number; // get total Book ratings
   bookId: number;
 }
 
