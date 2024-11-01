@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Provider from "./components/Provider";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 export const metadata: Metadata = {
   title: "TaleWhirl",
@@ -19,6 +20,7 @@ export default function RootLayout({
         <Provider>
           <Header />
           <main>{children}</main>
+          <Footer />
         </Provider>
       </body>
     </html>
