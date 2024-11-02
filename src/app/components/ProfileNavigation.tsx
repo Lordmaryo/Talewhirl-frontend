@@ -8,7 +8,7 @@ type userIdProps = {
   currentUserId: number;
 };
 
-const NavigateProfile = ({ userId, currentUserId }: userIdProps) => {
+const ProfileNavigation = ({ userId, currentUserId }: userIdProps) => {
   const [activeTabs, setActiveTabs] = useState<string>("published");
   const isCurrentUser = Number(userId) == currentUserId;
 
@@ -72,4 +72,4 @@ const NavigateProfile = ({ userId, currentUserId }: userIdProps) => {
   );
 };
 
-export default NavigateProfile;
+export default ProfileNavigation;

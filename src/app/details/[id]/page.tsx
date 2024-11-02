@@ -13,6 +13,7 @@ import { baseApi } from "@/app/api/baseApi";
 import {
   averageReadTime,
   interval,
+  timeAgo,
   truncateWord,
 } from "@/app/utilities/Helpers";
 
@@ -65,7 +66,7 @@ const Details = ({ params }: PageProps) => {
           </h1>
           <Link
             href={`/profile/${1}`}
-            // change to book.createdBy when before deployment  
+            // change to book.createdBy when before deployment
             className="hover:underline transition-all border-[#ffffffa2]"
           >
             <h2
@@ -85,9 +86,8 @@ const Details = ({ params }: PageProps) => {
               ))
               .slice(0, 3)}
           </div>
-          <div className="md:mt-5 mt-3 text-[#ffffffb3] font-medium">
-            {/* should be createdAt */}
-            24, september, 2024
+          <div className="text-sm sm:text-base md:mt-5 mt-3 text-[#ffffffb3] font-medium">
+            published {timeAgo(book.createdDate)}
           </div>
           <div
             className="hidden md:mt-8 mt-3 sm:flex flex-row 

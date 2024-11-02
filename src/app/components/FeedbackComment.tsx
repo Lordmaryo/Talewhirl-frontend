@@ -16,7 +16,7 @@ import { baseApi } from "../api/baseApi";
 import Image from "next/image";
 import { CiHeart } from "react-icons/ci";
 import Link from "next/link";
-import { timeSince } from "../utilities/FormatDate";
+import { timeAgo } from "../utilities/Helpers";
 
 interface FeedbackCommentProps {
   bookId: number;
@@ -27,11 +27,13 @@ const FeedbackComment = ({ bookId }: FeedbackCommentProps) => {
   const [feedbackResponse, setFeedbackResponse] =
     useState<FeedbackCommentResponseProps | null>(null);
   const [showComment, setShowComment] = useState("");
-  const [userData, setUserData] = useState<UserResponse>();
+  const [userData, setUserData] = useState<UserResponse | null>(null);
   const [likeEvents, setLikeEvents] = useState<Record<number, boolean>>({});
 
   useEffect(() => {
     loadFeedbackComments();
+    // if ()
+    // loadUser( ,setUserData)
   }, [bookId]);
 
   const loadFeedbackComments = async () => {
@@ -75,6 +77,9 @@ const FeedbackComment = ({ bookId }: FeedbackCommentProps) => {
     }
   };
 
+  let createdBy = 0;
+  console.log("Coment created by", createdBy);
+
   return (
     <div className="lg:w-[700px] py-10">
       <Accordion allowZeroExpanded>
@@ -112,41 +117,44 @@ const FeedbackComment = ({ bookId }: FeedbackCommentProps) => {
               </div>
               <div>
                 <div>
-                  {feedbackResponse?.content.map((c) => (
-                    <div
-                      key={c.commentId}
-                      className="flex flex-row gap-2 py-4 relative"
-                    >
-                      <Link href={`/profile/${c.createdBy}`}>
-                        <Image
-                          src={defaultProfile}
-                          className="h-8 w-8 rounded-full"
-                          alt="default-profile"
-                        />
-                      </Link>
-                      <div className="flex flex-col">
-                        <Link
-                          href={`/profile/${c.createdBy}`}
-                          className="font-bold"
-                        >
-                          {userData?.firstname}
+                  {feedbackResponse?.content.map((c) => {
+                    createdBy = c.createdBy;
+                    return (
+                      <div
+                        key={c.commentId}
+                        className="flex flex-row gap-2 py-4 relative"
+                      >
+                        <Link href={`/profile/${c.createdBy}`}>
+                          <Image
+                            src={defaultProfile}
+                            className="h-8 w-8 rounded-full"
+                            alt="default-profile"
+                          />
                         </Link>
-                        <button
-                          onClick={() => handleLike(c.commentId)}
-                          className="absolute top-2 right-2 hover:border-zinc-600 hover:border rounded-lg px-2 py-1"
-                        >
-                          <CiHeart size={25} />
-                          <span className="text-sm opacity-50">
-                            {likeEvents[c.commentId] ? c.likes + 1 : c.likes}
+                        <div className="flex flex-col">
+                          <Link
+                            href={`/profile/${c.createdBy}`}
+                            className="font-bold"
+                          >
+                            {userData?.firstname}
+                          </Link>
+                          <button
+                            onClick={() => handleLike(c.commentId)}
+                            className="absolute top-2 right-2 hover:border-zinc-600 hover:border rounded-lg px-2 py-1"
+                          >
+                            <CiHeart size={25} />
+                            <span className="text-sm opacity-50">
+                              {likeEvents[c.commentId] ? c.likes + 1 : c.likes}
+                            </span>
+                          </button>
+                          <span className="opacity-50">
+                            {timeAgo(c.createdDate)}
                           </span>
-                        </button>
-                        <span className="opacity-50">
-                          {timeSince(c.createdDate)}
-                        </span>
-                        <span>{c.comment}</span>
+                          <span>{c.comment}</span>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </div>

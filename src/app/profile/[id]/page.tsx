@@ -18,7 +18,7 @@ import checkAuthAndSetToken, {
 } from "@/app/token/Token";
 import { baseApi } from "@/app/api/baseApi";
 import EditProfile from "@/app/components/EditProfile";
-import NavigateProfile from "@/app/components/NavigateProfile";
+import ProfileNavigation from "@/app/components/ProfileNavigation";
 /*
  *sucess useState hook was accessed through a child being
   editProfile and it checks if edit was sucessfull 
@@ -166,7 +166,7 @@ const Profile = ({ params }: PageProps) => {
             <span>Followings</span>
           </button>
         </div>
-        <NavigateProfile userId={userId} currentUserId={currentUserId} />
+        <ProfileNavigation userId={userId} currentUserId={currentUserId} />
       </div>
       {openFollowers && <Followers params={params} />}
       {openFollowings && <Followings params={params} />}

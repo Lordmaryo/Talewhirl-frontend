@@ -8,6 +8,7 @@ export interface Book {
   authorName: string;
   genres: string[];
   isbn: string;
+  createdDate: string | Date;
   pgRating: number;
   readCount: number;
   synopsis: string | null;

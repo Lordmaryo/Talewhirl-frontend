@@ -2,6 +2,8 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { FaChevronLeft } from "react-icons/fa";
 import GenresMenu from "./GenresMenu";
+import { IoIosLogOut } from "react-icons/io";
+import { removeToken } from "../token/Token";
 
 type SideBarProps = {
   setToggleMenu: (toggleMenu: boolean) => void;
@@ -75,6 +77,13 @@ const SideBar = ({ setToggleMenu, currentUserId }: SideBarProps) => {
             <h2 className="font-bold opacity-75">Genres</h2>
             <GenresMenu setToggleMenu={setToggleMenu} />
           </div>
+          <button
+            onClick={() => removeToken()}
+            className="hover:bg-[#383838] py-2 px-4 flex flex-row items-center gap-x-2"
+          >
+            <IoIosLogOut />
+            <span>Logout</span>
+          </button>
         </div>
       </div>
     </div>
