@@ -15,6 +15,7 @@ import checkAuthAndSetToken from "../token/Token";
 import defaultProfile from "../image/default-profile.png";
 import ToggleHeader from "./ToggleHeader";
 import { loadUser, UserResponse } from "../api/ApiServices";
+import SideBar from "./SideBar";
 
 const Header = () => {
   const [toggleSearchButton, setToggleSearchButton] = useState<boolean>(false);
@@ -26,6 +27,7 @@ const Header = () => {
   const [toggleAccount, setToggleAccount] = useState(false);
   const [userData, setUserData] = useState<UserResponse | null>(null);
   const [currentUserId, setCurrentUserid] = useState<number | undefined>(0);
+  const [toggleMenu, setToggleMenu] = useState(false);
   const router = useRouter();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -52,11 +54,25 @@ const Header = () => {
 
   return (
     <>
+      {toggleMenu && (
+        <>
+          <div
+            onClick={() => setToggleMenu(false)}
+            className="backdrop-blur-md w-full h-full z-20 fixed"
+          />
+          <SideBar currentUserId={currentUserId} setToggleMenu={setToggleMenu} />
+        </>
+      )}
       <div className="sm:h-16 h-16 bg-inherit z-10 flex flex-row items-center justify-between py-5 px-3 fixed top-0 right-0 left-0">
         <div className="flex items-center justify-between gap-5">
-          <div>
-            <IoMenu size={30} />
-          </div>
+          <button
+            onClick={() => setToggleMenu(!toggleMenu)}
+            className="py-1 px-2"
+          >
+            <div>
+              <IoMenu size={30} />
+            </div>
+          </button>
           <Link className="flex flex-row items-center gap-x-2" href="/">
             <Image
               src={Logo}

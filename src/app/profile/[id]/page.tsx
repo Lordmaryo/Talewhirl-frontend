@@ -143,7 +143,7 @@ const Profile = ({ params }: PageProps) => {
             <ButtonTransparent
               onClick={() => setOpenEdit(!openEdit)}
               label="Edit profile"
-              className="lg:mr-10 mx-4"
+              className="lg:mr-10 mx-4 sm:mx-2 md:mx-4"
             />
           ) : (
             <ButtonTransparent

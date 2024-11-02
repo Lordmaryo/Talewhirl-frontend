@@ -21,7 +21,7 @@ const Published = () => {
       console.error("Error loading drafts", error);
     }
   };
-  if (!bookResponse) return <Spinner />;
+  if (!bookResponse?.content) return <Spinner />;
   return (
     <div className="min-h-screen pb-10 pt-4">
       {bookResponse?.content.length ? (

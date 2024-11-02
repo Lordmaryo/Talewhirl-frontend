@@ -65,7 +65,7 @@ const Details = ({ params }: PageProps) => {
           </h1>
           <Link
             href={`/profile/${1}`}
-            // change to book.createdBy when before deployment
+            // change to book.createdBy when before deployment  
             className="hover:underline transition-all border-[#ffffffa2]"
           >
             <h2

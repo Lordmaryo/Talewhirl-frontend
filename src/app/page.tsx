@@ -1,5 +1,5 @@
 import React from 'react'
-import HomeProvider from './page/HomeProvider'
+import HomeProvider from './pages/HomeProvider'
 
 const page = () => {
   return (

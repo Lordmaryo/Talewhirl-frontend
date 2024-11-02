@@ -3,6 +3,7 @@ import { IoClose } from "react-icons/io5";
 import { PageProps } from "../details/[id]/page";
 import { loadUser, UserResponse } from "../api/ApiServices";
 import ListFollowCard from "./ListFollowCard";
+import Spinner from "../loaders/Spinner";
 
 const Followings = ({ params }: PageProps) => {
   const userId = params.id;
@@ -10,10 +11,11 @@ const Followings = ({ params }: PageProps) => {
   const [userData, setUserData] = useState<UserResponse>();
 
   useEffect(() => {
-    loadUser(userId, setUserData);
-  }, []);
+    if (userId) loadUser(userId, setUserData);
+  }, [userId]);
 
   if (closePopUp) return null;
+  if (!userData) return <Spinner />;
 
   return (
     <div

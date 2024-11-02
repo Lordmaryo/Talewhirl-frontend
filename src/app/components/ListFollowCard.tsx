@@ -3,24 +3,23 @@ import { loadUser, UserResponse } from "../api/ApiServices";
 import Link from "next/link";
 import Image from "next/image";
 import defaultProfile from "../image/default-profile.png";
-import Spinner from "../loaders/Spinner";
 
 export type FollowIdProp = {
   followId: number;
 };
-const ListFollowCard = ({ followId }: FollowIdProp) => {
-  const [userData, setUserData] = useState<UserResponse>();
-  useEffect(() => {
-    loadUser(followId, setUserData);
-  }, []);
 
-  if (!userData) return <Spinner />;
+const ListFollowCard = ({ followId }: FollowIdProp) => {
+  const [userData, setUserData] = useState<UserResponse | null>(null);
+  useEffect(() => {
+    if (followId) loadUser(followId, setUserData);
+  }, [followId]);
+
   return (
     <div className="flex justify-between items-center my-4">
       <div className="flex flex-row gap-x-2">
         <Image
           src={
-            !userData.profilePic
+            !userData?.profilePic
               ? defaultProfile
               : `data:image/jpeg;base64,${userData?.profilePic}`
           }
@@ -41,7 +40,7 @@ const ListFollowCard = ({ followId }: FollowIdProp) => {
       </div>
       <Link
         className="hover:bg-[#ffffff08] border border-zinc-500 py-1 px-2 rounded-md ml-2"
-        href={`/profile/${userData?.username || userData?.id}`}
+        href={`/profile/${userData?.id}`}
       >
         View Profile
       </Link>
