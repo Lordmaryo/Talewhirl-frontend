@@ -3,6 +3,8 @@ import { checkAuthenication } from "../token/Token";
 import LoginPage from "../Authentication/LoginPage";
 import FeedbackComment from "./FeedbackComment";
 import { baseApi } from "../api/baseApi";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface FeedbackProp {
   getRate: number; // get total Book ratings
@@ -34,8 +36,10 @@ const Feedback = ({ getRate, bookId }: FeedbackProp) => {
         note: value,
         bookId,
       });
-    } catch (error) {
-      console.error(error);
+      toast.success("Rate posted");
+    } catch (error: any) {
+      toast.error(error.response.data.error);
+      console.error("Error rating book", error);
     }
   };
 
@@ -75,21 +79,24 @@ const Feedback = ({ getRate, bookId }: FeedbackProp) => {
   };
 
   return (
-    <div className="pt-10">
-      <h2 className="font-bold text-xl sm:text-2xl md:text-2xl pb-4">
-        Rating and reviews
-      </h2>
-      <h1 className="font-bold text-2xl sm:text-3xl lg:text-4xl xl:lg:text-5xl mb-2 text-[#ffffff93]">
-        {getRate}
-      </h1>
-      <div>
-        {renderStars()}
-        <span className="pl-2 font-bold text-[#ffffffb6]">
-          {reaction || rateReactions[note]}
-        </span>
+    <>
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
+      <div className="pt-10">
+        <h2 className="font-bold text-xl sm:text-2xl md:text-2xl pb-4">
+          Rating and reviews
+        </h2>
+        <h1 className="font-bold text-2xl sm:text-3xl lg:text-4xl xl:lg:text-5xl mb-2 text-[#ffffff93]">
+          {getRate}
+        </h1>
+        <div>
+          {renderStars()}
+          <span className="pl-2 font-bold text-[#ffffffb6]">
+            {reaction || rateReactions[note]}
+          </span>
+        </div>
+        <FeedbackComment bookId={bookId} />
       </div>
-      <FeedbackComment bookId={bookId} />
-    </div>
+    </>
   );
 };
 

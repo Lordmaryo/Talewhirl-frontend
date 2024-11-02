@@ -11,13 +11,13 @@ import axios from "axios";
 
 type CurrentUserIdProp = {
   currentUserId: number | undefined;
+  setSucess: (sucess: boolean) => void;
 };
 
-const EditProfile = ({ currentUserId }: CurrentUserIdProp) => {
-  const [userData, setUserData] = useState<UserResponse>();
+const EditProfile = ({ currentUserId, setSucess }: CurrentUserIdProp) => {
+  const [userData, setUserData] = useState<UserResponse | null>(null);
   const [profileFile, setProfileFile] = useState(null);
   const [backgroundFile, setBackgroundFile] = useState(null);
-  const [sucess, setSucess] = useState(false);
 
   const handleprofileChange = (e: any) => {
     setProfileFile(e.target.files[0]);
@@ -64,11 +64,10 @@ const EditProfile = ({ currentUserId }: CurrentUserIdProp) => {
     }
   };
 
-  const [cancel, setCancel] = useState(false);
+  const [close, setClose] = useState(false);
 
   if (!userData) return <Spinner />;
-  if (cancel) return null;
-  if (sucess) return null;
+  if (close) return null;
   return (
     <div
       className="z-10 bg-[#272727] rounded-md sm:max-w-[600px] 
@@ -78,10 +77,10 @@ const EditProfile = ({ currentUserId }: CurrentUserIdProp) => {
     >
       <div className="flex flex-row justify-between items-center mt-4 mx-2 bg-inherit sticky">
         <button
-          onClick={() => setCancel(!cancel)}
+          onClick={() => setClose(!close)}
           className="font-bold py-1 px-2 rounded-lg hover:bg-[#ffffff10] transition-colors"
         >
-          cancel
+          Cancel
         </button>
         <h2 className="font-bold text-xl">Edit profile</h2>
       </div>
@@ -156,6 +155,7 @@ const EditProfile = ({ currentUserId }: CurrentUserIdProp) => {
         uploadBackground={uploadBackground}
         currentUserId={currentUserId}
         userData={userData}
+        setClose={setClose}
         setSucess={setSucess}
       />
     </div>

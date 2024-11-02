@@ -90,6 +90,7 @@ export interface UserResponse {
   lastname: string;
   createdDate: string;
   email: string;
+  about: string;
   dateOfBirth: string;
   generatedUsername: string;
   profilePic: string;

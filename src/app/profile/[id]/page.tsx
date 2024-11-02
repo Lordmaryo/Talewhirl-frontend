@@ -18,9 +18,11 @@ import checkAuthAndSetToken, {
 } from "@/app/token/Token";
 import { baseApi } from "@/app/api/baseApi";
 import EditProfile from "@/app/components/EditProfile";
-import Link from "next/link";
 import NavigateProfile from "@/app/components/NavigateProfile";
-
+/*
+ *sucess useState hook was accessed through a child being
+  editProfile and it checks if edit was sucessfull 
+ */
 const Profile = ({ params }: PageProps) => {
   const userId = params.id;
   const [userData, setUserData] = useState<UserResponse | null>(null);
@@ -30,6 +32,7 @@ const Profile = ({ params }: PageProps) => {
   const [tokenData, setTokenData] = useState<TokenDataProps | null>(null);
   const [followStatus, setFollowStatus] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [success, setSucess] = useState(false);
   const currentUserId: any = tokenData?.id;
 
   useEffect(() => {
@@ -65,19 +68,27 @@ const Profile = ({ params }: PageProps) => {
     action: boolean
   ): void => {
     if (!isAuthenticated) {
+      toast.dismiss();
       notify();
     } else {
       setAction(!action);
     }
   };
 
-  const notify = () =>
-    toast("You need to be authenticated to complete this action");
+  useEffect(() => {
+    if (success) {
+      toast.dismiss();
+      editSucessfull();
+    }
+  }, [success]);
 
+  const notify = () =>
+    toast.error("You need to have an account to complete this action");
+  const editSucessfull = () => toast.success("Profile edited sucessfully");
   if (!userData) return <Spinner />;
   return (
     <>
-      <ToastContainer />
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
       <div className="pt-16 relative">
         <Image
           src={
@@ -159,7 +170,9 @@ const Profile = ({ params }: PageProps) => {
       </div>
       {openFollowers && <Followers params={params} />}
       {openFollowings && <Followings params={params} />}
-      {openEdit && <EditProfile currentUserId={currentUserId} />}
+      {openEdit && (
+        <EditProfile setSucess={setSucess} currentUserId={currentUserId} />
+      )}
     </>
   );
 };

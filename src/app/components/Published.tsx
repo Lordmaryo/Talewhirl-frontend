@@ -23,7 +23,7 @@ const Published = () => {
   };
   if (!bookResponse) return <Spinner />;
   return (
-    <div className="h-screen py-10">
+    <div className="min-h-screen pb-10 pt-4">
       {bookResponse?.content.length ? (
         <div className="px-4 flex flex-wrap gap-4 justify-center">
           {bookResponse?.content.map((book) => (
