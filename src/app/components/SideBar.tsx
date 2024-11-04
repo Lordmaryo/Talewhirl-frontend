@@ -1,9 +1,9 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaChevronLeft } from "react-icons/fa";
 import GenresMenu from "./GenresMenu";
 import { IoIosLogOut } from "react-icons/io";
-import { removeToken } from "../token/Token";
+import { checkAuthenication, removeToken } from "../token/Token";
 
 type SideBarProps = {
   setToggleMenu: (toggleMenu: boolean) => void;
@@ -11,6 +11,12 @@ type SideBarProps = {
 };
 
 const SideBar = ({ setToggleMenu, currentUserId }: SideBarProps) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    checkAuthenication(setIsAuthenticated);
+  }, []);
+
   return (
     <div className="fixed left-0 top-0 z-20">
       <div className="scrollbar-hide bg-[#272727] w-[300px] h-screen overflow-y-auto scroll pt-4">
@@ -30,41 +36,45 @@ const SideBar = ({ setToggleMenu, currentUserId }: SideBarProps) => {
             >
               <li>Home</li>
             </Link>
-            <Link
-              onClick={() => setToggleMenu(false)}
-              href={"/profile/" + currentUserId}
-              className="hover:bg-[#383838] py-2 px-4"
-            >
-              <li>Profile</li>
-            </Link>
-            <Link
-              onClick={() => setToggleMenu(false)}
-              href={"/create/"}
-              className="hover:bg-[#383838] py-2 px-4"
-            >
-              <li>Create</li>
-            </Link>
-            <Link
-              onClick={() => setToggleMenu(false)}
-              href={"/published"}
-              className="hover:bg-[#383838] py-2 px-4"
-            >
-              <li>Published</li>
-            </Link>
-            <Link
-              onClick={() => setToggleMenu(false)}
-              href={"/drafts"}
-              className="hover:bg-[#383838] py-2 px-4"
-            >
-              <li>Drafts</li>
-            </Link>
-            <Link
-              onClick={() => setToggleMenu(false)}
-              href={"/bookmarked"}
-              className="hover:bg-[#383838] py-2 px-4"
-            >
-              <li>Bookmarked</li>
-            </Link>
+            {isAuthenticated && (
+              <>
+                <Link
+                  onClick={() => setToggleMenu(false)}
+                  href={"/profile/" + currentUserId}
+                  className="hover:bg-[#383838] py-2 px-4"
+                >
+                  <li>Profile</li>
+                </Link>
+                <Link
+                  onClick={() => setToggleMenu(false)}
+                  href={"/create/"}
+                  className="hover:bg-[#383838] py-2 px-4"
+                >
+                  <li>Create</li>
+                </Link>
+                <Link
+                  onClick={() => setToggleMenu(false)}
+                  href={"/published"}
+                  className="hover:bg-[#383838] py-2 px-4"
+                >
+                  <li>Published</li>
+                </Link>
+                <Link
+                  onClick={() => setToggleMenu(false)}
+                  href={"/drafts"}
+                  className="hover:bg-[#383838] py-2 px-4"
+                >
+                  <li>Drafts</li>
+                </Link>
+                {/* <Link
+                  onClick={() => setToggleMenu(false)}
+                  href={"/bookmarked"}
+                  className="hover:bg-[#383838] py-2 px-4"
+                >
+                  <li>Bookmarked</li>
+                </Link> */}
+              </>
+            )}
             <Link
               onClick={() => setToggleMenu(false)}
               href={"/trending"}
@@ -77,13 +87,15 @@ const SideBar = ({ setToggleMenu, currentUserId }: SideBarProps) => {
             <h2 className="font-bold opacity-75">Genres</h2>
             <GenresMenu setToggleMenu={setToggleMenu} />
           </div>
-          <button
-            onClick={() => removeToken()}
-            className="hover:bg-[#383838] py-2 px-4 flex flex-row items-center gap-x-2"
-          >
-            <IoIosLogOut />
-            <span>Logout</span>
-          </button>
+          {isAuthenticated && (
+            <button
+              onClick={() => removeToken()}
+              className="hover:bg-[#383838] py-2 px-4 flex flex-row items-center gap-x-2"
+            >
+              <IoIosLogOut />
+              <span>Logout</span>
+            </button>
+          )}
         </div>
       </div>
     </div>

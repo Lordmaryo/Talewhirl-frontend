@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import GetDrafts from "./GetDrafts";
 import Published from "./Published";
 import AboutUser from "./AboutUser";
@@ -11,8 +11,6 @@ type userIdProps = {
 const ProfileNavigation = ({ userId, currentUserId }: userIdProps) => {
   const [activeTabs, setActiveTabs] = useState<string>("published");
   const isCurrentUser = Number(userId) == currentUserId;
-
-  useEffect(() => {}, []);
 
   const renderContents = () => {
     switch (activeTabs) {

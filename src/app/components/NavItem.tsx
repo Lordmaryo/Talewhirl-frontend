@@ -3,7 +3,7 @@ import { Book } from "../api/ApiServices";
 import Image from "next/image";
 import Link from "next/link";
 import { RxEyeOpen } from "react-icons/rx";
-import { truncateWord } from "../utilities/Helpers";
+import { formatViews, truncateWord } from "../utilities/Helpers";
 
 type BookProps = {
   book: Book;
@@ -30,7 +30,9 @@ const NavItem = ({ book, numberings }: BookProps) => {
           <h2>{truncateWord(book.title, 20)}</h2>
           <div className="flex items-center gap-2 font-bold text-[#ffffff8f]">
             <RxEyeOpen />
-            <span>{book.readCount}</span>
+            <span className="font-semibold">
+              {formatViews(book.readCount)} views
+            </span>
           </div>
         </div>
       </div>

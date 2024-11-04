@@ -2,26 +2,16 @@
 import React, { useEffect, useState } from "react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
-import { ResponseProps } from "../api/ApiServices";
+import { loadTrendingWeekly, ResponseProps } from "../api/ApiServices";
 import Herocard from "./Herocard";
 import HomeLoader from "../loaders/HomeLoader";
-import { baseApi } from "../api/baseApi";
 
 const Hero = () => {
   const [response, setResponse] = useState<ResponseProps | null>(null);
 
   useEffect(() => {
-    loadBooks();
+    loadTrendingWeekly(0, 10, setResponse);
   }, []);
-
-  const loadBooks = async () => {
-    try {
-      const { data } = await baseApi.get(`book/trending_weekly`);
-      setResponse(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   if (!response) return <HomeLoader />;
   return (

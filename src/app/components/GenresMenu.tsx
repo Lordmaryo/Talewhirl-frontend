@@ -1,5 +1,6 @@
 import Link from "next/link";
 import allGenres from "../data/genres.json";
+import { truncateWord } from "../utilities/Helpers";
 
 type GenresMenuProps = {
   setToggleMenu: (toggleMenu: boolean) => void;
@@ -13,7 +14,7 @@ const GenresMenu = ({ setToggleMenu }: GenresMenuProps) => {
           className="w-full text-sm pr-2 py-2 hover:font-bold"
           href={`/genre/${genre.name.replace(/\s+/g, "-").toLowerCase()}`}
         >
-          {genre.name}
+          {truncateWord(genre.name, 16)}
         </Link>
       ))}
     </div>

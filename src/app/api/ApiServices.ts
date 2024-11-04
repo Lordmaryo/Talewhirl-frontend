@@ -1,5 +1,4 @@
 // props for page response
-import FeedbackComment from "../components/FeedbackComment";
 import { baseApi } from "./baseApi";
 
 export interface Book {
@@ -11,6 +10,7 @@ export interface Book {
   createdDate: string | Date;
   pgRating: number;
   readCount: number;
+  createdBy: number;
   synopsis: string | null;
   owner: string;
   chapters: Chapter[];
@@ -65,7 +65,7 @@ export interface FeedbackResponseProps {
   last: boolean;
 }
 
-export interface FeedbackComment {
+export interface FeedbackDataProps {
   commentId: number;
   comment: string;
   createdBy: number;
@@ -75,7 +75,7 @@ export interface FeedbackComment {
 }
 
 export interface FeedbackCommentResponseProps {
-  content: FeedbackComment[];
+  content: FeedbackDataProps[];
   number: number;
   size: number;
   totalElements: number;
@@ -110,6 +110,73 @@ export const loadUser = async (
   try {
     const { data } = await baseApi.get<UserResponse>(`user/${userId}`);
     setUserData(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const loadDrafts = async (
+  setBookResponse: (BookResponse: ResponseProps) => void
+) => {
+  try {
+    const { data } = await baseApi.get<ResponseProps>("/book/owner/drafts");
+    setBookResponse(data);
+  } catch (error) {
+    console.error("Error loading drafts", error);
+  }
+};
+
+export const loadPublished = async (
+  setBookResponse: (BookResponse: ResponseProps) => void
+) => {
+  try {
+    const { data } = await baseApi.get<ResponseProps>("book/owner/published");
+    setBookResponse(data);
+  } catch (error) {
+    console.error("Error loading drafts", error);
+  }
+};
+
+export const loadTrendingWeekly = async (
+  page: number,
+  size: number,
+  setBookResponse: (BookResponse: ResponseProps) => void
+) => {
+  try {
+    const { data } = await baseApi.get(
+      `book/trending_weekly?page=${page}&size=${size}`
+    );
+    setBookResponse(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const loadTopTen = async (setTopTen: (topTen: Book[]) => void) => {
+  try {
+    const { data } = await baseApi.get(`book/top10`);
+    setTopTen(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const fetchBookDetails = async (
+  bookId: string,
+  setBook: (book: Book) => void
+) => {
+  try {
+    const { data } = await baseApi.get(`book/${bookId}`);
+    setBook(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deleteBook = async (bookId: string | number) => {
+  try {
+    await baseApi.delete(`book/delete/${bookId}`);
+    location.reload();
   } catch (error) {
     console.error(error);
   }

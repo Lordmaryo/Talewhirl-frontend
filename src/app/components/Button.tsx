@@ -12,7 +12,7 @@ interface ButtonProps {
 const Button = ({ onClick, label, type, disabled, className }: ButtonProps) => {
   return (
     <button
-      className={`bg-green-700 text-white hover:bg-green-800 px-6 py-2 rounded-md font-bold transition-colors ${className}`}
+      className={`bg-green-700 hover:opacity-75 px-6 py-2 rounded-md font-bold transition-opacity ${className}`}
       onClick={onClick}
       type={type}
       disabled={disabled}

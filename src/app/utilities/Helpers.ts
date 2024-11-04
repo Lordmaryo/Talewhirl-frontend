@@ -3,7 +3,6 @@ import allGenres from "../data/genres.json";
 
 export const interval = (time: number) => {
   return time > 59 ? `${Math.floor(time / 60)}h` : `${time}m`;
-  // time it takes to read a book
 };
 
 export const averageReadTime = (chapter: Chapter[] = []): number => {
@@ -61,3 +60,13 @@ export const timeAgo = (dateString: string | Date): string => {
   }
   return "just now";
 };
+
+export function formatViews(readCount: number): string {
+  if (readCount >= 1_000_000) {
+    return (readCount / 1_000_000).toFixed(1).replace(/\.0$/, "") + "m";
+  } else if (readCount >= 1_000) {
+    return (readCount / 1_000).toFixed(1).replace(/\.0$/, "") + "k";
+  } else {
+    return readCount.toString();
+  }
+}

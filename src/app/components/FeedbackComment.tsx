@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import defaultProfile from "../image/default-profile.png";
 import {
+  FeedbackDataProps,
   FeedbackCommentResponseProps,
   loadUser,
   UserResponse,
@@ -27,13 +28,13 @@ const FeedbackComment = ({ bookId }: FeedbackCommentProps) => {
   const [feedbackResponse, setFeedbackResponse] =
     useState<FeedbackCommentResponseProps | null>(null);
   const [showComment, setShowComment] = useState("");
-  const [userData, setUserData] = useState<UserResponse | null>(null);
+  const [userData, setUserData] = useState<Record<number, UserResponse | null>>(
+    {}
+  );
   const [likeEvents, setLikeEvents] = useState<Record<number, boolean>>({});
 
   useEffect(() => {
     loadFeedbackComments();
-    // if ()
-    // loadUser( ,setUserData)
   }, [bookId]);
 
   const loadFeedbackComments = async () => {
@@ -44,6 +45,15 @@ const FeedbackComment = ({ bookId }: FeedbackCommentProps) => {
         `feedback_comments/book/${bookId}?page=${page}&size=${size}`
       );
       setFeedbackResponse(data);
+
+      data.content.forEach((comment: FeedbackDataProps) => {
+        loadUser(comment.createdBy, (user: UserResponse) => {
+          setUserData((prevData) => ({
+            ...prevData,
+            [comment.createdBy]: user,
+          }));
+        });
+      });
     } catch (error) {
       console.error(error);
     }
@@ -118,7 +128,7 @@ const FeedbackComment = ({ bookId }: FeedbackCommentProps) => {
               <div>
                 <div>
                   {feedbackResponse?.content.map((c) => {
-                    createdBy = c.createdBy;
+                    const user = userData[c.createdBy];
                     return (
                       <div
                         key={c.commentId}
@@ -136,7 +146,7 @@ const FeedbackComment = ({ bookId }: FeedbackCommentProps) => {
                             href={`/profile/${c.createdBy}`}
                             className="font-bold"
                           >
-                            {userData?.firstname}
+                            {user?.firstname || "Unknown User"}
                           </Link>
                           <button
                             onClick={() => handleLike(c.commentId)}

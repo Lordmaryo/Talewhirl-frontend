@@ -21,7 +21,7 @@ const Card = ({ book }: CardProps) => {
           height={100}
           alt="book covers"
         />
-        <h2 className="absolute top-0 left-0 font-bold bg-[#fff] rounded-r-md p-1 text-black flex flex-row gap-1 items-center text-sm">
+        <h2 className="absolute top-0 left-0 font-bold rounded-r-md p-1 text-zinc-400 flex flex-row gap-1 items-center text-sm">
           <FiBookOpen />
           <span>{book.numOfChapters}</span>
         </h2>

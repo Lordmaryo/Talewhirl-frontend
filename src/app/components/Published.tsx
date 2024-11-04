@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ResponseProps } from "../api/ApiServices";
-import { baseApi } from "../api/baseApi";
+import { loadPublished, ResponseProps } from "../api/ApiServices";
 import Card from "./Card";
 import Spinner from "../loaders/Spinner";
 
@@ -8,19 +7,9 @@ const Published = () => {
   const [bookResponse, setBookResponse] = useState<ResponseProps | null>(null);
 
   useEffect(() => {
-    loadPublished();
+    loadPublished(setBookResponse);
   }, []);
 
-  console.log("published book", bookResponse);
-
-  const loadPublished = async () => {
-    try {
-      const { data } = await baseApi.get<ResponseProps>("book/owner");
-      setBookResponse(data);
-    } catch (error) {
-      console.error("Error loading drafts", error);
-    }
-  };
   if (!bookResponse?.content) return <Spinner />;
   return (
     <div className="min-h-screen pb-10 pt-4">

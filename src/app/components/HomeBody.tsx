@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
-import { Book, ResponseProps } from "../api/ApiServices";
+import { Book, loadTopTen, ResponseProps } from "../api/ApiServices";
 import Card from "./Card";
 import NavItem from "./NavItem";
 import HomeBodyLoader from "../loaders/HomeBodyLoader";
@@ -16,7 +16,7 @@ const HomeBody = () => {
 
   useEffect(() => {
     loadBooks();
-    loadTopTen();
+    loadTopTen(setTopTen);
   }, []);
 
   useEffect(() => {
@@ -25,21 +25,12 @@ const HomeBody = () => {
 
   const loadBooks = async () => {
     const page = 0;
-    const size = 5;
+    const size = 20;
     try {
       const { data } = await baseApi.get(
         `book/all-books?page=${page}&size=${size}`
       );
       setBookResponse(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const loadTopTen = async () => {
-    try {
-      const { data } = await baseApi.get(`book/top10`);
-      setTopTen(data);
     } catch (error) {
       console.error(error);
     }

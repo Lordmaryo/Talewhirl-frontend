@@ -9,9 +9,10 @@ import "react-toastify/dist/ReactToastify.css";
 interface FeedbackProp {
   getRate: number; // get total Book ratings
   bookId: number;
+  sharable: boolean;
 }
 
-const Feedback = ({ getRate, bookId }: FeedbackProp) => {
+const Feedback = ({ getRate, bookId, sharable }: FeedbackProp) => {
   const [hovered, setHovered] = useState(0);
   const [note, setNote] = useState(0);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -94,7 +95,7 @@ const Feedback = ({ getRate, bookId }: FeedbackProp) => {
             {reaction || rateReactions[note]}
           </span>
         </div>
-        <FeedbackComment bookId={bookId} />
+        {sharable && <FeedbackComment bookId={bookId} />}
       </div>
     </>
   );
