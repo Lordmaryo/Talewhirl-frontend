@@ -1,19 +1,26 @@
+// "use client"
 import React, { useState } from "react";
 import { Book, deleteBook } from "../api/ApiServices";
 import Image from "next/image";
 import { timeAgo } from "../utilities/Helpers";
 import Link from "next/link";
 import Button from "./Button";
+import { useRouter } from "next/navigation";
 
 type BookResultsCardProps = {
   book: Book;
 };
 
 const DraftCard = ({ book }: BookResultsCardProps) => {
+  const router = useRouter();
   const [clickedDelete, setClickedDelete] = useState(false);
 
   const triggerDelete = () => {
     setClickedDelete(!clickedDelete);
+  };
+
+  const handleEdit = () => {
+    router.push(`/edit/${book.title}/${book.id}`);
   };
 
   return (
@@ -73,7 +80,7 @@ const DraftCard = ({ book }: BookResultsCardProps) => {
           <Link className="hover:underline" href={"/details/" + book.id}>
             View Details
           </Link>
-          <button>Edit</button>
+          <button onClick={handleEdit}>Edit</button>
           <button className="font-bold text-red-500" onClick={triggerDelete}>
             Delete
           </button>

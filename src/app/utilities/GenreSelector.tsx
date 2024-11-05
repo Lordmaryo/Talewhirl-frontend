@@ -21,7 +21,7 @@ const GenreSelector = ({
   return (
     <div>
       <select className="p-2" required onChange={handleSelectChange}>
-        <option value="">select one</option>
+        <option value="">select Genres</option>
         {allGenresData.genres.map((g, index) => (
           <option key={index} value={g.name}>
             {g.name}

@@ -16,7 +16,8 @@ const NavItem = ({ book, numberings }: BookProps) => {
       className="flex flex-row flex-nowrap gap-2 items-center w-full py-2"
     >
       <h1 className="text-3xl md:text5xl font-extrabold text-[#ffffff79]">
-        0{numberings + 1}
+        {numberings < 9 && 0}
+        {numberings + 1}
       </h1>
       <div className="flex flex-row">
         <Image

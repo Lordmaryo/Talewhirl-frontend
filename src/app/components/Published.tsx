@@ -17,7 +17,7 @@ const Published = () => {
         <div className="px-4 flex flex-wrap gap-4 justify-center">
           {bookResponse?.content.map((book) => (
             <div className="md:[200px] sm:w-[180px] w-[160px]">
-              <Card book={book} />
+              <Card key={book.id} book={book} />
             </div>
           ))}
         </div>

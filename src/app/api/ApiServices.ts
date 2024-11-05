@@ -167,7 +167,7 @@ export const loadTopTen = async (setTopTen: (topTen: Book[]) => void) => {
   }
 };
 
-export const fetchBookDetails = async (
+export const fetchBookById = async (
   bookId: string,
   setBook: (book: Book) => void
 ) => {

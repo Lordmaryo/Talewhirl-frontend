@@ -1,34 +1,53 @@
 "use client";
-import React, { useState } from "react";
-import BookDetails from "../components/BookDetails";
-import Chapter from "../components/Chapter";
+import { Book, fetchBookById, SavedBookResponse } from "@/app/api/ApiServices";
+import { baseApi } from "@/app/api/baseApi";
+import EditBookDetails from "@/app/components/EditBookDetails";
+import EditChapter from "@/app/components/EditChapter";
 import axios from "axios";
-import { baseApi } from "../api/baseApi";
 import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import { SavedBookResponse } from "../api/ApiServices";
 import "react-toastify/dist/ReactToastify.css";
 
-const CreatePage = () => {
+type EditBookPageProps = {
+  params: {
+    id: string;
+    title: string;
+  };
+};
+
+const EditBookPage = ({ params }: EditBookPageProps) => {
   const router = useRouter();
   const [activeTabs, setActiveTabs] = useState<string>("Book details");
   const [title, setTitle] = useState("");
   const [synopsis, setSynopsis] = useState("");
   const [pgRating, setPgRating] = useState(0);
   const [genres, setGenres] = useState<string[]>([]);
-  const [chapters, setChapters] = useState([
+  const [editableChapters, setEditableChapters] = useState([
     { chapterName: "", epigraph: "", chapterNum: 0, content: "" },
   ]);
   const [sucess, setSucess] = useState(false);
   const [response, setResponse] = useState<SavedBookResponse | null>(null);
+  const [book, setBook] = useState<Book | null>(null);
+
+  useEffect(() => {
+    fetchBookById(params.id, (fetchedBook) => {
+      setBook(fetchedBook);
+      setTitle(fetchedBook.title || "");
+      setSynopsis(fetchedBook.synopsis || "");
+      setPgRating(fetchedBook.pgRating || 0);
+      setGenres(fetchedBook.genres || []);
+      setEditableChapters(fetchedBook.chapters || []);
+    });
+  }, [params.id]);
 
   const addNewChapter = () => {
-    setChapters([
-      ...chapters,
+    setEditableChapters([
+      ...editableChapters,
       {
         chapterName: "",
         epigraph: "",
-        chapterNum: chapters.length + 1,
+        chapterNum: editableChapters.length + 1,
         content: "",
       },
     ]);
@@ -39,46 +58,21 @@ const CreatePage = () => {
     field: string,
     value: string | number
   ) => {
-    const updatedChapter = chapters.map((chapter, i) =>
-      i === index ? { ...chapter, [field]: value } : chapter
+    setEditableChapters((prevChapters) =>
+      prevChapters.map((chapter, i) =>
+        i === index ? { ...chapter, [field]: value } : chapter
+      )
     );
-
-    setChapters(updatedChapter);
   };
 
-  const renderContents = () => {
-    switch (activeTabs) {
-      case "Book details":
-        return (
-          <BookDetails
-            setTitle={setTitle}
-            setSynopsis={setSynopsis}
-            setPgRating={setPgRating}
-            setGenres={setGenres}
-            setActiveTabs={setActiveTabs}
-          />
-        );
-      case "Story":
-        return (
-          <Chapter
-            chapters={chapters}
-            updateChapter={updateChapter}
-            addNewChapter={addNewChapter}
-          />
-        );
-      default:
-        return;
-    }
-  };
-
-  const saveBook = async () => {
+  const editBook = async () => {
     try {
-      const { data } = await baseApi.post("book", {
+      const { data } = await baseApi.put(`book/edit/${params.id}`, {
         title,
         synopsis,
         pgRating,
         genres,
-        chapters,
+        chapters: editableChapters,
       });
       setResponse(data);
       setSucess(true);
@@ -88,25 +82,52 @@ const CreatePage = () => {
         const errorMsg =
           err.response.data.validationErrors || "An error occurred";
         toast.error(errorMsg);
-      } else {
-        toast.error("Something went wrong");
       }
     }
   };
-  const bookId = response?.id;
 
-  const handleCancel = () => {
-    saveBook();
+  const handleCancel = async () => {
+    await editBook();
     router.push("/");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await saveBook();
+    await editBook();
     if (sucess) {
-      router.push(`/create/${bookId}/uploadCovers`);
+      router.push(`/create/${response?.id}/uploadCovers`);
     } else {
       toast.error("Something went wrong");
+    }
+  };
+
+  const renderContents = () => {
+    switch (activeTabs) {
+      case "Book details":
+        return (
+          <EditBookDetails
+            setTitle={setTitle}
+            setSynopsis={setSynopsis}
+            setPgRating={setPgRating}
+            setGenres={setGenres}
+            setActiveTabs={setActiveTabs}
+            title={title}
+            synopsis={synopsis}
+            genres={genres}
+            pgRating={pgRating}
+            book={book}
+          />
+        );
+      case "Story":
+        return (
+          <EditChapter
+            chapters={editableChapters}
+            updateChapter={updateChapter}
+            addNewChapter={addNewChapter}
+          />
+        );
+      default:
+        return;
     }
   };
 
@@ -120,12 +141,12 @@ const CreatePage = () => {
       />
       <form className="py-20 px-4" onSubmit={handleSubmit}>
         <div className="flex flex-row justify-between items-center sticky top-16 backdrop-blur-md">
-          <h1 className="text-xl font-bold ">Create</h1>
+          <h1 className="text-xl font-bold ">Edit</h1>
           <div className="flex flex-row items-center gap-4 text-sm">
             <button
               type="button"
               onClick={handleCancel}
-              className="border border-zinc-600 p-2 rounded-lg font-bold hover:bg-[#ffffff12] transition-colors"
+              className="border p-2 rounded-lg font-bold hover:bg-[#ffffff12] transition-colors"
             >
               Cancel
             </button>
@@ -133,7 +154,7 @@ const CreatePage = () => {
               type="submit"
               className="font-bold bg-green-700 py-2 px-3 rounded-lg hover:bg-green-600 transition-colors"
             >
-              Finnish
+              Finish
             </button>
           </div>
         </div>
@@ -170,4 +191,4 @@ const CreatePage = () => {
   );
 };
 
-export default CreatePage;
+export default EditBookPage;

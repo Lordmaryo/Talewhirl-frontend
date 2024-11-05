@@ -1,5 +1,5 @@
 "use client";
-import { Book, deleteBook, fetchBookDetails } from "@/app/api/ApiServices";
+import { Book, deleteBook, fetchBookById } from "@/app/api/ApiServices";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
@@ -33,20 +33,12 @@ const Details = ({ params }: PageProps) => {
   const [_, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    fetchBookDetails(bookId, setBook);
+    fetchBookById(bookId, setBook);
     checkAuthenication(setIsAuthenticated);
   }, [bookId]);
 
   const chapter = book?.chapters;
   const readTime = averageReadTime(chapter);
-
-  // const handleAddToBookmarks = () => {
-  //   if (isAuthenticated) {
-  //     toast.success("Book added to bookmark!");
-  //   } else {
-  //     toast.error("You need to have an account to complete this action");
-  //   }
-  // };
 
   const [clickedDelete, setClickedDelete] = useState(false);
 
@@ -76,7 +68,7 @@ const Details = ({ params }: PageProps) => {
             onClick={() => {
               deleteBook(book?.id);
               setClickedDelete(!clickedDelete);
-              router.push("/drafts")
+              router.push("/drafts");
             }}
           />
           <Button
