@@ -40,13 +40,6 @@ const EditBookDetails: React.FC<BookDetailsProps> = ({
     setDisplayGenre(uniqueGenres);
   }, [allGenres, singleGenre]);
 
-  useEffect(() => {
-    setTitle(book?.title || title);
-    setSynopsis(book?.synopsis || synopsis);
-    setPgRating(book?.pgRating || pgRating);
-    setGenres(book?.genres || genres);
-  }, [book]);
-
   return (
     <div className="py-4 max-w-[800px] mx-auto space-y-4">
       <div className="flex flex-col gap-4">
@@ -100,8 +93,11 @@ const EditBookDetails: React.FC<BookDetailsProps> = ({
         </select>
       </div>
       <div className="space-y-2">
-        <label htmlFor="genres" className="font-bold">
-          Genres
+        <label htmlFor="genres" className="flex flex-col gap-1">
+          <span className="font-bold">Genres</span>
+          <span className="text-sm text-zinc-500">
+            genres must be between 3 and 5
+          </span>
         </label>
         <div className="flex flex-wrap gap-4" id="genres">
           <GenreSelector

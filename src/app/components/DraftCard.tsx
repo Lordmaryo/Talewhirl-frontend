@@ -20,7 +20,7 @@ const DraftCard = ({ book }: BookResultsCardProps) => {
   };
 
   const handleEdit = () => {
-    router.push(`/edit/${book.title}/${book.id}`);
+    router.push(`/edit/${book.title.replace(/\s+/g, "-")}/${book.id}`);
   };
 
   return (

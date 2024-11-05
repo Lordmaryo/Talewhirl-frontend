@@ -19,7 +19,7 @@ const DraftsPage = () => {
         bookResponse?.content.map((book) => (
           <>
             <div className="w-full mx-auto mt-10">
-              <DraftCard book={book} />
+              <DraftCard key={book.id} book={book} />
             </div>
           </>
         ))

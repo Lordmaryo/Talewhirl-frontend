@@ -1,5 +1,5 @@
 "use client";
-import { publishBook } from "@/app/api/ApiServices";
+import { Book, fetchBookById, publishBook } from "@/app/api/ApiServices";
 import { baseApi } from "@/app/api/baseApi";
 import Button from "@/app/components/Button";
 import ButtonTransparent from "@/app/components/ButtonTransparent";
@@ -11,6 +11,8 @@ import React, { useEffect, useState } from "react";
 import { IoImageOutline } from "react-icons/io5";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import defaultbg from "../../../image/darkbackground.jpg";
+import defaultCover from "../../../image/defaultcover.png";
 
 const UploadCovers = ({ params }: PageProps) => {
   const router = useRouter();
@@ -19,6 +21,7 @@ const UploadCovers = ({ params }: PageProps) => {
   const [backgroundCoverFile, setBackgroundCoverFile] = useState<File | null>(
     null
   );
+  const [book, setBook] = useState<Book | null>(null);
 
   const handleBackgroundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -80,32 +83,37 @@ const UploadCovers = ({ params }: PageProps) => {
   const handlePublishBook = async () => {
     try {
       await Promise.all([uploadBookCover(), uploadBookBackground()]);
-      publishBook(bookId);
+      publishBook(bookId); // publish book
       toast.success("Uploads completed successfully!");
+      router.push("/");
     } catch (error) {
       toast.error("upload failed");
       console.error("Upload error:", error);
     }
   };
 
+  useEffect(() => {
+    fetchBookById(bookId, setBook);
+  }, [bookId]);
+// TODO MAKE A COMPONENT THAT HANDLES COVER UPLOADS FOR EXISTING BOOKS
   return (
     <div className="py-16">
       <ToastContainer position="top-right" autoClose={10000} hideProgressBar />
       <div className="pt-1 relative">
         <div>
-          {backgroundCoverFile ? (
-            <Image
-              src={URL.createObjectURL(backgroundCoverFile)}
-              width={100}
-              height={100}
-              alt="book background cover"
-              className="w-full h-60 object-cover"
-            />
-          ) : (
-            <div className="w-full h-60 border text-center text-zinc-500 pt-20">
-              Add a background
-            </div>
-          )}
+          <Image
+            src={
+              backgroundCoverFile
+                ? URL.createObjectURL(backgroundCoverFile)
+                : !book?.backgroundCover
+                ? defaultbg
+                : `data:image/jpeg;base64,${book?.backgroundCover}`
+            }
+            width={100}
+            height={100}
+            alt="book background cover"
+            className="w-full h-60 object-cover"
+          />
           <div>
             <div
               className="absolute top-16 left-1/2 right-1/2 transform
@@ -125,23 +133,20 @@ const UploadCovers = ({ params }: PageProps) => {
           </div>
         </div>
         <div>
-          {bookCoverFile ? (
-            <Image
-              src={URL.createObjectURL(bookCoverFile)}
-              width={100}
-              height={100}
-              className="w-40 h-full md:w-44 object-cover rounded-md absolute 
+          <Image
+            src={
+              bookCoverFile
+                ? URL.createObjectURL(bookCoverFile)
+                : !book?.cover
+                ? defaultCover
+                : `data:image/jpeg;base64,${book?.cover}`
+            }
+            width={100}
+            height={100}
+            className="w-40 h-full md:w-44 object-cover rounded-md absolute 
               top-28 sm:left-14 left-6"
-              alt="book cover"
-            />
-          ) : (
-            <div
-              className="w-40 h-60 border text-center text-zinc-500 pt-20 absolute top-[7rem] 
-            left-12 sm:top-[7rem] sm:left-[4rem]"
-            >
-              Add a cover
-            </div>
-          )}
+            alt="book cover"
+          />
           <div>
             <div
               className="absolute top-[8.5rem] left-12 sm:top-[9rem] sm:left-[5.5rem] transition-opacity"

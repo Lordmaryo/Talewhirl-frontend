@@ -80,11 +80,19 @@ const EditBookPage = ({ params }: EditBookPageProps) => {
       console.error("Error response:", err.response?.data);
       if (axios.isAxiosError(err) && err.response) {
         const errorMsg =
-          err.response.data.validationErrors || "An error occurred";
+          (err.response.data.validationErrors !== undefined &&
+            err.response.data.validationErrors[0]) ||
+          "An error occurred";
         toast.error(errorMsg);
       }
     }
   };
+
+  useEffect(() => {
+    if (sucess) {
+      router.push(`/create/${params.id}/uploadCovers`);
+    }
+  }, [sucess, params.id, router]);
 
   const handleCancel = async () => {
     await editBook();
@@ -94,12 +102,9 @@ const EditBookPage = ({ params }: EditBookPageProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await editBook();
-    if (sucess) {
-      router.push(`/create/${response?.id}/uploadCovers`);
-    } else {
-      toast.error("Something went wrong");
-    }
   };
+
+  console.log("response id", response?.id);
 
   const renderContents = () => {
     switch (activeTabs) {
