@@ -14,12 +14,12 @@ const PublishedPage = () => {
   if (!bookResponse) return <Spinner />;
   return (
     <div className="pt-16 px-4">
+      <h1 className="text-xl font-bold text-center pt-5">Published</h1>
       {bookResponse?.content.length ? (
         bookResponse?.content.map((book) => (
           <>
-            <h1 className="text-xl font-bold text-center pt-5">Published</h1>
             <div className="w-full mx-auto mt-10">
-              <BookResultsCard book={book} />
+              <BookResultsCard key={book.id} book={book} />
             </div>
           </>
         ))
