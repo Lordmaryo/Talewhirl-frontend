@@ -121,7 +121,9 @@ const ReadBook = ({ params }: ReadBookProps) => {
           <span className="text-zinc-500">Epigraph</span>
           <div className="w-full h-px bg-zinc-500"></div>
         </div>
-        <p className="text-center text-sm italic font-semibold pb-6 text-zinc-400">{currentChapter.epigraph}</p>
+        <p className="text-center text-sm italic font-semibold pb-6 text-zinc-400">
+          {currentChapter.epigraph}
+        </p>
       </div>
       <div className="px-4 md:px-10 flex gap-6 justify-between relative">
         <div className="hidden md:block w-[40%] sticky top-28 h-screen my-4">
@@ -160,7 +162,11 @@ const ReadBook = ({ params }: ReadBookProps) => {
                 You're done reading this book, share your thoughts! below
               </h2>
               <div className="mt-48">
-                <Feedback getRate={bookData.rate} bookId={Number(bookId)} />
+                <Feedback
+                  getRate={bookData.rate}
+                  bookId={Number(bookId)}
+                  sharable={bookData.sharable}
+                />
               </div>
             </div>
           ) : (

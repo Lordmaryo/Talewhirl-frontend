@@ -1,5 +1,5 @@
 "use client";
-import { Book, fetchBookDetails } from "@/app/api/ApiServices";
+import { Book, deleteBook, fetchBookDetails } from "@/app/api/ApiServices";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
@@ -20,6 +20,7 @@ import { CiBookmarkPlus } from "react-icons/ci";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { checkAuthenication } from "@/app/token/Token";
+import { useRouter } from "next/navigation";
 
 export type PageProps = {
   params: { id: string };
@@ -27,8 +28,9 @@ export type PageProps = {
 
 const Details = ({ params }: PageProps) => {
   const bookId = params.id;
+  const router = useRouter();
   const [book, setBook] = useState<Book | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [_, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     fetchBookDetails(bookId, setBook);
@@ -46,10 +48,44 @@ const Details = ({ params }: PageProps) => {
   //   }
   // };
 
-  console.log("details response state", book);
+  const [clickedDelete, setClickedDelete] = useState(false);
+
+  const triggerDelete = () => {
+    setClickedDelete(!clickedDelete);
+  };
+
   if (!book) return <Spinner />;
   return (
     <>
+      {clickedDelete && (
+        <div
+          className="text-center flex flex-col justify-center items-center gap-4 m-auto z-10 bg-[#383838]
+           rounded-md sm:max-w-[400px] w-[80%] md:max-w-[620px] h-[300px] fixed
+            top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+        >
+          <div>
+            <h2 className="text-xl pb-2">Are you sure you want to delete</h2>
+            <span className="font-bold pt-2 text-red-500">{book.title}</span>
+          </div>
+          <p className="text-red-500 text-sm">
+            Actions can NOT be undone and all data about this book will be lost.
+          </p>
+          <Button
+            className="bg-red-500"
+            label="Yes, delete"
+            onClick={() => {
+              deleteBook(book?.id);
+              setClickedDelete(!clickedDelete);
+              router.push("/drafts")
+            }}
+          />
+          <Button
+            className="bg-transparent"
+            label="Cancel"
+            onClick={() => setClickedDelete(false)}
+          />
+        </div>
+      )}
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
       <div className="pt-20 px-6 md:px-12 pb-10">
         <div className="flex flex-row gap-x-4">
@@ -148,8 +184,11 @@ const Details = ({ params }: PageProps) => {
           ) : (
             <div className="flex flex-col gap-4 sm:flex-row mt-6 justify-center">
               <ButtonTransparent label="Publish" className="w-full" />
-              <ButtonTransparent label="Edit" className=" w-full" />
-              <Button label="Delete" className="bg-red-500 w-full" />
+              <Button
+                label="Delete"
+                className="bg-red-500 w-full"
+                onClick={triggerDelete}
+              />
             </div>
           )}
           {/* <ButtonTransparent

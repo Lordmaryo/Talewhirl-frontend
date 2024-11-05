@@ -103,6 +103,12 @@ export interface UserResponse {
   bio: string;
 }
 
+export interface SavedBookResponse {
+  id: number;
+  bookName: string;
+  numOfChapters: number;
+}
+
 export const loadUser = async (
   userId: number | string | undefined,
   setUserData: (user: UserResponse) => void
@@ -179,5 +185,13 @@ export const deleteBook = async (bookId: string | number) => {
     location.reload();
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const publishBook = async (bookId: string | number) => {
+  try {
+    await baseApi.patch(`book/sharable/${bookId}`);
+  } catch (error) {
+    console.error("Failed to update sharable status", error);
   }
 };
