@@ -26,8 +26,8 @@ const Card = ({ book }: CardProps) => {
           <span>{book.numOfChapters}</span>
         </h2>
         <div className="flex flex-row justify-between absolute bottom-0 h-full w-full bg-gradient-to-t from-[#0b1c0bc3] to-transparent">
-          <h3 className="absolute text left-2 bottom-2 w-[70%]">
-            {truncateWord(book.title, 50)}
+          <h3 className="absolute text left-2 bottom-2 w-[70%] text-sm">
+            {truncateWord(book.title, 25)}
           </h3>
           <h3 className="absolute text-sm right-2 bottom-2 font-bold">
             {interval(readTime)}

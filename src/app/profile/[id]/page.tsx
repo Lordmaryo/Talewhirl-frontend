@@ -129,14 +129,18 @@ const Profile = ({ params }: PageProps) => {
             <button
               onClick={() => handleAction(setOpenFollowings, openFollowings)}
             >
-              <span className="pr-1">{userData.following.length}</span>
-              <span>Followings</span>
+              <span className="pr-1 font-bold">
+                {userData.following.length}
+              </span>
+              <span className="text-zinc-400">Followings</span>
             </button>
             <button
               onClick={() => handleAction(setOpenFollowers, openFollowers)}
             >
-              <span className="pr-1">{userData.followers.length}</span>
-              <span>Followers</span>
+              <span className="pr-1 font-bold">
+                {userData.followers.length}
+              </span>
+              <span className="text-zinc-400">Followers</span>
             </button>
           </div>
           {currentUserId == userId ? (
@@ -178,4 +182,3 @@ const Profile = ({ params }: PageProps) => {
 };
 
 export default Profile;
-// address the issue of null in header

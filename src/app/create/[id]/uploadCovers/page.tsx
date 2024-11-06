@@ -83,7 +83,7 @@ const UploadCovers = ({ params }: PageProps) => {
   const handlePublishBook = async () => {
     try {
       await Promise.all([uploadBookCover(), uploadBookBackground()]);
-      publishBook(bookId); // publish book
+      publishBook(bookId);
       toast.success("Uploads completed successfully!");
       router.push("/");
     } catch (error) {

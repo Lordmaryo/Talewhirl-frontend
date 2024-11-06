@@ -100,7 +100,7 @@ const Header = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               type="text"
-              className="sm:w-[300px] md:w-[292px] lg:w-[500px] pl-2 outline-none bg-transparent dark:placeholder:text-gray-50 placeholder:text-zinc-800"
+              className="sm:w-[300px] md:w-[292px] lg:w-[450px] pl-2 outline-none bg-transparent dark:placeholder:text-gray-50 placeholder:text-zinc-800"
               placeholder="Search any title"
             />
           </form>
@@ -118,7 +118,7 @@ const Header = () => {
           </button>
           {isAuthenticated ? (
             <>
-              <p className="xl:block hidden">
+              <p className="lg:block hidden lg:text-sm xl:text-base">
                 Welcome {userData?.firstname || "user"}!
               </p>
               <button

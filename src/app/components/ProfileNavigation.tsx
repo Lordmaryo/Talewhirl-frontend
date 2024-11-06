@@ -28,7 +28,7 @@ const ProfileNavigation = ({ userId, currentUserId }: userIdProps) => {
   return (
     <div>
       <div
-        className="pt-6 sm:pt-48 px-4 md:px-10 mt-4 border-b-[1px] pb-2 border-zinc-500
+        className="pt-6 sm:pt-48 px-4 md:px-10 mt-4 border-b-[1px] border-zinc-500
          text-sm sm:text-base flex flex-row justify-around items-center"
       >
         <button

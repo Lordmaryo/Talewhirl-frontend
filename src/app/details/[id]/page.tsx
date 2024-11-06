@@ -175,7 +175,6 @@ const Details = ({ params }: PageProps) => {
             </Link>
           ) : (
             <div className="flex flex-col gap-4 sm:flex-row mt-6 justify-center">
-              <ButtonTransparent label="Publish" className="w-full" />
               <Button
                 label="Delete"
                 className="bg-red-500 w-full"

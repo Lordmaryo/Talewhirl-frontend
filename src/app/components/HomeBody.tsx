@@ -65,7 +65,7 @@ const HomeBody = () => {
           </Splide>
         </>
       )}
-      <div className="lg:px-5 flex flex-wrap md:flex-nowrap flex-col-reverse lg:flex-row justify-between mt-6">
+      <div className="gap-y-6 lg:px-5 flex flex-wrap md:flex-nowrap flex-col-reverse lg:flex-row justify-between mt-6">
         <div>
           <h2 className="font-bold sm:text-xl mb-2">Explore</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
@@ -76,7 +76,7 @@ const HomeBody = () => {
             ))}
           </div>
         </div>
-        <div className="sm:ml-4 bg-[#252424] p-4 rounded-md">
+        <div className="sm:ml-4 lg:bg-[#252424] p-4 rounded-md self-start">
           <h2 className="font-bold mb-2">Top Ten</h2>
           {topTen?.map((book, index) => (
             <div className="max-w-60" key={book.id}>

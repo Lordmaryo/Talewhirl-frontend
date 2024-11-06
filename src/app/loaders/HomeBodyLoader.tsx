@@ -2,12 +2,17 @@ import React from "react";
 
 const HomeBodyLoader = () => {
   return (
-    <div className="py-6 px-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 text-center">
-      <div className="loader-box rounded-md h-[250px] w-[200px] bg-[#272727]" />
-      <div className="loader-box rounded-md h-[250px] w-[200px] bg-[#272727]" />
-      <div className="loader-box rounded-md h-[250px] w-[200px] bg-[#272727]" />
-      <div className="loader-box rounded-md h-[250px] w-[200px] bg-[#272727]" />
-      <div className="loader-box rounded-md h-[250px] w-[200px] bg-[#272727]" />
+    <div className="py-5 flex flex-wrap justify-center items-center gap-4">
+      <div className="loader-box rounded-md h-[250px] sm:w-[200px] w-36 bg-[#272727]" />
+      <div className="loader-box rounded-md h-[250px] sm:w-[200px] w-36 bg-[#272727]" />
+      <div className="loader-box rounded-md h-[250px] sm:w-[200px] w-36 bg-[#272727]" />
+      <div className="loader-box rounded-md h-[250px] sm:w-[200px] w-36 bg-[#272727]" />
+      <div className="loader-box rounded-md h-[250px] sm:w-[200px] w-36 bg-[#272727]" />
+      <div className="loader-box rounded-md h-[250px] sm:w-[200px] w-36 bg-[#272727]" />
+      <div className="loader-box rounded-md h-[250px] sm:w-[200px] w-36 bg-[#272727]" />
+      <div className="loader-box rounded-md h-[250px] sm:w-[200px] w-36 bg-[#272727]" />
+      <div className="loader-box rounded-md h-[250px] sm:w-[200px] w-36 bg-[#272727]" />
+      <div className="loader-box rounded-md h-[250px] sm:w-[200px] w-36 bg-[#272727]" />
     </div>
   );
 };
