@@ -28,8 +28,8 @@ export interface Chapter {
   epigraph: string;
   chapterNum: number;
   content: string;
-  likes: any[];
-  comments: any[];
+  likes: UserResponse[];
+  comments: UserResponse[];
 }
 
 export interface ResponseProps {

@@ -11,20 +11,18 @@ import ActivateAccount from "./ActivateAccount";
 import { baseApi } from "../api/baseApi";
 import { capitalizeName } from "../utilities/Helpers";
 
-// TODO - add loading animations to the signup and login buttons
-
 const SignUpPage = () => {
-  const [firstname, setFirstName] = useState<string>("");
-  const [lastname, setLastName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [selectedCountry, setSelectedCountry] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [dob, setDob] = useState<string>("");
+  const [firstname, setFirstName] = useState("");
+  const [lastname, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [password, setPassword] = useState("");
+  const [dob, setDob] = useState("");
   const [errormessage, setErrorMessage] = useState<string[]>([]);
-  const [closePopUp, setClosePopUp] = useState<boolean>(false);
-  const [loginPage, setLoginPage] = useState<boolean>(false);
-  const [signupSucess, setSignupSucess] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [closePopUp, setClosePopUp] = useState(false);
+  const [loginPage, setLoginPage] = useState(false);
+  const [signupSucess, setSignupSucess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,7 +41,7 @@ const SignUpPage = () => {
     try {
       await baseApi.post("auth/register", requestData);
       setSignupSucess(!signupSucess);
-    } catch (err: any) {
+    } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
         setErrorMessage(err.response.data.validationErrors || ["An error occurred"]);
         const regex = err.response.data.error;

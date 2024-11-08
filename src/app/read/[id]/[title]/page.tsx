@@ -4,10 +4,8 @@ import { baseApi } from "@/app/api/baseApi";
 import Feedback from "@/app/components/Feedback";
 import Spinner from "@/app/loaders/Spinner";
 import Image from "next/image";
-import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { GoArrowDown, GoArrowUp } from "react-icons/go";
 import {
   LiaLongArrowAltDownSolid,
   LiaLongArrowAltUpSolid,
@@ -150,11 +148,6 @@ const ReadBook = ({ params }: ReadBookProps) => {
         </div>
 
         <div className="w-full mb-5 sm:mb-10">
-          <p>{currentChapter?.content}</p>
-          <p>{currentChapter?.content}</p>
-          <p>{currentChapter?.content}</p>
-          <p>{currentChapter?.content}</p>
-          <p>{currentChapter?.content}</p>
           <p>{currentChapter?.content}</p>
           {isLastChap ? (
             <div>

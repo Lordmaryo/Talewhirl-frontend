@@ -7,10 +7,9 @@ import { CiSearch } from "react-icons/ci";
 import { useRouter } from "next/navigation";
 import { IoIosArrowDown, IoIosArrowUp, IoMdClose } from "react-icons/io";
 import Link from "next/link";
-import { MdOutlineAccountCircle } from "react-icons/md";
 import LoginPage from "../Authentication/LoginPage";
 import SignUpPage from "../Authentication/SignUpPage";
-import { getToken, removeToken, TokenDataProps } from "../token/Token";
+import { getToken, TokenDataProps } from "../token/Token";
 import checkAuthAndSetToken from "../token/Token";
 import defaultProfile from "../image/default-profile.png";
 import ToggleHeader from "./ToggleHeader";
@@ -30,16 +29,13 @@ const Header = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
   const router = useRouter();
 
-  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
       checkAuthAndSetToken(getToken, setIsAuthenticated, setTokenData);
       setCurrentUserid(tokenData?.id);
       if (currentUserId) {
-        setLoading(true);
         await loadUser(currentUserId, setUserData);
-        setLoading(false);
       }
     };
 
@@ -187,7 +183,7 @@ const Header = () => {
       {isLoginClicked && <LoginPage />}
       {isSignup && <SignUpPage />}
       {toggleAccount && (
-        <div className="absolute top-12 bg-inherit right-2 rounded-lg z-20">
+        <div className="fixed top-12 bg-inherit right-2 rounded-lg z-20">
           <ToggleHeader />
         </div>
       )}

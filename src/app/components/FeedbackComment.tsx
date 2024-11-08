@@ -18,23 +18,26 @@ import Image from "next/image";
 import { CiHeart } from "react-icons/ci";
 import Link from "next/link";
 import { timeAgo } from "../utilities/Helpers";
+import { checkAuthenication } from "../token/Token";
+import { toast } from "react-toastify";
 
 interface FeedbackCommentProps {
   bookId: number;
-}
+} // showComment
 
 const FeedbackComment = ({ bookId }: FeedbackCommentProps) => {
   const [comment, setComment] = useState("");
   const [feedbackResponse, setFeedbackResponse] =
     useState<FeedbackCommentResponseProps | null>(null);
-  const [showComment, setShowComment] = useState("");
   const [userData, setUserData] = useState<Record<number, UserResponse | null>>(
     {}
   );
   const [likeEvents, setLikeEvents] = useState<Record<number, boolean>>({});
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     loadFeedbackComments();
+    checkAuthenication(setIsAuthenticated);
   }, [bookId]);
 
   const loadFeedbackComments = async () => {
@@ -61,7 +64,9 @@ const FeedbackComment = ({ bookId }: FeedbackCommentProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setShowComment(comment);
+    if (!isAuthenticated) {
+      toast.error("You need to have an account to complete this action");
+    }
     try {
       await baseApi.post("feedback_comments/add_comment", {
         comment,
@@ -86,9 +91,6 @@ const FeedbackComment = ({ bookId }: FeedbackCommentProps) => {
       console.error(error);
     }
   };
-
-  let createdBy = 0;
-  console.log("Coment created by", createdBy);
 
   return (
     <div className="lg:w-[700px] py-10">

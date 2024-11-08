@@ -117,7 +117,7 @@ const Profile = ({ params }: PageProps) => {
             {userData?.firstname + " " + userData?.lastname}
           </span>
           <span className="opacity-50">
-            @{userData.generatedUsername || userData?.firstname}
+            @{userData.generatedUsername}
           </span>
           <span className="pt-3">{userData.bio || "No bio yet"}</span>
           <span className="opacity-50 py-2">

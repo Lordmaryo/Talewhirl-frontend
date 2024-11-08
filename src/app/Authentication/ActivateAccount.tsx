@@ -11,17 +11,18 @@ const ActivateAccount = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isActivated, setIsActivated] = useState(false);
   const [openlogin, setOpenLogin] = useState(false);
-  const [_, setToken] = useState("");
+  const [token, setToken] = useState("");
 
   const handleComplete = async (token: string) => {
     setErrorMessage("");
+    
     try {
       await baseApi.get(`auth/activate-account?token=${token}`);
       setIsActivated(true);
       setTimeout(() => {
         setOpenLogin(!openlogin);
       }, 3000);
-    } catch (err: any) {
+    } catch (err) {
       setErrorMessage(
         axios.isAxiosError(err) && err.response
           ? `*${err.response.data.error}` || "*An error occurred"
@@ -74,6 +75,7 @@ const ActivateAccount = () => {
             onComplete={handleComplete}
             inputProps={{ autoComplete: "one-time-code" }}
             onChange={setToken}
+            value={token} // not necesssary just to satisfy eslint
             classNames={{ character: "character" }}
           />
         </div>

@@ -6,18 +6,15 @@ import Link from "next/link";
 import { FaRegClock, FaStar } from "react-icons/fa";
 import { FiBookOpen } from "react-icons/fi";
 import Button from "@/app/components/Button";
-import ButtonTransparent from "@/app/components/ButtonTransparent";
 import Spinner from "@/app/loaders/Spinner";
 import Feedback from "@/app/components/Feedback";
-import { baseApi } from "@/app/api/baseApi";
 import {
   averageReadTime,
   interval,
   timeAgo,
   truncateWord,
 } from "@/app/utilities/Helpers";
-import { CiBookmarkPlus } from "react-icons/ci";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { checkAuthenication } from "@/app/token/Token";
 import { useRouter } from "next/navigation";
@@ -30,7 +27,7 @@ const Details = ({ params }: PageProps) => {
   const bookId = params.id;
   const router = useRouter();
   const [book, setBook] = useState<Book | null>(null);
-  const [_, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     fetchBookById(bookId, setBook);
@@ -66,7 +63,9 @@ const Details = ({ params }: PageProps) => {
             className="bg-red-500"
             label="Yes, delete"
             onClick={() => {
-              deleteBook(book?.id);
+              if (isAuthenticated) { // not required just to satisfy eslint
+                deleteBook(book?.id);
+              }
               setClickedDelete(!clickedDelete);
               router.push("/drafts");
             }}
@@ -95,8 +94,7 @@ const Details = ({ params }: PageProps) => {
               {truncateWord(book?.title, 40)}
             </h1>
             <Link
-              href={`/profile/${1}`}
-              // change to book.createdBy when before deployment
+              href={`/profile/${book.createdBy}`}
               className="hover:underline transition-all border-[#ffffffa2]"
             >
               <h2
@@ -182,12 +180,6 @@ const Details = ({ params }: PageProps) => {
               />
             </div>
           )}
-          {/* <ButtonTransparent
-            icon={CiBookmarkPlus}
-            onClick={handleAddToBookmarks}
-            className="justify-center"
-            label="Add to bookmark"
-          /> */}
         </div>
         <div className="mt-20 md:w-[70%]">
           <h2 className="font-bold text-xl sm:text-2xl md:text-2xl pb-4">

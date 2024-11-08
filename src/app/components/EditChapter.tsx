@@ -9,7 +9,7 @@ type ChapterProps = {
   }[];
   updateChapter: (index: number, field: string, value: string | number) => void;
   addNewChapter: () => void;
-};
+}; 
 
 const EditChapter = ({
   chapters,

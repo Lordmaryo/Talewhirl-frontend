@@ -9,6 +9,8 @@ body {
   font-family: "Poppins", sans-serif;
   max-width: 1440px;
   margin: 0 auto;
+  color: white;
+  background-color: black;
 }
 
 .sigmar-regular {

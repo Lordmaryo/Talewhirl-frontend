@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import GenreSelector from "../utilities/GenreSelector";
 import Button from "./Button";
@@ -41,7 +42,7 @@ const BookDetails = ({
           maxLength={100}
           required
           name="title"
-          className="p-2"
+          className="p-2 bg-transparent"
           id="title"
           placeholder="title"
         />
@@ -54,7 +55,7 @@ const BookDetails = ({
           maxLength={250}
           onChange={(e) => setSynopsis(e.target.value)}
           required
-          className="p-2 h-40"
+          className="p-2 h-40 bg-transparent"
           id="overview"
           name="synopsis"
           placeholder="overview"
@@ -66,7 +67,7 @@ const BookDetails = ({
         </label>
         <select
           name="pgRating"
-          className="p-2"
+          className="p-2 bg-transparent"
           id="pg-rating"
           required
           onChange={(e) => setPgRating(parseInt(e.target.value))}

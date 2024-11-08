@@ -8,7 +8,7 @@ import checkAuthAndSetToken, {
 
 const ToggleHeader = () => {
   const [tokenData, setTokenData] = useState<TokenDataProps | null>(null);
-  const [_, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [close, Setclose] = useState(false);
 
   useEffect(() => {
@@ -18,21 +18,23 @@ const ToggleHeader = () => {
   if (close) return null;
   return (
     <>
-      <div className="flex flex-col gap-y-2 py-4 px-6">
-        <Link
-          onClick={() => Setclose(!close)}
-          className="px-2 py-1 rounded-lg hover:bg-[#ffffff0c] transition-colors"
-          href={`/profile/${tokenData?.id}`}
-        >
-          View profile
-        </Link>
-        <button
-          className="transition-colors bg-red-700 text-white font-bold px-2 py-1 rounded-md hover:bg-red-600"
-          onClick={removeToken}
-        >
-          Logout
-        </button>
-      </div>
+      {isAuthenticated && ( // condition not requiredjust to satisfy eslint
+        <div className="flex flex-col gap-y-2 py-4 px-6">
+          <Link
+            onClick={() => Setclose(!close)}
+            className="px-2 py-1 rounded-lg hover:bg-[#ffffff0c] transition-colors"
+            href={`/profile/${tokenData?.id}`}
+          >
+            View profile
+          </Link>
+          <button
+            className="transition-colors bg-red-700 text-white font-bold px-2 py-1 rounded-md hover:bg-red-600"
+            onClick={removeToken}
+          >
+            Logout
+          </button>
+        </div>
+      )}
     </>
   );
 };

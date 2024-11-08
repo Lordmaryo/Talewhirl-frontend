@@ -12,7 +12,7 @@ type EditProfileFormProps = {
   uploadBackground: () => Promise<void>;
   currentUserId: number | undefined;
   userData: UserResponse;
-  setSucess: (sucess: boolean) => void; // unneessary for now
+  setSucess: (sucess: boolean) => void;
   setClose: (sucess: boolean) => void;
 };
 
@@ -51,7 +51,7 @@ const EditProfileForm = ({
         bio,
       });
       return true;
-    } catch (err: any) {
+    } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
         setErrorMessage(
           err.response.data.businessErrorDescription ||

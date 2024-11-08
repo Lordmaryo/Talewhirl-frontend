@@ -28,7 +28,7 @@ const SearchPage = ({ params }: SearchPageProps) => {
         `book/search_books?query=${searchedWord}&page=${page}&size=${size}`
       );
       setSearchResponse(data);
-    } catch (error: any) {
+    } catch (error) {
       console.error(`Error searching ${readableSearchedWord}`, error);
     }
   };

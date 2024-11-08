@@ -13,14 +13,14 @@ const GenreSelector = ({
   setSingleGenre,
 }: GenreSelectorProps) => {
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    let values = e.target.value;
+    const values = e.target.value;
     setSingleGenre(values);
     setAllGenres([...allGenres, values]);
   };
 
   return (
     <div>
-      <select className="p-2" required onChange={handleSelectChange}>
+      <select className="p-2 bg-transparent" required onChange={handleSelectChange}>
         <option value="">select Genres</option>
         {allGenresData.genres.map((g, index) => (
           <option key={index} value={g.name}>

@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import Button from "./Button";
 import GenreSelector from "../utilities/GenreSelector";
@@ -22,10 +23,9 @@ const EditBookDetails: React.FC<BookDetailsProps> = ({
   setPgRating,
   setGenres,
   setActiveTabs,
-  book,
   title,
   synopsis,
-  genres,
+  // genres,
   pgRating,
 }) => {
   const [allGenres, setAllGenres] = useState<string[]>([]);

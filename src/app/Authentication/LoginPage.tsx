@@ -20,7 +20,7 @@ const LoginPage = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage("");
+    setErrorMessage(""); 
     setIsLoading(true);
     try {
       const response = await baseApi.post("auth/Authenticate", {
@@ -30,7 +30,7 @@ const LoginPage = () => {
       setToken(response.data.token);
       console.log(getToken());
       location.reload();
-    } catch (err: any) {
+    } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
         setErrorMessage(
           err.response.data.businessErrorDescription ||

@@ -21,7 +21,7 @@ const NavItem = ({ book, numberings }: BookProps) => {
       </h1>
       <div className="flex flex-row">
         <Image
-          className="w-[58px] object-cover rounded-md"
+          className="h-[70px] w-[58px] object-cover rounded-md"
           src={`data:image/jpeg;base64,${book.cover}`}
           alt="book cover"
           width={100}

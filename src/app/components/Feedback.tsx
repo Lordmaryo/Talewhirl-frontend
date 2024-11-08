@@ -32,15 +32,18 @@ const Feedback = ({ getRate, bookId, sharable }: FeedbackProp) => {
   };
 
   const handleFeedbacks = async (value: number) => {
+    if (!isAuthenticated) {
+      toast.error("You need to have an account to perfom this action");
+    }
     try {
       await baseApi.post("feedbacks/add_feedback", {
         note: value,
         bookId,
       });
       toast.success("Rate posted");
-    } catch (error: any) {
-      toast.error(error.response.data.error);
-      console.error("Error rating book", error);
+    } catch (err: any) {
+      toast.error(err.response.data.error);
+      console.error("Error rating book", err);
     }
   };
 

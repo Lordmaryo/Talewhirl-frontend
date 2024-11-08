@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import defaultProfile from "../image/default-profile.png";
 import defaultbg from "../image/darkbackground.jpg";
@@ -16,14 +17,18 @@ type CurrentUserIdProp = {
 
 const EditProfile = ({ currentUserId, setSucess }: CurrentUserIdProp) => {
   const [userData, setUserData] = useState<UserResponse | null>(null);
-  const [profileFile, setProfileFile] = useState(null);
-  const [backgroundFile, setBackgroundFile] = useState(null);
+  const [profileFile, setProfileFile] = useState<File | null>(null);
+  const [backgroundFile, setBackgroundFile] = useState<File | null>(null);
 
-  const handleprofileChange = (e: any) => {
-    setProfileFile(e.target.files[0]);
+  const handleprofileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setProfileFile(e.target.files[0]);
+    }
   };
-  const handleBackgroundChange = (e: any) => {
-    setBackgroundFile(e.target.files[0]);
+  const handleBackgroundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setBackgroundFile(e.target.files[0]);
+    }
   };
 
   useEffect(() => {
@@ -38,7 +43,7 @@ const EditProfile = ({ currentUserId, setSucess }: CurrentUserIdProp) => {
       await baseApi.post("user/profile_pic", profileData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-    } catch (err: any) {
+    } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
         console.error(err.response.data.businessErrorDescription);
         console.error(err.response.data.validationErrors);
@@ -56,13 +61,13 @@ const EditProfile = ({ currentUserId, setSucess }: CurrentUserIdProp) => {
           "Content-Type": "multipart/form-data",
         },
       });
-    } catch (err: any) {
+    } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
         console.error(err.response.data.businessErrorDescription);
         console.error(err.response.data.validationErrors);
       }
     }
-  };
+  }; 
 
   const [close, setClose] = useState(false);
 

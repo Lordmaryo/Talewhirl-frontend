@@ -1,4 +1,4 @@
-// "use client"
+"use client"
 import React, { useState } from "react";
 import { Book, deleteBook } from "../api/ApiServices";
 import Image from "next/image";

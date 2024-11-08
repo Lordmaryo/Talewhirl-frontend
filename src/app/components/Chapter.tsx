@@ -23,7 +23,7 @@ const Chapter = ({ chapters, updateChapter, addNewChapter }: ChapterProps) => {
             type="text"
             value={chapter.chapterName}
             required
-            className="p-4"
+            className="p-4 bg-transparent"
             onChange={(e) =>
               updateChapter(index, "chapterName", e.target.value)
             }
@@ -32,12 +32,12 @@ const Chapter = ({ chapters, updateChapter, addNewChapter }: ChapterProps) => {
           <textarea
             value={chapter.epigraph}
             onChange={(e) => updateChapter(index, "epigraph", e.target.value)}
-            className="p-2 h-28"
+            className="p-2 h-28 bg-transparent"
             placeholder="Epigraph (Optional)"
           />
           <textarea
             value={chapter.content}
-            className="p-2 h-screen"
+            className="p-2 h-screen bg-transparent"
             required
             onChange={(e) => updateChapter(index, "content", e.target.value)}
             placeholder="Content"
