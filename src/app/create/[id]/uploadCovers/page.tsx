@@ -17,17 +17,11 @@ import defaultCover from "../../../image/defaultcover.png";
 const UploadCovers = ({ params }: PageProps) => {
   const router = useRouter();
   const bookId = params.id;
+  const [book, setBook] = useState<Book | null>(null);
   const [bookCoverFile, setBookCoverFile] = useState<File | null>(null);
   const [backgroundCoverFile, setBackgroundCoverFile] = useState<File | null>(
     null
   );
-  const [book, setBook] = useState<Book | null>(null);
-
-  const handleBackgroundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setBackgroundCoverFile(e.target.files[0]);
-    }
-  };
 
   const handleCoverChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -35,12 +29,18 @@ const UploadCovers = ({ params }: PageProps) => {
     }
   };
 
+  const handleBackgroundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setBackgroundCoverFile(e.target.files[0]);
+    }
+  };
+
   const uploadBookCover = async () => {
     if (!bookCoverFile) return;
-    const coverData = new FormData();
-    coverData.append("file", bookCoverFile);
+    const profileCoverData = new FormData();
+    profileCoverData.append("file", bookCoverFile);
     try {
-      await baseApi.post(`book/cover/${bookId}`, coverData, {
+      await baseApi.post(`book/cover/${bookId}`, profileCoverData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
     } catch (err: any) {
@@ -54,12 +54,16 @@ const UploadCovers = ({ params }: PageProps) => {
 
   const uploadBookBackground = async () => {
     if (!backgroundCoverFile) return;
-    const coverData = new FormData();
-    coverData.append("file", backgroundCoverFile);
+    const backgroundCoverData = new FormData();
+    backgroundCoverData.append("file", backgroundCoverFile);
     try {
-      await baseApi.post(`book/background-cover/${bookId}`, coverData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      await baseApi.post(
+        `book/background-cover/${bookId}`,
+        backgroundCoverData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
     } catch (err: any) {
       if (axios.isAxiosError(err) && err.response) {
         toast.error("Something went wrong");
@@ -71,7 +75,8 @@ const UploadCovers = ({ params }: PageProps) => {
 
   const saveAndExit = async () => {
     try {
-      await Promise.all([uploadBookCover(), uploadBookBackground()]);
+      await uploadBookCover();
+      await uploadBookBackground();
       toast.success("covers saved successfully!");
       router.push("/");
     } catch (error) {
@@ -82,7 +87,8 @@ const UploadCovers = ({ params }: PageProps) => {
 
   const handlePublishBook = async () => {
     try {
-      await Promise.all([uploadBookCover(), uploadBookBackground()]);
+      await uploadBookCover();
+      await uploadBookBackground();
       publishBook(bookId);
       toast.success("Uploads completed successfully!");
       router.push("/");
@@ -95,7 +101,6 @@ const UploadCovers = ({ params }: PageProps) => {
   useEffect(() => {
     fetchBookById(bookId, setBook);
   }, [bookId]);
-// TODO MAKE A COMPONENT THAT HANDLES COVER UPLOADS FOR EXISTING BOOKS
   return (
     <div className="py-16">
       <ToastContainer position="top-right" autoClose={10000} hideProgressBar />

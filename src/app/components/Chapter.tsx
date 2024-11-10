@@ -16,7 +16,7 @@ const Chapter = ({ chapters, updateChapter, addNewChapter }: ChapterProps) => {
     <div className="py-4 max-w-[1000px] mx-auto">
       {chapters.map((chapter, index) => (
         <div key={index} className="flex flex-col gap-4 mb-6 py-6">
-          <button>
+          <button type="button">
             Chapter {index + 1}: {truncateWord(chapter.chapterName, 26)}
           </button>
           <input

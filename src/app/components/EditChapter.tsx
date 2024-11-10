@@ -31,19 +31,19 @@ const EditChapter = ({
               updateChapter(index, "chapterName", e.target.value)
             }
             placeholder="Chapter Name"
-            className="p-4"
+            className="p-4 bg-transparent"
           />
           <textarea
             value={chapter.epigraph}
             onChange={(e) => updateChapter(index, "epigraph", e.target.value)}
             placeholder="Epigraph (Optional)"
-            className="p-2 h-28"
+            className="p-2 h-28 bg-transparent"
           />
           <textarea
             value={chapter.content}
             onChange={(e) => updateChapter(index, "content", e.target.value)}
             placeholder="Content"
-            className="p-2 h-screen"
+            className="p-2 h-screen bg-transparent"
           />
         </div>
       ))}

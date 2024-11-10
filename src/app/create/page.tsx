@@ -17,11 +17,8 @@ const CreatePage = () => {
   const [pgRating, setPgRating] = useState(0);
   const [genres, setGenres] = useState<string[]>([]);
   const [chapters, setChapters] = useState([
-    { chapterName: "", epigraph: "", chapterNum: 0, content: "" },
+    { chapterName: "", epigraph: "", chapterNum: 1, content: "" },
   ]);
-  const [sucess, setSucess] = useState(false);
-  const [response, setResponse] = useState<SavedBookResponse | null>(null);
-
   const addNewChapter = () => {
     setChapters([
       ...chapters,
@@ -56,6 +53,10 @@ const CreatePage = () => {
             setPgRating={setPgRating}
             setGenres={setGenres}
             setActiveTabs={setActiveTabs}
+            title={title}
+            synopsis={synopsis}
+            genres={genres}
+            pgRating={pgRating}
           />
         );
       case "Story":
@@ -71,6 +72,7 @@ const CreatePage = () => {
     }
   };
 
+  let bookId = 0;
   const saveBook = async () => {
     try {
       const { data } = await baseApi.post("book", {
@@ -80,8 +82,7 @@ const CreatePage = () => {
         genres,
         chapters,
       });
-      setResponse(data);
-      setSucess(true);
+      bookId = data.id;
     } catch (err: any) {
       console.error("Error response:", err.response?.data);
       if (axios.isAxiosError(err) && err.response) {
@@ -89,11 +90,10 @@ const CreatePage = () => {
           err.response.data.validationErrors || "An error occurred";
         toast.error(errorMsg);
       } else {
-        toast.error("Something went wrong");
+        toast.error("Something went wrong, try again later");
       }
     }
   };
-  const bookId = response?.id;
 
   const handleCancel = () => {
     saveBook();
@@ -103,11 +103,7 @@ const CreatePage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await saveBook();
-    if (sucess) {
-      router.push(`/create/${bookId}/uploadCovers`);
-    } else {
-      toast.error("Something went wrong");
-    }
+    if (bookId) router.push(`/create/${bookId}/uploadCovers`);
   };
 
   return (

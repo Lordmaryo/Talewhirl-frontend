@@ -1,5 +1,4 @@
 "use client";
-import React, { useEffect, useState } from "react";
 import GenreSelector from "../utilities/GenreSelector";
 import Button from "./Button";
 
@@ -9,6 +8,10 @@ type BookDetailsProps = {
   setSynopsis: (synopsis: string) => void;
   setGenres: (genres: string[]) => void;
   setActiveTabs: (activeTabs: string) => void;
+  title: string;
+  synopsis: string;
+  genres: string[];
+  pgRating: number;
 };
 
 const BookDetails = ({
@@ -17,19 +20,11 @@ const BookDetails = ({
   setPgRating,
   setGenres,
   setActiveTabs,
+  title,
+  synopsis,
+  genres,
+  pgRating,
 }: BookDetailsProps) => {
-  const [allGenres, setAllGenres] = useState<string[]>([]);
-  const [singleGenre, setSingleGenre] = useState("");
-  const [displayGenre, setDisplayGenre] = useState<string[]>([]);
-
-  useEffect(() => {
-    const uniqueGenres = [...allGenres, singleGenre].filter(
-      (genre, index, self) => self.indexOf(genre) === index
-    );
-    setGenres(uniqueGenres);
-    setDisplayGenre(uniqueGenres);
-  }, [allGenres, singleGenre]);
-
   return (
     <div className="py-4 max-w-[800px] mx-auto space-y-4">
       <div className="flex flex-col gap-4">
@@ -40,6 +35,7 @@ const BookDetails = ({
           type="text"
           onChange={(e) => setTitle(e.target.value)}
           maxLength={100}
+          value={title}
           required
           name="title"
           className="p-2 bg-transparent"
@@ -53,6 +49,7 @@ const BookDetails = ({
         </label>
         <textarea
           maxLength={250}
+          value={synopsis}
           onChange={(e) => setSynopsis(e.target.value)}
           required
           className="p-2 h-40 bg-transparent"
@@ -67,7 +64,8 @@ const BookDetails = ({
         </label>
         <select
           name="pgRating"
-          className="p-2 bg-transparent"
+          className="p-2 bg-black text-white"
+          value={pgRating}
           id="pg-rating"
           required
           onChange={(e) => setPgRating(parseInt(e.target.value))}
@@ -80,18 +78,17 @@ const BookDetails = ({
         </select>
       </div>
       <div className="space-y-2">
-        <label htmlFor="genres" className="font-bold">
-          Genres
+        <label htmlFor="genres" className="flex flex-col gap-1">
+          <span className="font-bold">Genres</span>
+          <span className="text-sm text-zinc-500">
+            genres must be between 3 and 5
+          </span>
         </label>
         <div className="flex flex-wrap gap-4" id="genres">
-          <GenreSelector
-            setAllGenres={setAllGenres}
-            allGenres={allGenres}
-            setSingleGenre={setSingleGenre}
-          />
-          {allGenres.length > 0 && (
+          <GenreSelector setGenres={setGenres} genres={genres} />
+          {genres.length > 0 && (
             <div className="bg-[#383838] p-2 rounded-md scrollbar-hide overflow-auto max-h-32 font-bold flex flex-col text-sm gap-2">
-              {displayGenre.map((genre, index) => (
+              {genres.map((genre, index) => (
                 <span key={index}>{genre}</span>
               ))}
             </div>
@@ -101,6 +98,7 @@ const BookDetails = ({
       <Button
         className="w-full"
         label="Start writing!"
+        type="button"
         onClick={() => {
           setActiveTabs("Story");
           window.scrollTo({ top: 0, behavior: "smooth" });
